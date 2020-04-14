@@ -16,6 +16,7 @@ class RequestLogMiddleware
     /**
      * @param $request
      * @param Closure $next
+     * @return mixed
      */
     public function handle(Request $request, Closure $next)
     {
@@ -36,6 +37,8 @@ class RequestLogMiddleware
             ->setResponseContent($response->original)
             ->setResponseTime($responseTime);
 
-        Log::info('teste', $requestLog->toArray());
+        Log::info('Request info!', $requestLog->toArray());
+
+        return $response;
     }
 }
