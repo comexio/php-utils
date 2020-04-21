@@ -14,7 +14,7 @@ class RequestLogUnitTest extends TestCase
     public function testRequestHeaders(): void
     {
         $requestLog = new RequestLog();
-        $response = $requestLog->setResponseTime([]);
+        $response = $requestLog->setRequestHeaders([]);
 
         $this->assertInstanceOf(RequestLog::class, $response);
     }
@@ -25,7 +25,7 @@ class RequestLogUnitTest extends TestCase
     public function testRequestServer(): void
     {
         $requestLog = new RequestLog();
-        $response = $requestLog->setResponseTime([]);
+        $response = $requestLog->setRequestServer([]);
 
         $this->assertInstanceOf(RequestLog::class, $response);
     }
@@ -36,7 +36,7 @@ class RequestLogUnitTest extends TestCase
     public function testRequestPayload(): void
     {
         $requestLog = new RequestLog();
-        $response = $requestLog->setResponseTime([]);
+        $response = $requestLog->setRequestPayload([]);
 
         $this->assertInstanceOf(RequestLog::class, $response);
     }
@@ -47,7 +47,7 @@ class RequestLogUnitTest extends TestCase
     public function testResponseHeaders(): void
     {
         $requestLog = new RequestLog();
-        $response = $requestLog->setResponseTime([]);
+        $response = $requestLog->setResponseHeaders([]);
 
         $this->assertInstanceOf(RequestLog::class, $response);
     }
@@ -58,7 +58,7 @@ class RequestLogUnitTest extends TestCase
     public function testResponseContent(): void
     {
         $requestLog = new RequestLog();
-        $response = $requestLog->setResponseTime([]);
+        $response = $requestLog->setResponseContent([]);
 
         $this->assertInstanceOf(RequestLog::class, $response);
     }

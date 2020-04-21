@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Logcomex\PhpUtils\Exceptions\ApiException;
+use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -110,9 +111,10 @@ class ExceptionHandler
                     ], Response::HTTP_METHOD_NOT_ALLOWED);
             case $exception instanceof ApiException:
                 return response()
-                    ->json([
-                        'message' => $exception->getMessage()
-                    ], $exception->getHttpCode());
+                    ->json(['message' => $exception->getMessage()], $exception->getHttpCode());
+            case $exception instanceof BadImplementationException:
+                return response()
+                    ->json(['message' => 'Tivemos um erro na aplicação!'], $exception->getHttpCode());
             default:
                 return response()
                     ->json([

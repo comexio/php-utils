@@ -75,7 +75,7 @@ class ApiExceptionUnitTest extends TestCase
     {
         $this->assertIsArray($exception->toArray());
         $this->assertEquals(
-            '{"exception-class":"ApiException","message":"Test Message!","file":"\/var\/www\/logcomex-php-utils\/tests\/ApiExceptionUnitTest.php","line":29,"http-code":404,"token":"T001"}',
+            '{"exception-class":"ApiException","message":"Test Message!","file":"\/var\/www\/logcomex-php-utils\/tests\/Exceptions\/ApiExceptionUnitTest.php","line":29,"http-code":404,"token":"T001"}',
             json_encode($exception->toArray())
         );
     }
@@ -88,7 +88,7 @@ class ApiExceptionUnitTest extends TestCase
     {
         $this->assertIsString($exception->toJson());
         $this->assertEquals(
-            '{"exception-class":"ApiException","message":"Test Message!","file":"\/var\/www\/logcomex-php-utils\/tests\/ApiExceptionUnitTest.php","line":29,"http-code":404,"token":"T001"}',
+            '{"exception-class":"ApiException","message":"Test Message!","file":"\/var\/www\/logcomex-php-utils\/tests\/Exceptions\/ApiExceptionUnitTest.php","line":29,"http-code":404,"token":"T001"}',
             $exception->toJson()
         );
     }

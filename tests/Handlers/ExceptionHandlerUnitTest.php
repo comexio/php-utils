@@ -3,12 +3,15 @@
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
+use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use PHPUnit\Framework\TestCase;
 use Logcomex\PhpUtils\Handlers\ExceptionHandler;
 use Logcomex\PhpUtils\Exceptions\ApiException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * Class ExceptionHandlerUnitTest
@@ -56,7 +59,7 @@ class ExceptionHandlerUnitTest extends TestCase
 
         $this->assertIsArray($response);
         $this->assertEquals(
-            '{"exception-class":"Exception","message":"Teste","file":"\/var\/www\/logcomex-php-utils\/tests\/ExceptionHandlerUnitTest.php","line":53,"code":100}',
+            '{"exception-class":"Exception","message":"Teste","file":"\/var\/www\/logcomex-php-utils\/tests\/Handlers\/ExceptionHandlerUnitTest.php","line":56,"code":100}',
             json_encode($response)
         );
     }
@@ -124,9 +127,22 @@ class ExceptionHandlerUnitTest extends TestCase
     /**
      * @return void
      */
-    public function tesRenderValidationException(): void
+    public function testRenderValidationException(): void
     {
-        //TODO: study how to do this test
+        try {
+            Validator::make(['wrongKey' => 'test'], ['test' => 'required'])->validate();
+        } catch (Exception $exception) {
+            $request = new Request();
+            $response = $this->handler->render($request, $exception);
+
+            $this->assertInstanceOf(JsonResponse::class, $response);
+            $this->assertEquals('{"message":"common.errors.data_invalid","error":{"test":["The test field is required."]}}', $response->getContent());
+            $this->assertEquals(406, $response->getStatusCode());
+
+            return;
+        }
+
+        $this->assertTrue(false, 'It was not possible to test this Exception');
     }
 
     /**
@@ -157,5 +173,32 @@ class ExceptionHandlerUnitTest extends TestCase
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals('{"message":""}', $response->getContent());
         $this->assertEquals(400, $response->getStatusCode());
+    }
+
+    /**
+     * @return void
+     */
+    public function testRenderBadImplementationException(): void
+    {
+        $exception = new BadImplementationException('Error', Response::HTTP_INTERNAL_SERVER_ERROR);
+        $request = new Request();
+
+        $response = $this->handler->render($request, $exception);
+
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals('{"message":"Tivemos um erro na aplica\u00e7\u00e3o!"}', $response->getContent());
+        $this->assertEquals(500, $response->getStatusCode());
+    }
+
+    /**
+     * @return void
+     */
+    public function testReport(): void
+    {
+        $exception = new ApiException('', '');
+
+        $response = $this->handler->report($exception);
+
+        $this->assertNull($response);
     }
 }
