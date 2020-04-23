@@ -10,6 +10,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use Laravel\Lumen\Exceptions\Handler;
 use Logcomex\PhpUtils\Exceptions\ApiException;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * Class ExceptionHandler
  * @package Logcomex\PhpUtils\Handlers
  */
-class ExceptionHandler
+class ExceptionHandler extends Handler
 {
     /**
      * A list of the exception types that should not be reported.
