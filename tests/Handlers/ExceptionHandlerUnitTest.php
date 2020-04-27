@@ -5,6 +5,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
+use Logcomex\PhpUtils\Exceptions\SecurityException;
 use PHPUnit\Framework\TestCase;
 use Logcomex\PhpUtils\Handlers\ExceptionHandler;
 use Logcomex\PhpUtils\Exceptions\ApiException;
@@ -59,7 +60,7 @@ class ExceptionHandlerUnitTest extends TestCase
 
         $this->assertIsArray($response);
         $this->assertEquals(
-            '{"exception-class":"Exception","message":"Teste","file":"\/var\/www\/logcomex-php-utils\/tests\/Handlers\/ExceptionHandlerUnitTest.php","line":56,"code":100}',
+            '{"exception-class":"Exception","message":"Teste","file":"\/var\/www\/logcomex-php-utils\/tests\/Handlers\/ExceptionHandlerUnitTest.php","line":57,"code":100}',
             json_encode($response)
         );
     }
@@ -188,6 +189,21 @@ class ExceptionHandlerUnitTest extends TestCase
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals('{"message":"Tivemos um erro na aplica\u00e7\u00e3o!"}', $response->getContent());
         $this->assertEquals(500, $response->getStatusCode());
+    }
+
+    /**
+     * @return void
+     */
+    public function testRenderSecurityException(): void
+    {
+        $exception = new SecurityException('SEC01', "It's not safe");
+        $request = new Request();
+
+        $response = $this->handler->render($request, $exception);
+
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals('{"code":"SEC01","message":"Tivemos um erro de seguran\u00e7a na aplica\u00e7\u00e3o!","reason":"It\'s not safe"}', $response->getContent());
+        $this->assertEquals(403, $response->getStatusCode());
     }
 
     /**

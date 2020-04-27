@@ -14,7 +14,7 @@ use Logcomex\PhpUtils\Logs\RequestLog;
 class RequestLogMiddleware
 {
     /**
-     * @param $request
+     * @param Request $request
      * @param Closure $next
      * @return mixed
      */

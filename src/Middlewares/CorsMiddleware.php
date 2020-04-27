@@ -4,6 +4,7 @@ namespace Logcomex\PhpUtils\Middlewares;
 
 use Closure;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 
@@ -14,11 +15,11 @@ use Illuminate\Support\Collection;
 class CorsMiddleware
 {
     /**
-     * @param $request
+     * @param Request $request
      * @param Closure $next
      * @return JsonResponse|mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
         $corsSettings = collect(config('cors'))->filter();
 
