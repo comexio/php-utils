@@ -22,16 +22,44 @@ class AllowedHostsMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $requestOriginHost = $request->getHost();
-        $allowedHosts = config('app.allowed-hosts', []);
+        $allowedHosts = array_filter(explode(';', config('app.allowed-hosts', '')));
 
-        $isAllowedHost = empty($allowedHosts) || in_array($requestOriginHost, $allowedHosts);
+        $isAllowedByHostname = $this->checkByHostname($request, $allowedHosts);
+        $isAllowedByIp = $this->checkByIp($request, $allowedHosts);
+
+        $isAllowedHost = empty($allowedHosts) || $isAllowedByHostname || $isAllowedByIp;
         if ($isAllowedHost) {
             $response = $next($request);
 
             return $response;
         }
 
-        throw new SecurityException('SEC001', "Host {$requestOriginHost} is not allowed to use this API.", Response::HTTP_FORBIDDEN);
+        throw new SecurityException('SEC001', "Host is not allowed to use this API.", Response::HTTP_FORBIDDEN);
+    }
+
+    /**
+     * @param Request $request
+     * @param array $allowedHosts
+     * @return bool
+     */
+    public function checkByHostname(Request $request, array $allowedHosts): bool
+    {
+        $requestOriginScheme = $request->getScheme();
+        $requestOriginHost = gethostbyaddr($request->getClientIp());
+        $requestOriginFull = "{$requestOriginScheme}://{$requestOriginHost}";
+
+        return in_array($requestOriginFull, $allowedHosts);
+    }
+
+    /**
+     * @param Request $request
+     * @param array $allowedHosts
+     * @return bool
+     */
+    public function checkByIp(Request $request, array $allowedHosts): bool
+    {
+        $requestOriginFull = $request->getClientIp();
+
+        return in_array($requestOriginFull, $allowedHosts);
     }
 }
