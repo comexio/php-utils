@@ -27,7 +27,7 @@ class ApiException extends Exception implements Arrayable, Jsonable
      * @param string $token
      * @param string $message
      * @param int $httpCode
-     * @param \Exception|null $previous
+     * @param Exception|null $previous
      */
     public function __construct(
         string $token,
