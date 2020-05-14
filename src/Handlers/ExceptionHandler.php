@@ -113,7 +113,10 @@ class ExceptionHandler extends Handler
                     ], Response::HTTP_METHOD_NOT_ALLOWED);
             case $exception instanceof ApiException:
                 return response()
-                    ->json(['message' => $exception->getMessage()], $exception->getHttpCode());
+                    ->json(
+                        ['message' => $exception->getMessage(), 'code' => $exception->getToken()],
+                        $exception->getHttpCode()
+                    );
             case $exception instanceof BadImplementationException:
                 return response()
                     ->json(['message' => 'Tivemos um erro na aplicação!'], $exception->getHttpCode());
