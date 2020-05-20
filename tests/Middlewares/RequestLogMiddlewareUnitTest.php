@@ -1,5 +1,7 @@
 <?php
 
+use Logcomex\PhpUtils\Middlewares\RequestLogMiddleware;
+
 /**
  * Class RequestLogUnitTest
  */
@@ -24,6 +26,10 @@ class RequestLogMiddlewareUnitTest extends TestCase
      */
     public function testHandlerWithMicrotime(): void
     {
+        config([
+            'requestLog.enable-response-content' => true,
+            'requestLog.blocked-data-request-server' => ['test'],
+        ]);
         if (!defined('GLOBAL_FRAMEWORK_START')) {
             define('GLOBAL_FRAMEWORK_START', microtime(true));
         }
@@ -34,5 +40,26 @@ class RequestLogMiddlewareUnitTest extends TestCase
         } catch (Exception $exception) {
             $this->assertTrue(false, 'Middleware is not working!');
         }
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetSetting(): void
+    {
+        $middleware = new RequestLogMiddleware();
+
+        $response = $middleware->getSetting('test', true);
+        $this->assertIsBool($response);
+        $this->assertTrue($response);
+
+        config([
+            'requestLog.test' => false
+        ]);
+        $middleware->__construct();
+
+        $response = $middleware->getSetting('test', true);
+        $this->assertIsBool($response);
+        $this->assertFalse($response);
     }
 }

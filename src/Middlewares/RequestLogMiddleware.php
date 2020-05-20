@@ -14,6 +14,19 @@ use Logcomex\PhpUtils\Logs\RequestLog;
 class RequestLogMiddleware
 {
     /**
+     * @var mixed
+     */
+    private $settings;
+
+    /**
+     * RequestLogMiddleware constructor.
+     */
+    public function __construct()
+    {
+        $this->settings = config('requestLog');
+    }
+
+    /**
      * @param Request $request
      * @param Closure $next
      * @return mixed
@@ -21,24 +34,55 @@ class RequestLogMiddleware
     public function handle(Request $request, Closure $next)
     {
         $requestLog = new RequestLog();
+        if ($this->getSetting('enable-request-header', true)) {
+            $requestLog->setRequestHeaders($request->headers->all());
+        }
+        if ($this->getSetting('enable-request-server', true)) {
+            $blockedDataSetting = $this->getSetting('blocked-data-request-server');
+            $requestServerContent = $request->server->all();
 
-        $requestLog
-            ->setRequestHeaders($request->headers->all())
-            ->setRequestServer($request->server->all())
-            ->setRequestPayload($request->all());
+            if (isset($blockedDataSetting)) {
+                $blockedDataSetting = is_array($blockedDataSetting)
+                    ? $blockedDataSetting
+                    : [$blockedDataSetting];
+                foreach ($blockedDataSetting as $itemToRemove) {
+                    unset($requestServerContent[$itemToRemove]);
+                }
+            }
+
+            $requestLog->setRequestServer($requestServerContent);
+        }
+        if ($this->getSetting('enable-request-payload', true)) {
+            $requestLog->setRequestPayload($request->all());
+        }
 
         $response = $next($request);
 
-        $responseTime = defined('GLOBAL_FRAMEWORK_START')
-            ? microtime(true) - GLOBAL_FRAMEWORK_START
-            : 'GLOBAL_FRAMEWORK_START is not setted';
-        $requestLog
-            ->setResponseHeaders($response->headers->all())
-            ->setResponseContent($response->original)
-            ->setResponseTime($responseTime);
+        if ($this->getSetting('enable-response-header', true)) {
+            $requestLog->setResponseHeaders($response->headers->all());
+        }
+        if ($this->getSetting('enable-response-content', false)) {
+            $requestLog->setResponseContent($response->original);
+        }
+        if ($this->getSetting('enable-response-time', true)) {
+            $responseTime = defined('GLOBAL_FRAMEWORK_START')
+                ? microtime(true) - GLOBAL_FRAMEWORK_START
+                : 'GLOBAL_FRAMEWORK_START is not setted';
+            $requestLog->setResponseTime($responseTime);
+        }
 
         Log::info('Request info!', $requestLog->toArray());
 
         return $response;
+    }
+
+    /**
+     * @param string $settingKey
+     * @param null $defaultValue
+     * @return mixed
+     */
+    public function getSetting(string $settingKey, $defaultValue = null)
+    {
+        return $this->settings[$settingKey] ?? $defaultValue;
     }
 }
