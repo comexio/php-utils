@@ -71,7 +71,7 @@ class RequestLogMiddleware
             $requestLog->setResponseTime($responseTime);
         }
 
-        Log::info('Request info!', $requestLog->toArray());
+        Log::info('[[REQUEST_INFO]]', $requestLog->toArray());
 
         return $response;
     }
