@@ -38,16 +38,13 @@ class RequestLogMiddleware
             $requestLog->setRequestHeaders($request->headers->all());
         }
         if ($this->getSetting('enable-request-server', true)) {
-            $blockedDataSetting = $this->getSetting('blocked-data-request-server');
+            $allowedDataSetting = $this->getSetting('allowed-data-request-server');
             $requestServerContent = $request->server->all();
 
-            if (isset($blockedDataSetting)) {
-                $blockedDataSetting = is_array($blockedDataSetting)
-                    ? $blockedDataSetting
-                    : [$blockedDataSetting];
-                foreach ($blockedDataSetting as $itemToRemove) {
-                    unset($requestServerContent[$itemToRemove]);
-                }
+            if (isset($allowedDataSetting)) {
+                $requestServerContent = collect($requestServerContent)
+                    ->only($allowedDataSetting)
+                    ->toArray();
             }
 
             $requestLog->setRequestServer($requestServerContent);

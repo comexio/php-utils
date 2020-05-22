@@ -28,7 +28,7 @@ class RequestLogMiddlewareUnitTest extends TestCase
     {
         config([
             'requestLog.enable-response-content' => true,
-            'requestLog.blocked-data-request-server' => ['test'],
+            'requestLog.allowed-data-request-server' => ['test'],
         ]);
         if (!defined('GLOBAL_FRAMEWORK_START')) {
             define('GLOBAL_FRAMEWORK_START', microtime(true));
