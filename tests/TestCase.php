@@ -31,6 +31,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * @param Exception $expectedException
      * @param Closure $handler
+     * @throws Exception
      */
     public function expectCustomException(Exception $expectedException, Closure $handler): void
     {
@@ -41,6 +42,8 @@ abstract class TestCase extends BaseTestCase
             if (method_exists($exception, 'getToken')) {
                 $this->expectExceptionToken($exception, $expectedException->getToken());
             }
+
+            throw $exception;
         }
     }
 
