@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace Logcomex\PhpUtils\Middlewares;
 
 use Closure;
 use Illuminate\Http\JsonResponse;
@@ -10,7 +10,7 @@ use Logcomex\PhpUtils\Exceptions\SecurityException;
 
 /**
  * Class AccreditedApiKeysMiddleware
- * @package App\Http\Middleware
+ * @package Logcomex\PhpUtils\Middlewares
  */
 class AccreditedApiKeysMiddleware
 {
