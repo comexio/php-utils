@@ -56,13 +56,12 @@ class ExceptionHandlerUnitTest extends TestCase
     {
         $exception = new Exception('Teste', 100);
 
-        $response = $this->handler->exportExceptionToArray($exception);
-
-        $this->assertIsArray($response);
-        $this->assertEquals(
-            '{"exception-class":"Exception","message":"Teste","file":"\/var\/www\/logcomex-php-utils\/tests\/Handlers\/ExceptionHandlerUnitTest.php","line":57,"code":100}',
-            json_encode($response)
-        );
+        $exceptionArray = $this->handler->exportExceptionToArray($exception);
+        $this->assertIsArray($exceptionArray);
+        $this->assertEquals('Exception', $exceptionArray['exception-class']);
+        $this->assertEquals('Teste', $exceptionArray['message']);
+        $this->assertNotNull($exceptionArray['file']);
+        $this->assertNotNull($exceptionArray['line']);
     }
 
     /**

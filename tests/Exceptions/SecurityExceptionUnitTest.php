@@ -73,11 +73,14 @@ class SecurityExceptionUnitTest extends TestCase
      */
     public function testToArray(SecurityException $exception): void
     {
-        $this->assertIsArray($exception->toArray());
-        $this->assertEquals(
-            '{"exception-class":"SecurityException","message":"Test Message!","file":"\/var\/www\/logcomex-php-utils\/tests\/Exceptions\/SecurityExceptionUnitTest.php","line":29,"http-code":403,"token":"SEC01"}',
-            json_encode($exception->toArray())
-        );
+        $exceptionArray = $exception->toArray();
+        $this->assertIsArray($exceptionArray);
+        $this->assertEquals('SecurityException', $exceptionArray['exception-class']);
+        $this->assertEquals('Test Message!', $exceptionArray['message']);
+        $this->assertEquals('403', $exceptionArray['http-code']);
+        $this->assertEquals('SEC01', $exceptionArray['token']);
+        $this->assertNotNull($exceptionArray['file']);
+        $this->assertNotNull($exceptionArray['line']);
     }
 
     /**
@@ -86,10 +89,15 @@ class SecurityExceptionUnitTest extends TestCase
      */
     public function testToJson(SecurityException $exception): void
     {
-        $this->assertIsString($exception->toJson());
-        $this->assertEquals(
-            '{"exception-class":"SecurityException","message":"Test Message!","file":"\/var\/www\/logcomex-php-utils\/tests\/Exceptions\/SecurityExceptionUnitTest.php","line":29,"http-code":403,"token":"SEC01"}',
-            $exception->toJson()
-        );
+        $exceptionJson = $exception->toJson();
+        $this->assertJson($exceptionJson);
+
+        $exceptionArray = json_decode($exceptionJson, true);
+        $this->assertEquals('SecurityException', $exceptionArray['exception-class']);
+        $this->assertEquals('Test Message!', $exceptionArray['message']);
+        $this->assertEquals('403', $exceptionArray['http-code']);
+        $this->assertEquals('SEC01', $exceptionArray['token']);
+        $this->assertNotNull($exceptionArray['file']);
+        $this->assertNotNull($exceptionArray['line']);
     }
 }
