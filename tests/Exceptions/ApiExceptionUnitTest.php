@@ -73,11 +73,14 @@ class ApiExceptionUnitTest extends TestCase
      */
     public function testToArray(ApiException $exception): void
     {
-        $this->assertIsArray($exception->toArray());
-        $this->assertEquals(
-            '{"exception-class":"ApiException","message":"Test Message!","file":"\/var\/www\/logcomex-php-utils\/tests\/Exceptions\/ApiExceptionUnitTest.php","line":29,"http-code":404,"token":"T001"}',
-            json_encode($exception->toArray())
-        );
+        $exceptionArray = $exception->toArray();
+        $this->assertIsArray($exceptionArray);
+        $this->assertEquals('ApiException', $exceptionArray['exception-class']);
+        $this->assertEquals('Test Message!', $exceptionArray['message']);
+        $this->assertEquals('404', $exceptionArray['http-code']);
+        $this->assertEquals('T001', $exceptionArray['token']);
+        $this->assertNotNull($exceptionArray['file']);
+        $this->assertNotNull($exceptionArray['line']);
     }
 
     /**
@@ -86,10 +89,15 @@ class ApiExceptionUnitTest extends TestCase
      */
     public function testToJson(ApiException $exception): void
     {
-        $this->assertIsString($exception->toJson());
-        $this->assertEquals(
-            '{"exception-class":"ApiException","message":"Test Message!","file":"\/var\/www\/logcomex-php-utils\/tests\/Exceptions\/ApiExceptionUnitTest.php","line":29,"http-code":404,"token":"T001"}',
-            $exception->toJson()
-        );
+        $exceptionJson = $exception->toJson();
+        $this->assertJson($exceptionJson);
+
+        $exceptionArray = json_decode($exceptionJson, true);
+        $this->assertEquals('ApiException', $exceptionArray['exception-class']);
+        $this->assertEquals('Test Message!', $exceptionArray['message']);
+        $this->assertEquals('404', $exceptionArray['http-code']);
+        $this->assertEquals('T001', $exceptionArray['token']);
+        $this->assertNotNull($exceptionArray['file']);
+        $this->assertNotNull($exceptionArray['line']);
     }
 }

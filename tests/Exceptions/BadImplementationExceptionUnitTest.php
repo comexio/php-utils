@@ -48,11 +48,13 @@ class BadImplementationExceptionUnitTest extends TestCase
      */
     public function testToArray(BadImplementationException $exception): void
     {
-        $this->assertIsArray($exception->toArray());
-        $this->assertEquals(
-            '{"exception-class":"BadImplementationException","message":"Error!","file":"\/var\/www\/logcomex-php-utils\/tests\/Exceptions\/BadImplementationExceptionUnitTest.php","line":17,"http-code":500}',
-            json_encode($exception->toArray())
-        );
+        $exceptionArray = $exception->toArray();
+        $this->assertIsArray($exceptionArray);
+        $this->assertEquals('BadImplementationException', $exceptionArray['exception-class']);
+        $this->assertEquals('Error!', $exceptionArray['message']);
+        $this->assertEquals('500', $exceptionArray['http-code']);
+        $this->assertNotNull($exceptionArray['file']);
+        $this->assertNotNull($exceptionArray['line']);
     }
 
     /**
@@ -61,10 +63,14 @@ class BadImplementationExceptionUnitTest extends TestCase
      */
     public function testToJson(BadImplementationException $exception): void
     {
-        $this->assertIsString($exception->toJson());
-        $this->assertEquals(
-            '{"exception-class":"BadImplementationException","message":"Error!","file":"\/var\/www\/logcomex-php-utils\/tests\/Exceptions\/BadImplementationExceptionUnitTest.php","line":17,"http-code":500}',
-            $exception->toJson()
-        );
+        $exceptionJson = $exception->toJson();
+        $this->assertJson($exceptionJson);
+
+        $exceptionArray = json_decode($exceptionJson, true);
+        $this->assertEquals('BadImplementationException', $exceptionArray['exception-class']);
+        $this->assertEquals('Error!', $exceptionArray['message']);
+        $this->assertEquals('500', $exceptionArray['http-code']);
+        $this->assertNotNull($exceptionArray['file']);
+        $this->assertNotNull($exceptionArray['line']);
     }
 }
