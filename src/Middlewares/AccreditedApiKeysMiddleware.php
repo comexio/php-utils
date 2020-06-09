@@ -3,10 +3,9 @@
 namespace Logcomex\PhpUtils\Middlewares;
 
 use Closure;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Logcomex\PhpUtils\Exceptions\SecurityException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class AccreditedApiKeysMiddleware
@@ -20,9 +19,9 @@ class AccreditedApiKeysMiddleware
      * @return mixed
      * @throws SecurityException
      */
-    public function handle(Request $request, Closure $next): JsonResponse
+    public function handle(Request $request, Closure $next): Response
     {
-        $xApiKeyHeader = $request->header('x-api-key');
+        $xApiKeyHeader = $request->header('x-api-key', '');
         $accreditedApiKeys = config('accreditedApiKeys', []);
 
         $this->validateXApiKeyData($accreditedApiKeys, $xApiKeyHeader);
@@ -34,14 +33,14 @@ class AccreditedApiKeysMiddleware
     }
 
     /**
-     * @param JsonResponse $response
+     * @param Response $response
      * @param array $accreditedApiKeys
      * @param string $xApiKeyHeader
-     * @return JsonResponse
+     * @return Response
      */
-    public function setWelcomeHeaderInResponse(JsonResponse $response,
+    public function setWelcomeHeaderInResponse(Response $response,
                                                array $accreditedApiKeys,
-                                               string $xApiKeyHeader): JsonResponse
+                                               string $xApiKeyHeader): Response
     {
         $xApiKeyName = array_flip($accreditedApiKeys)[$xApiKeyHeader];
         $apiName = config('app.api-name', 'UnknowApi');
