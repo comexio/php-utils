@@ -2,6 +2,7 @@
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Logcomex\PhpUtils\Exceptions\SecurityException;
 use Logcomex\PhpUtils\Middlewares\AccreditedApiKeysMiddleware;
 
@@ -14,7 +15,7 @@ class AccreditedApiKeysMiddlewareUnitTest extends TestCase
      * @return void
      * @throws SecurityException
      */
-    public function testValidateXApiKeyDataSucccessFlow(): void
+    public function testValidateXApiKeyDataSuccessFlow(): void
     {
         $middleware = new AccreditedApiKeysMiddleware();
 
@@ -70,16 +71,16 @@ class AccreditedApiKeysMiddlewareUnitTest extends TestCase
     {
         $middleware = new AccreditedApiKeysMiddleware();
 
-        $fakeJsonResponse = response()->json([]);
+        $fakeResponse = new Response();
 
         config(['app.api-name' => 'test']);
         $response = $middleware->setWelcomeHeaderInResponse(
-            $fakeJsonResponse,
+            $fakeResponse,
             ['test' => '623187s8712yw8'],
             '623187s8712yw8'
         );
 
-        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertTrue($response->headers->has('Welcome-Message'));
         $this->assertEquals(
             'Welcome to the test. You are using the x-api-key credential: test',
@@ -94,15 +95,15 @@ class AccreditedApiKeysMiddlewareUnitTest extends TestCase
     {
         $middleware = new AccreditedApiKeysMiddleware();
 
-        $fakeJsonResponse = response()->json([]);
+        $fakeResponse = new Response();
 
         $response = $middleware->setWelcomeHeaderInResponse(
-            $fakeJsonResponse,
+            $fakeResponse,
             ['test' => '623187s8712yw8'],
             '623187s8712yw8'
         );
 
-        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertTrue($response->headers->has('Welcome-Message'));
         $this->assertEquals(
             'Welcome to the UnknowApi. You are using the x-api-key credential: test',
@@ -114,7 +115,7 @@ class AccreditedApiKeysMiddlewareUnitTest extends TestCase
      * @return void
      * @throws SecurityException
      */
-    public function testHandler(): void
+    public function testHandler_SuccessFlow(): void
     {
         $middleware = new AccreditedApiKeysMiddleware();
 
@@ -129,5 +130,59 @@ class AccreditedApiKeysMiddlewareUnitTest extends TestCase
         });
 
         $this->assertInstanceOf(JsonResponse::class, $response);
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function testHandler_FailureFlowNotSendingHeader(): void
+    {
+        config(['accreditedApiKeys' => [
+            'source-test-api' => '1721wt712w6216t'
+        ]]);
+        $expectedException = new SecurityException(
+            'SEC03',
+            'This endpoint is protected by ApiKey, you must provide a valid x-api-key header to use.',
+            401
+        );
+
+        $this->expectCustomException($expectedException, function () {
+            $middleware = new AccreditedApiKeysMiddleware();
+
+            $fakeRequest = new Request();
+            $fakeRequest->headers->set('x-api-keyy', '');
+
+            $middleware->handle($fakeRequest, function () {
+                return response()->json('test');
+            });
+        });
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function testHandler_FailureFlowSendingHeader(): void
+    {
+        config(['accreditedApiKeys' => [
+            'source-test-api' => '1721wt712w6216t'
+        ]]);
+        $expectedException = new SecurityException(
+            'SEC04',
+            'Your x-api-key header is invalid.',
+            401
+        );
+
+        $this->expectCustomException($expectedException, function () {
+            $middleware = new AccreditedApiKeysMiddleware();
+
+            $fakeRequest = new Request();
+            $fakeRequest->headers->set('x-api-key', 'invalid');
+
+            $middleware->handle($fakeRequest, function () {
+                return response()->json('test');
+            });
+        });
     }
 }
