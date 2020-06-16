@@ -1,66 +1,169 @@
 # php-utils
+
 PHP Utilities for Laravel/Lumen
 
-## Installation
+## Installation 
 
-    composer require logcomex/php-utils
-    
-## Utilities Documentation
+```sh
+cd /path/to/your/project
+composer require logcomex/php-utils
+```
 
-#### Exceptions
+## Utilities Packages
 
-You can use the exceptions to segregate your errors types
+ - Contracts
+ - Exceptions
+ - Functionalities
+ - Helpers
+ - Handlers
+ - Logs
+ - Middlewares
 
-* ##### ApiException(`string $token`, `string $message`, `int $httpCode = Response::HTTP_BAD_REQUEST`, `Exception $previous = null`)
-    
-    > ##### public function getHttpCode(): int
+## Contracts
 
-    > ##### public function getToken(): string
+> Have all the contracts (interfaces) used by the php-utils classes and other that you can use in your project.
+  
+## Exceptions  
 
-    > ##### public function __toString(): string
+> Have all the exceptions used by the php-utils classes. 
+> And others that you can use in your project to segregate your errors types .
 
-    > ##### public function toArray(): array
+#### ApiException
 
-    > ##### public function toJson(): string
+> You can use for all exceptions in 400 range http code
 
-* ##### BadImplementationException(`string $message`, `int $httpCode = Response::HTTP_INTERNAL_SERVER_ERROR`, `Exception $previous = null`)
-    
-    > ##### public function getHttpCode(): int
+``` php
+ApiException(string $token,
+			string $message, 
+			int $httpCode = Response::HTTP_BAD_REQUEST, 
+			Exception $previous = null)  
+```
+| Visibility | Function		  | Return Type |
+| ---------- | -------------- | ----------- |
+| public 	 | getHttpCode    | int 		|
+| public 	 | getToken		  | string 		|
+| public 	 | __toString     | string 		|
+| public 	 | toArray 		  | array 		|
+| public 	 | toJson 		  | string 		|
 
-    > ##### public function __toString(): string
+#### BadImplementationException
 
-    > ##### public function toArray(): array
+> This exception means that a situation has been overlooked or incorrectly done by the developer.
 
-    > ##### public function toJson(): string
+``` php
+BadImplementationException(string $message,
+			int $httpCode = Response::HTTP_INTERNAL_SERVER_ERROR, 
+			Exception $previous = null)  
+```
+| Visibility | Function		  | Return Type |
+| ---------- | -------------- | ----------- |
+| public 	 | getHttpCode    | int 		|
+| public 	 | __toString     | string 		|
+| public 	 | toArray 		  | array 		|
+| public 	 | toJson 		  | string 		|
 
-* ##### SecurityException(`string $token`, `string $message`, `int $httpCode = Response::HTTP_FORBIDDEN`, `Exception $previous = null`)
-    
-    > ##### public function getHttpCode(): int
+#### SecurityException
 
-    > ##### public function getToken(): string
+> This exception serves to point out some security problem in your application.
 
-    > ##### public function __toString(): string
+``` php
+SecurityException(string $token,
+			string $message, 
+			int $httpCode = Response::HTTP_FORBIDDEN, 
+			Exception $previous = null)  
+```
+| Visibility | Function		  | Return Type |
+| ---------- | -------------- | ----------- |
+| public 	 | getHttpCode    | int 		|
+| public 	 | getToken		  | string 		|
+| public 	 | __toString     | string 		|
+| public 	 | toArray 		  | array 		|
+| public 	 | toJson 		  | string 		|
 
-    > ##### public function toArray(): array
+## Functionalities  
 
-    > ##### public function toJson(): string
+> They're a pack of traits that can be useful in your code  
 
-#### Functionalities
+#### PropertiesExporterFunctionality
 
-They're a pack of traits that can be useful in your code
+> You can use this functionality to export an array with you class properties
 
-* ##### PropertiesExporterFunctionality
-    `You can use this functionality to export an array with you class properties`
-    
-    > ##### public static function properties(): array
+``` php
+public static function properties(): array  
+```
 
-* ##### PropertiesAttacherFunctionality
-    `You can use this functionality to attach in your class properties the values passed in the parameter.`
-    
-    **Note:** `To uses this functionality, you need use the PropertiesExporter functionality in the class.`
+#### PropertiesAttacherFunctionality
 
-    > ##### public function attachValues(array $values): void
+> You can use this functionality to attach in your class properties the values passed in the parameter.
+> >   **Note:** To uses this functionality, you need use the PropertiesExporterFunctionality in the class.
 
-## Contributing
+``` php
+public function attachValues(array $values): void
+```
+| Exception  | Reason |
+| ---------- | ----------- |
+| BadImplementationException | When you don't use PropertiesExporterFunctionality |
 
+#### ValuesExporterToArrayFunctionality
+
+> You can use this functionality to easily get all the properties of class in an array.
+> >   **Note:** To uses this functionality, you need to do two things:
+> >  1. The class must implement Illuminate\Contracts\Support\Arrayable.
+> >  2. The class must use PropertiesExporterFunctionality.
+
+``` php
+public function toArray()  
+```
+| Exception  | Reason |
+| ---------- | ----------- |
+| BadImplementationException | When yout don't implement the the Arrayable contract |
+| BadImplementationException | When you don't use PropertiesExporterFunctionality |
+
+## Helpers  
+
+> They're a pack of Helpers classes and traits.
+
+#### EnumHelper
+
+> It's a trait that provide some utilities to your Enumerators classes.
+
+| Visibility | Function | Return Type | Purpose |
+| :--- | :--- | :--- |:--- |
+| public 	 | all | array | Get all the constants of your Enumerator |
+
+``` php
+use Logcomex\PhpUtils\Helpers\EnumHelper;
+
+class ProductEnum
+{
+	user EnumHelper;
+	public const EXAMPLE = 'example';
+	public const EXAMPLE2 = 'example2';
+}
+
+$allProducts = ProductEnum::all();
+```
+
+## Unit Tests Coverage
+
+**100% at moment.**
+
+## TODO
+
+ - [ ] HttpHelper Doc
+ - [ ] TokenHelper Doc
+ - [ ] Handlers Package Doc
+	 - [ ] ExceptionHandler Doc
+ - [ ] Logs Package Doc
+	 - [ ] RequestLog Doc
+ - [ ] Middlewares Package Doc
+	 - [ ] AccreditedApiKeysMiddleware Doc
+	 - [ ] AllowedHostsMiddleware Doc
+	 - [ ] CorsMiddleware Doc
+	 - [ ] RequestLogMiddleware Doc
+ - [ ] Implement build tests requirement
+
+  
+## Contributing  
+  
 Open an issue first to discuss potential changes/additions.
