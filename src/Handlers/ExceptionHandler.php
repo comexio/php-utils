@@ -8,6 +8,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler;
@@ -68,15 +69,15 @@ class ExceptionHandler extends Handler
     {
         $treatedException = $this->exportExceptionToArray($exception);
 
-        Log::error('Ocorreu um erro!', $treatedException);
+        Log::error('[[REQUEST_ERROR]]', $treatedException);
     }
 
     /**
      * Render an exception into an HTTP response.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param Exception $exception
-     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response|JsonResponse
      */
     public function render($request, Exception $exception): JsonResponse
     {
