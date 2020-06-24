@@ -42,7 +42,7 @@ class ExceptionHandler extends Handler
      * @param Exception $exception
      * @return array
      */
-    public function exportExceptionToArray(Exception $exception): array
+    public static function exportExceptionToArray(Exception $exception): array
     {
         if (method_exists($exception, 'toArray')) {
             return $exception->toArray();
@@ -67,7 +67,7 @@ class ExceptionHandler extends Handler
      */
     public function report(Exception $exception): void
     {
-        $treatedException = $this->exportExceptionToArray($exception);
+        $treatedException = self::exportExceptionToArray($exception);
 
         Log::error('[[REQUEST_ERROR]]', $treatedException);
     }
