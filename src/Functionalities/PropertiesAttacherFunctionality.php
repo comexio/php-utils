@@ -22,8 +22,13 @@ trait PropertiesAttacherFunctionality
             );
         }
 
-        foreach ($this->properties() as $property) {
-            $this->{$property} = $values[$property] ?? null;
+        $properties = $this->properties();
+        foreach ($values as $propertyName => $propertyValue) {
+            if (!in_array($propertyName, $properties)) {
+                continue;
+            }
+
+            $this->{$propertyName} = $propertyValue;
         }
     }
 }
