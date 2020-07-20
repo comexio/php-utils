@@ -1,2 +1,28 @@
 language: php
+php:
+    - 7.2
 
+before_script:
+    - composer self-update
+    - composer install --prefer-source --no-interaction --dev
+
+# Commands you want to run that will verify your build.
+
+script: phpunit
+
+# Customize when the notification emails are sent.
+
+notifications:
+    on_success: always
+    on_failure: always
+    email: crystopher@logcomex.com
+
+# Cache composer packages so "composer install" is faster
+cache:
+    directories:
+        - $HOME/.composer/cache/files
+
+# Install composer dependencies,
+# Create database, schema and fixtures
+install:
+    - composer install
