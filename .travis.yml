@@ -23,6 +23,5 @@ cache:
         - $HOME/.composer/cache/files
 
 # Install composer dependencies,
-# Create database, schema and fixtures
 install:
     - composer install
