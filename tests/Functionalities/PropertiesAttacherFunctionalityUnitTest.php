@@ -15,7 +15,7 @@ class PropertiesAttacherFunctionalityUnitTest extends TestCase
      * @return void
      * @throws BadImplementationException
      */
-    public function testSuccessFlow(): void
+    public function test_PassingAllTheProperties_SuccessFlow(): void
     {
         $fakeClass = new FakeClassWithPropertiesExporterFunctionality();
         $response = $fakeClass->attachValues([
@@ -39,17 +39,36 @@ class PropertiesAttacherFunctionalityUnitTest extends TestCase
 
     /**
      * @return void
+     * @throws BadImplementationException
+     */
+    public function test_SomeProperties_SuccessFlow(): void
+    {
+        $fakeClass = new FakeClassWithPropertiesExporterFunctionality();
+        $response = $fakeClass
+            ->attachValues([
+                'myProtectedProperty' => 'test',
+                'myNotFoundProperty' => 'test',
+            ]);
+
+        $this->assertNull($response);
+
+        $fakeClassPropertiesValues = $fakeClass->toArray();
+        $this->assertEquals(1, $fakeClassPropertiesValues['myPublicProperty']);
+        $this->assertEquals('test', $fakeClassPropertiesValues['myProtectedProperty']);
+        $this->assertNull($fakeClassPropertiesValues['myPrivateProperty']);
+        $this->assertArrayNotHasKey('myNotFoundProperty', $fakeClassPropertiesValues);
+    }
+
+    /**
+     * @return void
      */
     public function testFailureFlow(): void
     {
-        $fakeClass = new FakeClassWithoutPropertiesExporterFunctionality();
-        try {
-            $fakeClass->attachValues([]);
+        $this->expectException(BadImplementationException::class);
+        $this->expectExceptionMessage('You must use the Trait PropertiesExporterFunctionality to use this functionality');
 
-            $this->assertTrue(false);
-        } catch (Exception $exception) {
-            $this->assertTrue(true);
-        }
+        $fakeClass = new FakeClassWithoutPropertiesExporterFunctionality();
+        $fakeClass->attachValues([]);
     }
 }
 
@@ -71,7 +90,7 @@ class FakeClassWithPropertiesExporterFunctionality implements Arrayable
     /**
      * @var
      */
-    public $myPublicProperty;
+    public $myPublicProperty = 1;
     /**
      * @var
      */

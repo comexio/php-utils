@@ -1,0 +1,22 @@
+language: php
+
+php:
+    - 7.2
+
+before_script:
+    - composer self-update
+    - composer install --prefer-source --no-interaction --dev
+
+script: phpunit
+
+notifications:
+    on_success: always
+    on_failure: always
+    email: engenharia@logcomex.com
+
+cache:
+    directories:
+        - $HOME/.composer/cache/files
+
+install:
+    - composer install
