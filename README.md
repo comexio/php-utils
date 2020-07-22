@@ -163,7 +163,8 @@ $allProducts = ProductEnum::all();
 	 - [ ] RequestLogMiddleware Doc
  - [ ] Implement build tests requirement
 
-  
+
 ## Contributing  
   
-Open an issue first to discuss potential changes/additions.
+- Open an issue first to discuss potential changes/additions.
+- Open a pull request, you need two approvals and tests need to pass Travis CI.

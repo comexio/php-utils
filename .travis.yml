@@ -12,7 +12,7 @@ script: phpunit
 notifications:
     on_success: always
     on_failure: always
-    email: engenharia@logcomex.com
+    email: monitoramento@logcomex.com
 
 cache:
     directories:
