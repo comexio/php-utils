@@ -144,6 +144,30 @@ class ProductEnum
 $allProducts = ProductEnum::all();
 ```
 
+## Middlewares  
+
+> They're a pack of Middleware classes.
+
+#### AuthenticateMiddleware
+
+> It is a class that provides authentication verification. 
+> You'll need a AuthProvider configured in your application to use this Middleware.
+
+``` php
+// bootstrap/app.php
+$app->register(Your\Provider\AuthServiceProvider::class);
+
+// Using in global mode
+$app->middleware([
+    Logcomex\PhpUtils\Middleware\AuthenticateMiddleware::class,
+]);
+
+// Or, by specific route
+$app->routeMiddleware([
+    'auth' => Logcomex\PhpUtils\Middleware\AuthenticateMiddleware::class,
+]);
+```
+
 ## Unit Tests Coverage
 
 **100% at moment.**
