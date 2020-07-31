@@ -1,7 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use GuzzleHttp\Psr7\Response;
 use Logcomex\PhpUtils\Contracts\MockContract;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Helpers\HttpHelper;
@@ -45,7 +44,7 @@ class HttpHelperUnitTest extends TestCase
     /**
      * @return void
      */
-    public function testIsMockedEndpoint(): void
+    public function testIsMockedEndpoint_TrueFlow(): void
     {
         config([
             'mockedEndpoints.api/test' => ApiTestMock::class,
@@ -53,10 +52,20 @@ class HttpHelperUnitTest extends TestCase
         $httpHelper = new HttpHelper();
 
         $response = $httpHelper->isMockedEndpoint('api/test');
+
         $this->assertIsBool($response);
         $this->assertTrue($response);
+    }
+
+    /**
+     * @return void
+     */
+    public function testIsMockedEndpoint_FalseFlow(): void
+    {
+        $httpHelper = new HttpHelper();
 
         $response = $httpHelper->isMockedEndpoint('api/not/mocked');
+
         $this->assertIsBool($response);
         $this->assertFalse($response);
     }
@@ -88,39 +97,67 @@ class HttpHelperUnitTest extends TestCase
         ]);
         $httpHelper = new HttpHelper();
 
-        try {
-            $response = $httpHelper->post('api/mocked');
-            $this->assertInstanceOf(\GuzzleHttp\Psr7\Response::class, $response);
-            $this->assertEquals(200, $response->getStatusCode());
-        } catch (Exception $exception) {
-            // If an error occurs, it means that the guzzle is not mocking
-            $this->assertTrue(false);
-        }
+        $response = $httpHelper->post('api/mocked');
+        $this->assertInstanceOf(Response::class, $response);
+        $this->assertEquals(200, $response->getStatusCode());
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function test__callWithMockedEndpoint_FakeFailureFlow(): void
+    {
+        config([
+            'app.mode' => 'test',
+            'mockedEndpoints.api/mocked' => ApiTestMock::class,
+        ]);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(400);
 
         HttpHelper::mustReturnError();
         try {
+            $httpHelper = new HttpHelper();
             $httpHelper->post('api/mocked');
-            // If an error not occurs, it means that the guzzle is not mocking
-            $this->assertTrue(false);
-        } catch (Exception $exception) {
-            $this->assertEquals(400, $exception->getCode());
         } finally{
             HttpHelper::mustNotReturnError();
         }
+    }
 
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function test__callWithMockedEndpointAndNotExistingMockClass(): void
+    {
         config([
             'app.mode' => 'test',
             'mockedEndpoints.api/mocked' => 'ClassDoesNotExists',
         ]);
-        $httpHelper = new HttpHelper();
 
-        try {
+        $expectedException = new BadImplementationException('Mock Class registered does not exists.');
+        $this->expectCustomException($expectedException, function () {
+            $httpHelper = new HttpHelper();
             $httpHelper->post('api/mocked');
-            $this->assertTrue(false, 'Validation of class existence its not working');
-        } catch (Exception $exception) {
-            $this->assertInstanceOf(BadImplementationException::class, $exception);
-            $this->assertEquals('Mock Class registered does not exists.', $exception->getMessage());
-        }
+        });
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function test__callWithNotMockedEndpointInTestMode(): void
+    {
+        config(['app.mode' => 'test']);
+        $expectedException = new BadImplementationException(
+            'You are requesting to external APIs in test mode. Please mock your endpoint.'
+        );
+
+        $this->expectCustomException($expectedException, function () {
+            $httpHelper = new HttpHelper();
+            $httpHelper->post('api/not/mocked');
+        });
     }
 }
 

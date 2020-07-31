@@ -45,7 +45,10 @@ class HttpHelper
         // Tratativa criada pra endpoint mockados,
         // se não estiver registro no contrato de mocks,
         // será feita a requisição normalmente.
-        if ($this->isTestMode() && $this->isMockedEndpoint($urlPath)) {
+        if ($this->isTestMode()) {
+            if (!$this->isMockedEndpoint($urlPath)) {
+                throw new BadImplementationException('You are requesting to external APIs in test mode. Please mock your endpoint.');
+            }
             if (!class_exists($this->mockedEndpoints[$urlPath])) {
                 throw new BadImplementationException('Mock Class registered does not exists.');
             }
