@@ -170,7 +170,8 @@ $app->routeMiddleware([
 
 ## Unit Tests Coverage
 
-**100% at moment.**
+Master <br>
+[![codecov](https://codecov.io/gh/comexio/php-utils/branch/master/graph/badge.svg)](https://codecov.io/gh/comexio/php-utils)
 
 ## TODO
 
