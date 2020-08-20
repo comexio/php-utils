@@ -186,7 +186,6 @@ Master <br>
 	 - [ ] AllowedHostsMiddleware Doc
 	 - [ ] CorsMiddleware Doc
 	 - [ ] RequestLogMiddleware Doc
- - [ ] Implement build tests requirement
 
 
 ## Contributing  
