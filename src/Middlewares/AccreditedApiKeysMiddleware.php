@@ -42,6 +42,7 @@ class AccreditedApiKeysMiddleware
                                                array $accreditedApiKeys,
                                                string $xApiKeyHeader): Response
     {
+        $accreditedApiKeys = array_filter($accreditedApiKeys);
         $xApiKeyName = array_flip($accreditedApiKeys)[$xApiKeyHeader];
         $apiName = config('app.api-name', 'UnknowApi');
         $response->headers->set('Welcome-Message', "Welcome to the {$apiName}. You are using the x-api-key credential: {$xApiKeyName}");
