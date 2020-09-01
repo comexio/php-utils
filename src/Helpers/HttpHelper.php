@@ -47,10 +47,16 @@ class HttpHelper
         // será feita a requisição normalmente.
         if ($this->isTestMode()) {
             if (!$this->isMockedEndpoint($urlPath)) {
-                throw new BadImplementationException('You are requesting to external APIs in test mode. Please mock your endpoint.');
+                throw new BadImplementationException(
+                    'PHU-003',
+                    'You are requesting to external APIs in test mode. Please mock your endpoint.'
+                );
             }
             if (!class_exists($this->mockedEndpoints[$urlPath])) {
-                throw new BadImplementationException('Mock Class registered does not exists.');
+                throw new BadImplementationException(
+                    'PHU-004',
+                    'Mock Class registered does not exists.'
+                );
             }
 
             $mockResponse = call_user_func_array([$this->mockedEndpoints[$urlPath], 'mock'], []);

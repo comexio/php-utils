@@ -51,13 +51,15 @@ ApiException(string $token,
 > This exception means that a situation has been overlooked or incorrectly done by the developer.
 
 ``` php
-BadImplementationException(string $message,
+BadImplementationException(string $token,
+            string $message,
 			int $httpCode = Response::HTTP_INTERNAL_SERVER_ERROR, 
 			Exception $previous = null)  
 ```
 | Visibility | Function		  | Return Type |
 | ---------- | -------------- | ----------- |
 | public 	 | getHttpCode    | int 		|
+| public 	 | getToken		  | string 		|
 | public 	 | __toString     | string 		|
 | public 	 | toArray 		  | array 		|
 | public 	 | toJson 		  | string 		|
@@ -68,6 +70,24 @@ BadImplementationException(string $message,
 
 ``` php
 SecurityException(string $token,
+			string $message, 
+			int $httpCode = Response::HTTP_FORBIDDEN, 
+			Exception $previous = null)  
+```
+| Visibility | Function		  | Return Type |
+| ---------- | -------------- | ----------- |
+| public 	 | getHttpCode    | int 		|
+| public 	 | getToken		  | string 		|
+| public 	 | __toString     | string 		|
+| public 	 | toArray 		  | array 		|
+| public 	 | toJson 		  | string 		|
+
+#### UnavailableServiceException
+
+> This exception serves to point out that your or other application is unavailable.
+
+``` php
+UnavailableServiceException(string $token,
 			string $message, 
 			int $httpCode = Response::HTTP_FORBIDDEN, 
 			Exception $previous = null)  
@@ -186,7 +206,6 @@ Master <br>
 	 - [ ] AllowedHostsMiddleware Doc
 	 - [ ] CorsMiddleware Doc
 	 - [ ] RequestLogMiddleware Doc
-
 
 ## Contributing  
   
