@@ -17,17 +17,25 @@ class BadImplementationException extends Exception implements Arrayable, Jsonabl
      * @var int
      */
     private $httpCode;
+    /**
+     * @var string
+     */
+    private $token;
 
     /**
      * BadImplementationException constructor.
+     * @param string $token
      * @param string $message
      * @param int $httpCode
      * @param Exception|null $previous
      */
-    public function __construct(string $message,
+    public function __construct(string $token,
+                                string $message,
                                 int $httpCode = Response::HTTP_INTERNAL_SERVER_ERROR,
-                                Exception $previous = null)
+                                Exception $previous = null
+    )
     {
+        $this->token = $token;
         $this->httpCode = $httpCode;
         parent::__construct($message, $httpCode, $previous);
     }
@@ -69,5 +77,13 @@ class BadImplementationException extends Exception implements Arrayable, Jsonabl
     public function getHttpCode(): int
     {
         return $this->httpCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getToken(): string
+    {
+        return $this->token;
     }
 }

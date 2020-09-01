@@ -19,12 +19,14 @@ trait ValuesExporterToArrayFunctionality
     {
         if (!($this instanceof Arrayable)) {
             throw new BadImplementationException(
+                'PHU-002',
                 'You must implement the the Arrayable contract to use this functionality'
             );
         }
 
         if (!method_exists($this, 'properties')) {
             throw new BadImplementationException(
+                'PHU-001',
                 'You must use the Trait PropertiesExporterFunctionality to use this functionality'
             );
         }
