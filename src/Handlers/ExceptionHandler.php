@@ -15,6 +15,7 @@ use Laravel\Lumen\Exceptions\Handler;
 use Logcomex\PhpUtils\Exceptions\ApiException;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Exceptions\SecurityException;
+use Logcomex\PhpUtils\Exceptions\UnavailableServiceException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -120,12 +121,23 @@ class ExceptionHandler extends Handler
                     );
             case $exception instanceof BadImplementationException:
                 return response()
-                    ->json(['message' => 'Tivemos um erro na aplicação!'], $exception->getHttpCode());
+                    ->json([
+                        'code' => $exception->getToken(),
+                        'message' => 'Tivemos um erro na aplicação!'
+                    ], $exception->getHttpCode());
             case $exception instanceof SecurityException:
                 return response()
                     ->json([
                         'code' => $exception->getToken(),
                         'message' => 'Tivemos um erro de segurança na aplicação!',
+                        'reason' => $exception->getMessage(),
+                    ], $exception->getHttpCode());
+            case $exception instanceof UnavailableServiceException:
+                return response()
+                    ->json([
+                        'code' => $exception->getToken(),
+                        'message' => "Service {$exception->getService()} apresenta problemas!",
+                        'service' => $exception->getService(),
                         'reason' => $exception->getMessage(),
                     ], $exception->getHttpCode());
             default:

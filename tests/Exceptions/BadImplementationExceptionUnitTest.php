@@ -14,7 +14,10 @@ class BadImplementationExceptionUnitTest extends TestCase
      */
     public function testConstructor(): BadImplementationException
     {
-        $exception = new BadImplementationException('Error!', Response::HTTP_INTERNAL_SERVER_ERROR);
+        $exception = new BadImplementationException(
+            'BI001',
+            'Error!'
+        );
 
         $this->assertInstanceOf(Exception::class, $exception);
 

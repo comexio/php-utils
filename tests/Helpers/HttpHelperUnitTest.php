@@ -136,7 +136,7 @@ class HttpHelperUnitTest extends TestCase
             'mockedEndpoints.api/mocked' => 'ClassDoesNotExists',
         ]);
 
-        $expectedException = new BadImplementationException('Mock Class registered does not exists.');
+        $expectedException = new BadImplementationException('PHU-004', 'Mock Class registered does not exists.');
         $this->expectCustomException($expectedException, function () {
             $httpHelper = new HttpHelper();
             $httpHelper->post('api/mocked');
@@ -151,6 +151,7 @@ class HttpHelperUnitTest extends TestCase
     {
         config(['app.mode' => 'test']);
         $expectedException = new BadImplementationException(
+            'PHU-003',
             'You are requesting to external APIs in test mode. Please mock your endpoint.'
         );
 

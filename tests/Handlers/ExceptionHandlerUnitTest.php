@@ -6,6 +6,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Exceptions\SecurityException;
+use Logcomex\PhpUtils\Exceptions\UnavailableServiceException;
 use PHPUnit\Framework\TestCase;
 use Logcomex\PhpUtils\Handlers\ExceptionHandler;
 use Logcomex\PhpUtils\Exceptions\ApiException;
@@ -180,13 +181,16 @@ class ExceptionHandlerUnitTest extends TestCase
      */
     public function testRenderBadImplementationException(): void
     {
-        $exception = new BadImplementationException('Error', Response::HTTP_INTERNAL_SERVER_ERROR);
+        $exception = new BadImplementationException('B1-004', 'Error');
         $request = new Request();
 
         $response = $this->handler->render($request, $exception);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertEquals('{"message":"Tivemos um erro na aplica\u00e7\u00e3o!"}', $response->getContent());
+        $this->assertEquals(
+            '{"code":"B1-004","message":"Tivemos um erro na aplica\u00e7\u00e3o!"}',
+            $response->getContent()
+        );
         $this->assertEquals(500, $response->getStatusCode());
     }
 
@@ -203,6 +207,28 @@ class ExceptionHandlerUnitTest extends TestCase
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals('{"code":"SEC01","message":"Tivemos um erro de seguran\u00e7a na aplica\u00e7\u00e3o!","reason":"It\'s not safe"}', $response->getContent());
         $this->assertEquals(403, $response->getStatusCode());
+    }
+
+    /**
+     * @return void
+     */
+    public function testRenderUnavailableServiceException(): void
+    {
+        $exception = new UnavailableServiceException(
+            'XXX001',
+            "Não foi possível fazer requisição",
+            'test-1'
+        );
+        $request = new Request();
+
+        $response = $this->handler->render($request, $exception);
+
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals(
+            '{"code":"XXX001","message":"Service test-1 apresenta problemas!","service":"test-1","reason":"N\u00e3o foi poss\u00edvel fazer requisi\u00e7\u00e3o"}',
+            $response->getContent()
+        );
+        $this->assertEquals(503, $response->getStatusCode());
     }
 
     /**
