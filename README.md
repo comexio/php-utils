@@ -96,6 +96,7 @@ UnavailableServiceException(string $token,
 | ---------- | -------------- | ----------- |
 | public 	 | getHttpCode    | int 		|
 | public 	 | getToken		  | string 		|
+| public 	 | getService	  | string 		|
 | public 	 | __toString     | string 		|
 | public 	 | toArray 		  | array 		|
 | public 	 | toJson 		  | string 		|
