@@ -20,7 +20,9 @@ class TracerMiddlewareUnitTest extends TestCase
     {
         TracerSingleton::setTraceValue('');
         try {
-            config(['tracer.headersToPropagate' => ['x-trace-id']]);
+            config([
+                'tracer.headersRequestToPropagate' => ['x-trace-id',],
+            ]);
 
             $middleware = new TracerMiddleware();
 
@@ -49,7 +51,9 @@ class TracerMiddlewareUnitTest extends TestCase
     {
         TracerSingleton::setTraceValue('');
         try {
-            config(['tracer.headersToPropagate' => ['x-trace-id', 'x-trace-id-2',]]);
+            config([
+                'tracer.headersRequestToPropagate' => ['x-trace-id', 'x-trace-id-2',],
+            ]);
 
             $middleware = new TracerMiddleware();
 
@@ -80,7 +84,9 @@ class TracerMiddlewareUnitTest extends TestCase
     {
         TracerSingleton::setTraceValue('');
         try {
-            config(['tracer.headersToPropagate' => ['x-trace-id',]]);
+            config([
+                'tracer.headersRequestToPropagate' => ['x-trace-id'],
+            ]);
 
             $middleware = new TracerMiddleware();
 
@@ -111,7 +117,37 @@ class TracerMiddlewareUnitTest extends TestCase
     {
         TracerSingleton::setTraceValue('');
         try {
-            config(['tracer.headersToPropagate' => ['x-trace-id',]]);
+            config([
+                'tracer.headersRequestToPropagate' => ['x-trace-id'],
+            ]);
+
+            $middleware = new TracerMiddleware();
+
+            $fakeRequest = new Request();
+
+            $response = $middleware->handle($fakeRequest, function () {
+                return response()->json();
+            });
+
+            $this->assertInstanceOf(JsonResponse::class, $response);
+            $this->assertIsString(TracerSingleton::getTraceValue());
+            $this->assertNotEmpty(TracerSingleton::getTraceValue());
+        } finally {
+            TracerSingleton::setTraceValue('');
+        }
+    }
+
+    /**
+     * @return void
+     * @throws BadImplementationException
+     */
+    public function testHandler_WithNotArraySetting_SuccessFlow(): void
+    {
+        TracerSingleton::setTraceValue('');
+        try {
+            config([
+                'tracer.headersRequestToPropagate' => 'x-trace-id',
+            ]);
 
             $middleware = new TracerMiddleware();
 
@@ -155,7 +191,7 @@ class TracerMiddlewareUnitTest extends TestCase
      */
     public function testHandler_EmptyTraceSettings_FailureFlow(): void
     {
-        config(['tracer.headersToPropagate' => []]);
+        config(['tracer.headersRequestToPropagate' => []]);
         $expectedException = new BadImplementationException(
             'PHU-005',
             'You must provide at least one header request to trace.'

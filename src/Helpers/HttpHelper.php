@@ -3,10 +3,13 @@
 namespace Logcomex\PhpUtils\Helpers;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\RequestOptions;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
+use Logcomex\PhpUtils\Singletons\TracerSingleton;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -37,10 +40,15 @@ class HttpHelper
      * @param $args
      * @return ResponseInterface
      * @throws BadImplementationException
+     * @throws GuzzleException
      */
     public function __call($method, $args)
     {
         $urlPath = parse_url($args[0] ?? '')['path'];
+
+        if (!empty($tracerValue = TracerSingleton::getTraceValue())) {
+            $args = self::propagateTracerValue($tracerValue, $args);
+        }
 
         // Tratativa criada pra endpoint mockados,
         // se não estiver registro no contrato de mocks,
@@ -107,5 +115,37 @@ class HttpHelper
     public function isMockedEndpoint(string $endpoint): bool
     {
         return !empty($endpoint) && array_key_exists($endpoint, $this->mockedEndpoints);
+    }
+
+    /**
+     * @param string $tracerValue
+     * @param $functionArguments
+     * @return array
+     * @throws BadImplementationException
+     */
+    public static function propagateTracerValue(string $tracerValue, $functionArguments): array
+    {
+        $headersNamesToPropagate = config('tracer.headersNamesToPropagate');
+        if (empty($headersNamesToPropagate)) {
+            throw new BadImplementationException(
+                'PHU-006',
+                'You must provide at least one header name to propagate trace value.'
+            );
+        }
+        $headersNamesToPropagate = is_array($headersNamesToPropagate)
+            ? $headersNamesToPropagate
+            : [$headersNamesToPropagate];
+
+        $tracerHeaderToPropagate = [];
+        foreach ($headersNamesToPropagate as $headerNameToPropagate) {
+            $tracerHeaderToPropagate[$headerNameToPropagate] = $tracerValue;
+        }
+
+        $hasRequestOptions = count($functionArguments) > 1;
+        $functionArguments[1][RequestOptions::HEADERS] = $hasRequestOptions
+            ? array_merge($functionArguments[1][RequestOptions::HEADERS] ?? [], $tracerHeaderToPropagate)
+            : $tracerHeaderToPropagate;
+
+        return $functionArguments;
     }
 }

@@ -23,13 +23,16 @@ class TracerMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $traceHeadersOptions = config('tracer.headersToPropagate');
+        $traceHeadersOptions = config('tracer.headersRequestToPropagate');
         if (empty($traceHeadersOptions)) {
             throw new BadImplementationException(
                 'PHU-005',
                 'You must provide at least one header request to trace.'
             );
         }
+        $traceHeadersOptions = is_array($traceHeadersOptions)
+            ? $traceHeadersOptions
+            : [$traceHeadersOptions];
 
         $traceHeaderValue = TokenHelper::generate(false);
 
