@@ -235,7 +235,7 @@ class HttpHelperUnitTest extends TestCase
         $response = HttpHelper::propagateTracerValue($tracerValue, $functionArguments);
 
         $this->assertIsArray($response);
-        $this->assertCount(count($functionArguments), $functionArguments);
+        $this->assertCount(count($functionArguments), $response);
 
         $supposedRequestOptions = $response[1];
         $this->assertIsArray($supposedRequestOptions);
@@ -268,7 +268,7 @@ class HttpHelperUnitTest extends TestCase
         $response = HttpHelper::propagateTracerValue($tracerValue, $functionArguments);
 
         $this->assertIsArray($response);
-        $this->assertCount(count($functionArguments), $functionArguments);
+        $this->assertCount(count($functionArguments), $response);
 
         $supposedRequestOptions = $response[1];
         $this->assertIsArray($supposedRequestOptions);
