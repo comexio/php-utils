@@ -15,6 +15,24 @@ class HttpHelperUnitTest extends TestCase
     /**
      * @return void
      */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        TracerSingleton::setTraceValue('');
+    }
+
+    /**
+     * @return void
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        TracerSingleton::setTraceValue('');
+    }
+
+    /**
+     * @return void
+     */
     public function test__construct(): void
     {
         $httpHelper = new HttpHelper();
@@ -174,14 +192,11 @@ class HttpHelperUnitTest extends TestCase
     {
         config(['tracer.headersToPropagate' => ['x-tracer-id',],]);
         TracerSingleton::setTraceValue('test');
-        try {
-            $httpHelper = new HttpHelper();
-            $response = $httpHelper->post('api/mocked', [RequestOptions::DEBUG => false,]);
 
-            $this->assertNotNull($response);
-        } finally {
-            TracerSingleton::setTraceValue('');
-        }
+        $httpHelper = new HttpHelper();
+        $response = $httpHelper->post('api/mocked', [RequestOptions::DEBUG => false,]);
+
+        $this->assertNotNull($response);
     }
 
     /**
@@ -191,16 +206,15 @@ class HttpHelperUnitTest extends TestCase
     {
         config(['tracer.headersToPropagate' => ['x-tracer-id',],]);
         TracerSingleton::setTraceValue('test');
-        try {
-            $httpHelper = new HttpHelper();
-            $response = $httpHelper->post('api/mocked', [
-                RequestOptions::HEADERS => ['test-header-key' => 'test',]
-            ]);
 
-            $this->assertNotNull($response);
-        } finally {
-            TracerSingleton::setTraceValue('');
-        }
+        $httpHelper = new HttpHelper();
+        $response = $httpHelper->post('api/mocked', [
+            RequestOptions::HEADERS => ['test-header-key' => 'test',]
+        ]);
+
+        $this->assertNotNull($response);
+        $this->assertInstanceOf(Response::class, $response);
+        $this->assertEmpty($response->getBody()->getContents());
     }
 
     /**
@@ -210,14 +224,11 @@ class HttpHelperUnitTest extends TestCase
     {
         config(['tracer.headersToPropagate' => ['x-tracer-id',],]);
         TracerSingleton::setTraceValue('test');
-        try {
-            $httpHelper = new HttpHelper();
-            $response = $httpHelper->post('api/mocked');
 
-            $this->assertNotNull($response);
-        } finally {
-            TracerSingleton::setTraceValue('');
-        }
+        $httpHelper = new HttpHelper();
+        $response = $httpHelper->post('api/mocked');
+
+        $this->assertNotNull($response);
     }
 
     /**
@@ -299,7 +310,7 @@ class HttpHelperUnitTest extends TestCase
         $response = HttpHelper::propagateTracerValue($tracerValue, $functionArguments);
 
         $this->assertIsArray($response);
-        $this->assertCount(count($functionArguments), $functionArguments);
+        $this->assertCount(count($functionArguments), $response);
 
         $supposedRequestOptions = $response[1];
         $this->assertIsArray($supposedRequestOptions);
@@ -336,7 +347,7 @@ class HttpHelperUnitTest extends TestCase
         $response = HttpHelper::propagateTracerValue($tracerValue, $functionArguments);
 
         $this->assertIsArray($response);
-        $this->assertCount(count($functionArguments), $functionArguments);
+        $this->assertCount(count($functionArguments), $response);
 
         $supposedRequestOptions = $response[1];
         $this->assertIsArray($supposedRequestOptions);

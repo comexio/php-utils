@@ -10,16 +10,31 @@ class TracerSingletonUnitTest extends TestCase
     /**
      * @return void
      */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        TracerSingleton::setTraceValue('');
+    }
+
+    /**
+     * @return void
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        TracerSingleton::setTraceValue('');
+    }
+
+    /**
+     * @return void
+     */
     public function testGetTraceValue_SuccessFlow(): void
     {
         TracerSingleton::setTraceValue('test');
-        try {
-            $response = TracerSingleton::getTraceValue();
-            $this->assertIsString($response);
-            $this->assertEquals('test', $response);
-        } finally {
-            TracerSingleton::setTraceValue('');
-        }
+
+        $response = TracerSingleton::getTraceValue();
+        $this->assertIsString($response);
+        $this->assertEquals('test', $response);
     }
 
     /**
@@ -27,16 +42,11 @@ class TracerSingletonUnitTest extends TestCase
      */
     public function testSetTraceValue_SuccessFlow(): void
     {
-        TracerSingleton::setTraceValue('test');
-        try {
-            $response = TracerSingleton::setTraceValue('test');
+        $response = TracerSingleton::setTraceValue('test');
 
-            $this->assertNull($response);
+        $this->assertNull($response);
 
-            $this->assertIsString(TracerSingleton::getTraceValue());
-            $this->assertEquals('test', TracerSingleton::getTraceValue());
-        } finally {
-            TracerSingleton::setTraceValue('');
-        }
+        $this->assertIsString(TracerSingleton::getTraceValue());
+        $this->assertEquals('test', TracerSingleton::getTraceValue());
     }
 }
