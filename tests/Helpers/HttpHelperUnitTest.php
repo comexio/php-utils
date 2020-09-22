@@ -15,15 +15,6 @@ class HttpHelperUnitTest extends TestCase
     /**
      * @return void
      */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        TracerSingleton::setTraceValue('');
-    }
-
-    /**
-     * @return void
-     */
     protected function tearDown(): void
     {
         parent::tearDown();
