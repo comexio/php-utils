@@ -6,41 +6,45 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 
 /**
- * Class RequestLog
+ * Class RequestInfoLog
  * @package Logcomex\PhpUtils\Logs
  */
-class RequestLog implements Arrayable, Jsonable
+class RequestInfoLog implements Arrayable, Jsonable
 {
     /**
-     * @var
+     * @var array
      */
     private $requestHeaders;
     /**
-     * @var
+     * @var array
      */
     private $requestServer;
     /**
-     * @var
+     * @var array
      */
     private $requestPayload;
     /**
-     * @var
+     * @var array
      */
     private $responseHeaders;
     /**
-     * @var
+     * @var array
      */
     private $responseContent;
     /**
-     * @var
+     * @var float
      */
     private $responseTime;
+    /**
+     * @var string
+     */
+    private $traceId;
 
     /**
      * @param mixed $requestHeaders
-     * @return RequestLog
+     * @return RequestInfoLog
      */
-    public function setRequestHeaders($requestHeaders)
+    public function setRequestHeaders($requestHeaders): RequestInfoLog
     {
         $this->requestHeaders = $requestHeaders;
 
@@ -49,9 +53,9 @@ class RequestLog implements Arrayable, Jsonable
 
     /**
      * @param mixed $requestServer
-     * @return RequestLog
+     * @return RequestInfoLog
      */
-    public function setRequestServer($requestServer)
+    public function setRequestServer($requestServer): RequestInfoLog
     {
         $this->requestServer = $requestServer;
 
@@ -60,9 +64,9 @@ class RequestLog implements Arrayable, Jsonable
 
     /**
      * @param mixed $requestPayload
-     * @return RequestLog
+     * @return RequestInfoLog
      */
-    public function setRequestPayload($requestPayload)
+    public function setRequestPayload($requestPayload): RequestInfoLog
     {
         $this->requestPayload = $requestPayload;
 
@@ -71,9 +75,9 @@ class RequestLog implements Arrayable, Jsonable
 
     /**
      * @param mixed $responseHeaders
-     * @return RequestLog
+     * @return RequestInfoLog
      */
-    public function setResponseHeaders($responseHeaders)
+    public function setResponseHeaders($responseHeaders): RequestInfoLog
     {
         $this->responseHeaders = $responseHeaders;
 
@@ -82,9 +86,9 @@ class RequestLog implements Arrayable, Jsonable
 
     /**
      * @param mixed $responseContent
-     * @return RequestLog
+     * @return RequestInfoLog
      */
-    public function setResponseContent($responseContent)
+    public function setResponseContent($responseContent): RequestInfoLog
     {
         $this->responseContent = $responseContent;
 
@@ -93,11 +97,22 @@ class RequestLog implements Arrayable, Jsonable
 
     /**
      * @param mixed $responseTime
-     * @return RequestLog
+     * @return RequestInfoLog
      */
-    public function setResponseTime($responseTime)
+    public function setResponseTime($responseTime): RequestInfoLog
     {
         $this->responseTime = $responseTime;
+
+        return $this;
+    }
+
+    /**
+     * @param string $traceId
+     * @return RequestInfoLog
+     */
+    public function setTraceId(string $traceId): RequestInfoLog
+    {
+        $this->traceId = $traceId;
 
         return $this;
     }
@@ -112,6 +127,7 @@ class RequestLog implements Arrayable, Jsonable
                 'headers' => $this->requestHeaders,
                 'server' => $this->requestServer,
                 'payload' => $this->requestPayload,
+                'trace-id' => $this->traceId,
             ],
             'response' => [
                 'headers' => $this->responseHeaders,

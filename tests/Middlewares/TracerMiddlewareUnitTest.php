@@ -202,7 +202,7 @@ class TracerMiddlewareUnitTest extends TestCase
     {
         $expectedException = new BadImplementationException(
             'PHU-005',
-            'You must provide at least one header request to trace.'
+            'You must provide at least one header name to trace.'
         );
         $this->expectCustomException($expectedException, function () {
             $middleware = new TracerMiddleware();
@@ -223,7 +223,7 @@ class TracerMiddlewareUnitTest extends TestCase
         config(['tracer.headersToPropagate' => []]);
         $expectedException = new BadImplementationException(
             'PHU-005',
-            'You must provide at least one header request to trace.'
+            'You must provide at least one header name to trace.'
         );
         $this->expectCustomException($expectedException, function () {
             $middleware = new TracerMiddleware();
