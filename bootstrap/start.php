@@ -16,9 +16,9 @@ $app->configure('app');
 $app->configure('cors');
 
 $app->routeMiddleware([
-    'request-log' => \Logcomex\PhpUtils\Middlewares\RequestLogMiddleware::class,
-    'allowed-hosts' => \Logcomex\PhpUtils\Middlewares\AllowedHostsMiddleware::class,
-    'cors' => \Logcomex\PhpUtils\Middlewares\CorsMiddleware::class,
+    'request-log' => Logcomex\PhpUtils\Middlewares\RequestLogMiddleware::class,
+    'allowed-hosts' => Logcomex\PhpUtils\Middlewares\AllowedHostsMiddleware::class,
+    'cors' => Logcomex\PhpUtils\Middlewares\CorsMiddleware::class,
 ]);
 
 $app->router->group([], function ($router) {
@@ -38,6 +38,9 @@ $app->router->group([], function ($router) {
     });
     $router->group(['middleware' => ['allowed-hosts']], function () use ($router, $routeFunction) {
         $router->get('allowed-hosts-middleware', $routeFunction);
+    });
+    $router->group(['middleware' => ['trace']], function () use ($router, $routeFunction) {
+        $router->get('trace', $routeFunction);
     });
 });
 

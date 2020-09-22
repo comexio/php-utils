@@ -18,6 +18,7 @@ composer require logcomex/php-utils
  - Handlers
  - Logs
  - Middlewares
+ - Singletons
 
 ## Contracts
 
@@ -189,6 +190,83 @@ $app->routeMiddleware([
 ]);
 ```
 
+#### RequestLogMiddleware
+
+> It is a class that provides a log for each request in your api.
+> You can choose what you gonna print in the log, such as: request-header, request-server, request-payload,
+> response-header, response-content, response-time, and trace-id.
+> <br><br> The .env configuration:
+
+| Env Variable | Type		  | Description |
+| ---------- | -------------- | ----------- |
+| REQUEST_LOGGER_ENABLE_REQUEST_HEADER | boolean | Print in the log, the request header information |
+| REQUEST_LOGGER_ENABLE_REQUEST_SERVER | boolean | Print in the log, the request server information |
+| REQUEST_LOGGER_ENABLE_REQUEST_PAYLOAD | boolean | Print in the log, the request payload information |
+| REQUEST_LOGGER_ENABLE_RESPONSE_HEADER | boolean | Print in the log, the response header information |
+| REQUEST_LOGGER_ENABLE_RESPONSE_CONTENT | boolean | Print in the log, the response content information |
+| REQUEST_LOGGER_ENABLE_RESPONSE_TIME | boolean | Print in the log, the response execution time information |
+| REQUEST_LOGGER_ALLOWED_DATA_REQUEST_SERVER | string | If has data in this variable, the middleware gonna print just the infos requested in this setting |
+
+``` php
+// config/requestLog.php
+return [
+    'enable-request-header' => env('REQUEST_LOGGER_ENABLE_REQUEST_HEADER', true),
+    'enable-request-server' => env('REQUEST_LOGGER_ENABLE_REQUEST_SERVER', true),
+    'enable-request-payload' => env('REQUEST_LOGGER_ENABLE_REQUEST_PAYLOAD', true),
+    'enable-response-header' => env('REQUEST_LOGGER_ENABLE_RESPONSE_HEADER', true),
+    'enable-response-content' => env('REQUEST_LOGGER_ENABLE_RESPONSE_CONTENT', true),
+    'enable-response-time' => env('REQUEST_LOGGER_ENABLE_RESPONSE_TIME', true),
+    'allowed-data-request-server' => explode(';', env('REQUEST_LOGGER_ALLOWED_DATA_REQUEST_SERVER', '')),
+];
+
+
+// bootstrap/app.php
+$app->configure('requestLog');
+
+// Using in global mode
+$app->middleware([
+    Logcomex\PhpUtils\Middleware\TracerMiddleware::class, // If you gonna use tracer, it must be above the requestlog
+    Logcomex\PhpUtils\Middleware\RequestLogMiddleware::class, // And after trace, you need the request log
+]);
+```
+
+#### TracerMiddleware
+
+> It is a class that provides tracer functionality for your api.
+> So your log can use this value and the HttpHelper.
+> You must create a tracer config file in config folder. 
+> We recommend uses this middleware as global, and the first one in middlewares chain.
+
+``` php
+// config/tracer.php
+return [
+    'headersToPropagate' => explode(';', env('TRACER_HEADERS_TO_PROPAGATE')),
+];
+
+
+// bootstrap/app.php
+$app->configure('tracer');
+
+// Using in global mode
+$app->middleware([
+    Logcomex\PhpUtils\Middleware\TracerMiddleware::class,
+    // the other middlewares
+]);
+
+// Or, by specific route
+$app->routeMiddleware([
+    'tracer' => Logcomex\PhpUtils\Middleware\TracerMiddleware::class,
+]);
+```
+
+## Singletons  
+
+> They're a pack of Singleton classes.
+
+#### TracerSingleton
+
+> It is a class that provides the tracer value.
+
 ## Unit Tests Coverage
 
 Master <br>
@@ -206,7 +284,6 @@ Master <br>
 	 - [ ] AccreditedApiKeysMiddleware Doc
 	 - [ ] AllowedHostsMiddleware Doc
 	 - [ ] CorsMiddleware Doc
-	 - [ ] RequestLogMiddleware Doc
 
 ## Contributing  
   

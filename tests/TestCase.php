@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\File;
 use Laravel\Lumen\Application;
 use Laravel\Lumen\Testing\TestCase as BaseTestCase;
+use Logcomex\PhpUtils\Contracts\MockContract;
 
 /**
  * Class TestCase
@@ -17,6 +18,20 @@ abstract class TestCase extends BaseTestCase
     public function createApplication()
     {
         return require __DIR__.'/../bootstrap/start.php';
+    }
+
+    /**
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        config([
+            'app.mode' => 'test',
+            'mockedEndpoints' => [
+                'api/mocked' => FakeMock::class,
+            ]
+        ]);
     }
 
     /**
@@ -54,5 +69,19 @@ abstract class TestCase extends BaseTestCase
     public function getJsonFile(string $filePath): string
     {
         return trim(json_encode(json_decode(File::get($filePath))));
+    }
+}
+
+/**
+ * Class FakeMock
+ */
+class FakeMock implements MockContract
+{
+    /**
+     * @return string
+     */
+    public static function mock(): string
+    {
+        return '';
     }
 }
