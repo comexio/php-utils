@@ -172,7 +172,7 @@ class HttpHelperUnitTest extends TestCase
      */
     public function test__call_WithTracerWithoutHeaderBundle_SuccessFlow(): void
     {
-        config(['tracer.headersNamesToPropagate' => ['x-tracer-id',],]);
+        config(['tracer.headersToPropagate' => ['x-tracer-id',],]);
         TracerSingleton::setTraceValue('test');
         try {
             $httpHelper = new HttpHelper();
@@ -189,7 +189,7 @@ class HttpHelperUnitTest extends TestCase
      */
     public function test__call_WithTracerWithHeaderBundle_SuccessFlow(): void
     {
-        config(['tracer.headersNamesToPropagate' => ['x-tracer-id',],]);
+        config(['tracer.headersToPropagate' => ['x-tracer-id',],]);
         TracerSingleton::setTraceValue('test');
         try {
             $httpHelper = new HttpHelper();
@@ -208,7 +208,7 @@ class HttpHelperUnitTest extends TestCase
      */
     public function test__call_WithTracerWithoutOptions_SuccessFlow(): void
     {
-        config(['tracer.headersNamesToPropagate' => ['x-tracer-id',],]);
+        config(['tracer.headersToPropagate' => ['x-tracer-id',],]);
         TracerSingleton::setTraceValue('test');
         try {
             $httpHelper = new HttpHelper();
@@ -227,7 +227,7 @@ class HttpHelperUnitTest extends TestCase
     public function testPropagateTracerValue_HappyPath_WithoutHeaderBundle_SuccessFlow(): void
     {
         $headerNameToPropagate = 'x-tracer-id';
-        config(['tracer.headersNamesToPropagate' => [$headerNameToPropagate,],]);
+        config(['tracer.headersToPropagate' => [$headerNameToPropagate,],]);
         $tracerValue = 'test';
         $functionArguments = ['mocked/endpoint', [RequestOptions::DEBUG => false,]];
         $response = HttpHelper::propagateTracerValue($tracerValue, $functionArguments);
@@ -255,7 +255,7 @@ class HttpHelperUnitTest extends TestCase
     public function testPropagateTracerValue_HappyPath_WithHeaderBundle_SuccessFlow(): void
     {
         $headerNameToPropagate = 'x-tracer-id';
-        config(['tracer.headersNamesToPropagate' => [$headerNameToPropagate,],]);
+        config(['tracer.headersToPropagate' => [$headerNameToPropagate,],]);
         $tracerValue = 'test';
         $functionArguments = [
             'mocked/endpoint', [
@@ -288,7 +288,7 @@ class HttpHelperUnitTest extends TestCase
     public function testPropagateTracerValue_MultipleHeadersNameToPropagate_SuccessFlow(): void
     {
         $headersNamesToPropagate = ['x-tracer-id', 'x-tracer-id-2',];
-        config(['tracer.headersNamesToPropagate' => $headersNamesToPropagate,]);
+        config(['tracer.headersToPropagate' => $headersNamesToPropagate,]);
         $tracerValue = 'test';
         $functionArguments = [
             'mocked/endpoint', [
@@ -322,58 +322,10 @@ class HttpHelperUnitTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testPropagateTracerValue_WithoutSettings_FailureFlow(): void
-    {
-        $expectedException = new BadImplementationException(
-            'PHU-006',
-            'You must provide at least one header name to propagate trace value.'
-        );
-        $this->expectCustomException($expectedException, function () {
-            $tracerValue = 'test';
-            $functionArguments = [
-                'mocked/endpoint', [
-                    RequestOptions::DEBUG => false,
-                    RequestOptions::HEADERS => ['test' => 'test',],
-                ],
-            ];
-
-            HttpHelper::propagateTracerValue($tracerValue, $functionArguments);
-        });
-    }
-
-    /**
-     * @return void
-     * @throws Exception
-     */
-    public function testPropagateTracerValue_WithSettingsEmpty_FailureFlow(): void
-    {
-        config(['tracer.headersNamesToPropagate' => [],]);
-
-        $expectedException = new BadImplementationException(
-            'PHU-006',
-            'You must provide at least one header name to propagate trace value.'
-        );
-        $this->expectCustomException($expectedException, function () {
-            $tracerValue = 'test';
-            $functionArguments = [
-                'mocked/endpoint', [
-                    RequestOptions::DEBUG => false,
-                    RequestOptions::HEADERS => ['test' => 'test',],
-                ],
-            ];
-
-            HttpHelper::propagateTracerValue($tracerValue, $functionArguments);
-        });
-    }
-
-    /**
-     * @return void
-     * @throws Exception
-     */
-    public function testPropagateTracerValue_WithSettingsNotArray_FailureFlow(): void
+    public function testPropagateTracerValue_WithSettingsNotArray_SuccessFlow(): void
     {
         $headerNameToPropagate = 'x-tracer-id';
-        config(['tracer.headersNamesToPropagate' => $headerNameToPropagate,]);
+        config(['tracer.headersToPropagate' => $headerNameToPropagate,]);
         $tracerValue = 'test';
         $functionArguments = [
             'mocked/endpoint', [

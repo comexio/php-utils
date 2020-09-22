@@ -189,6 +189,43 @@ $app->routeMiddleware([
 ]);
 ```
 
+#### TracerMiddleware
+
+> It is a class that provides tracer functionality for your api.
+> So your log can use this value and the HttpHelper.
+> You must create a tracer config file in config folder. 
+> We recommend uses this middleware as global, and the first one in middlewares chain.
+
+``` php
+// config/tracer.php
+return [
+    'headersToPropagate' => explode(',', env('TRACER_HEADERS_TO_PROPAGATE')),
+];
+
+
+// bootstrap/app.php
+$app->configure('tracer');
+
+// Using in global mode
+$app->middleware([
+    Logcomex\PhpUtils\Middleware\TracerMiddleware::class,
+    // the other middlewares
+]);
+
+// Or, by specific route
+$app->routeMiddleware([
+    'tracer' => Logcomex\PhpUtils\Middleware\TracerMiddleware::class,
+]);
+```
+
+## Singletons  
+
+> They're a pack of Singleton classes.
+
+#### TracerMiddleware
+
+> It is a class that provides the tracer value.
+
 ## Unit Tests Coverage
 
 Master <br>

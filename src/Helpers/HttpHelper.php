@@ -121,24 +121,17 @@ class HttpHelper
      * @param string $tracerValue
      * @param $functionArguments
      * @return array
-     * @throws BadImplementationException
      */
     public static function propagateTracerValue(string $tracerValue, $functionArguments): array
     {
-        $headersNamesToPropagate = config('tracer.headersNamesToPropagate');
-        if (empty($headersNamesToPropagate)) {
-            throw new BadImplementationException(
-                'PHU-006',
-                'You must provide at least one header name to propagate trace value.'
-            );
-        }
+        $headersNamesToPropagate = config('tracer.headersToPropagate');
         $headersNamesToPropagate = is_array($headersNamesToPropagate)
             ? $headersNamesToPropagate
             : [$headersNamesToPropagate];
 
         $tracerHeaderToPropagate = [];
         foreach ($headersNamesToPropagate as $headerNameToPropagate) {
-            $tracerHeaderToPropagate[$headerNameToPropagate] = $tracerValue;
+            $tracerHeaderToPropagate[strtolower($headerNameToPropagate)] = $tracerValue;
         }
 
         $hasRequestOptions = count($functionArguments) > 1;
