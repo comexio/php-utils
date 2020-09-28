@@ -4,7 +4,6 @@ use Illuminate\Contracts\Support\Jsonable;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Functionalities\PropertiesAttacherFunctionality;
 use Logcomex\PhpUtils\Functionalities\PropertiesExporterFunctionality;
-use Logcomex\PhpUtils\Functionalities\ValuesExporterToArrayFunctionality;
 use Logcomex\PhpUtils\Functionalities\ValuesExporterToJsonFunctionality;
 
 /**

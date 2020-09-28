@@ -4,7 +4,6 @@ use Illuminate\Contracts\Support\Arrayable;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Functionalities\PropertiesAttacherFunctionality;
 use Logcomex\PhpUtils\Functionalities\PropertiesExporterFunctionality;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Class PropertiesAttacherFunctionalityUnitTest
