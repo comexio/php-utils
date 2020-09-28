@@ -65,7 +65,7 @@ class PropertiesAttacherFunctionalityUnitTest extends TestCase
     public function testFailureFlow(): void
     {
         $this->expectException(BadImplementationException::class);
-        $this->expectExceptionMessage('You must use the Trait PropertiesExporterFunctionality to use this functionality');
+        $this->expectExceptionMessage('You must use the Trait PropertiesExporterFunctionality to use this functionality.');
 
         $fakeClass = new FakeClassWithoutPropertiesExporterFunctionality();
         $fakeClass->attachValues([]);
