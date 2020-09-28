@@ -1,7 +1,6 @@
 <?php
 
 use Logcomex\PhpUtils\Functionalities\PropertiesExporterFunctionality;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Class PropertiesExporterFunctionalityUnitTest

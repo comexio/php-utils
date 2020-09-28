@@ -2,25 +2,26 @@
 
 namespace Logcomex\PhpUtils\Functionalities;
 
-use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 
 /**
- * Trait ValuesExporterToArrayFunctionality
+ * Trait ValuesExporterToJsonFunctionality
  * @package Logcomex\PhpUtils\Functionalities
  */
-trait ValuesExporterToArrayFunctionality
+trait ValuesExporterToJsonFunctionality
 {
     /**
-     * @return array
+     * @param int $options
+     * @return string
      * @throws BadImplementationException
      */
-    public function toArray()
+    public function toJson($options = 0)
     {
-        if (!($this instanceof Arrayable)) {
+        if (!($this instanceof Jsonable)) {
             throw new BadImplementationException(
-                'PHU-002',
-                'You must implement the Arrayable contract to use this functionality.'
+                'PHU-006',
+                'You must implement the Jsonable contract to use this functionality.'
             );
         }
 
@@ -36,6 +37,6 @@ trait ValuesExporterToArrayFunctionality
             $response[$propertyClass] = $this->{$propertyClass};
         }
 
-        return $response;
+        return json_encode($response, $options);
     }
 }

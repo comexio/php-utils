@@ -3,11 +3,9 @@
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Exceptions\SecurityException;
 use Logcomex\PhpUtils\Exceptions\UnavailableServiceException;
-use PHPUnit\Framework\TestCase;
 use Logcomex\PhpUtils\Handlers\ExceptionHandler;
 use Logcomex\PhpUtils\Exceptions\ApiException;
 use Illuminate\Http\Request;

@@ -19,7 +19,7 @@ trait PropertiesAttacherFunctionality
         if (!method_exists($this, 'properties')) {
             throw new BadImplementationException(
                 'PHU-001',
-                'You must use the Trait PropertiesExporterFunctionality to use this functionality'
+                'You must use the Trait PropertiesExporterFunctionality to use this functionality.'
             );
         }
 

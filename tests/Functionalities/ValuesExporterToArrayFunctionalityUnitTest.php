@@ -5,7 +5,6 @@ use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Functionalities\PropertiesAttacherFunctionality;
 use Logcomex\PhpUtils\Functionalities\PropertiesExporterFunctionality;
 use Logcomex\PhpUtils\Functionalities\ValuesExporterToArrayFunctionality;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Class ValuesExporterToArrayFunctionalityUnitTest
@@ -16,50 +15,51 @@ class ValuesExporterToArrayFunctionalityUnitTest extends TestCase
      * @return void
      * @throws BadImplementationException
      */
-    public function testSuccessFlow(): void
+    public function testToArray_SuccessFlow(): void
     {
-        $fakeClass = new FakeClassWithArrayableContractAndPropertiesFunctionality();
-        $fakeClass->attachValues([
+        $expectedResponse = [
             'myPublicProperty' => 'test',
             'myProtectedProperty' => 'test',
             'myPrivateProperty' => 'test',
-        ]);
+        ];
+        $fakeClass = new FakeClassWithArrayableContractAndPropertiesFunctionality();
+        $fakeClass->attachValues($expectedResponse);
 
         $response = $fakeClass->toArray();
         $this->assertIsArray($response);
-        $this->assertCount(3, $response);
+        $this->assertEquals($expectedResponse, $response);
     }
 
     /**
      * @return void
+     * @throws Exception
      */
-    public function testFailureArrayableContractFlow(): void
+    public function testToArray_WithoutArrayableContract_FailureFlow(): void
     {
-        $fakeClass = new FakeClassWithoutArrayableContract();
-        try {
+        $expectedException = new BadImplementationException(
+            'PHU-002',
+            'You must implement the Arrayable contract to use this functionality.'
+        );
+        $this->expectCustomException($expectedException, function () {
+            $fakeClass = new FakeClassWithoutArrayableContract();
             $fakeClass->toArray();
-
-            $this->assertTrue(false);
-        } catch (Exception $exception) {
-            $this->assertInstanceOf(BadImplementationException::class, $exception);
-            $this->assertTrue(true);
-        }
+        });
     }
 
     /**
      * @return void
+     * @throws Exception
      */
-    public function testFailurePropertiesFunctionalityFlow(): void
+    public function testToArray_WithoutPropertiesFunctionality_FailureFlow(): void
     {
-        $fakeClass = new FakeClassWithArrayableContractButNotPropertiesFunctionality();
-        try {
+        $expectedException = new BadImplementationException(
+            'PHU-001',
+            'You must use the Trait PropertiesExporterFunctionality to use this functionality.'
+        );
+        $this->expectCustomException($expectedException, function () {
+            $fakeClass = new FakeClassWithArrayableContractButNotPropertiesFunctionality();
             $fakeClass->toArray();
-
-            $this->assertTrue(false);
-        } catch (Exception $exception) {
-            $this->assertInstanceOf(BadImplementationException::class, $exception);
-            $this->assertTrue(true);
-        }
+        });
     }
 }
 

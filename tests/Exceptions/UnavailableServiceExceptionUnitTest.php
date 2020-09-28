@@ -1,7 +1,6 @@
 <?php
 
 use Logcomex\PhpUtils\Exceptions\UnavailableServiceException;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Class UnavailableServiceExceptionUnitTest
