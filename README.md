@@ -141,6 +141,21 @@ public function toArray()
 | BadImplementationException | When yout don't implement the the Arrayable contract |
 | BadImplementationException | When you don't use PropertiesExporterFunctionality |
 
+#### ValuesExporterToJsonFunctionality
+
+> You can use this functionality to easily get all the properties of class in a Json.
+> >   **Note:** To uses this functionality, you need to do two things:
+> >  1. The class must implement Illuminate\Contracts\Support\Jsonable.
+> >  2. The class must use PropertiesExporterFunctionality.
+
+``` php
+public function toJson()  
+```
+| Exception  | Reason |
+| ---------- | ----------- |
+| BadImplementationException | When yout don't implement the the Jsonable contract |
+| BadImplementationException | When you don't use PropertiesExporterFunctionality |
+
 ## Helpers  
 
 > They're a pack of Helpers classes and traits.

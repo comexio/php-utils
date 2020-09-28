@@ -12,6 +12,8 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
+$app->withFacades();
+
 $app->configure('app');
 $app->configure('cors');
 
@@ -43,8 +45,6 @@ $app->router->group([], function ($router) {
         $router->get('trace', $routeFunction);
     });
 });
-
-$app->withFacades();
 
 return $app;
 

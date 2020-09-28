@@ -63,7 +63,7 @@ class HttpHelper
             if (!class_exists($this->mockedEndpoints[$urlPath])) {
                 throw new BadImplementationException(
                     'PHU-004',
-                    'Mock Class registered does not exists.'
+                    'Mock Class registered does not exist.'
                 );
             }
 

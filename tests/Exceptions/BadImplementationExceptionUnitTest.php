@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Response;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Class BadImplementationExceptionUnitTest

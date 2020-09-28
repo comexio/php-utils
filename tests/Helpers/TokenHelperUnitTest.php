@@ -1,7 +1,6 @@
 <?php
 
 use Logcomex\PhpUtils\Helpers\TokenHelper;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Class TokenHelperUnitTest

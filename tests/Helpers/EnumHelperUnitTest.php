@@ -1,7 +1,6 @@
 <?php
 
 use Logcomex\PhpUtils\Helpers\EnumHelper;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Class EnumHelperUnitTest
