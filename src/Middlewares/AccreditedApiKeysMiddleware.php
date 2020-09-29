@@ -21,6 +21,12 @@ class AccreditedApiKeysMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $requestUriBasePath = $this->extractRequestBasePath($request->getRequestUri());
+        $isPublicRoute = preg_match('/public/', $requestUriBasePath);
+        if ($isPublicRoute) {
+            return $next($request);
+        }
+
         $xApiKeyHeader = $request->header('x-api-key', '');
         $accreditedApiKeys = config('accreditedApiKeys', []);
 
@@ -72,5 +78,17 @@ class AccreditedApiKeysMiddleware
                 Response::HTTP_UNAUTHORIZED
             );
         }
+    }
+
+    /**
+     * @param string $requestUri
+     * @return string
+     */
+    public function extractRequestBasePath(string $requestUri): string
+    {
+        $requestUriExploded = explode('/', $requestUri);
+        $requestUriExploded = array_filter($requestUriExploded);
+
+        return array_shift($requestUriExploded) ?? '';
     }
 }
