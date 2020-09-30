@@ -39,7 +39,8 @@ class TracerMiddleware
 
         $requestHeaders = array_map('strtolower', array_keys($request->headers->all()));
         if (!empty($traceHeadersAvailableInRequest = array_intersect($requestHeaders, $traceHeadersOptions))) {
-            $traceHeaderValue = $request->header($traceHeadersAvailableInRequest[0]);
+            $traceHeaderKey = array_shift($traceHeadersAvailableInRequest);
+            $traceHeaderValue = $request->header($traceHeaderKey);
         }
 
         TracerSingleton::setTraceValue($traceHeaderValue);
