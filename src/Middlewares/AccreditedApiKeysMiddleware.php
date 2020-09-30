@@ -23,6 +23,7 @@ class AccreditedApiKeysMiddleware
     {
         $requestUriBasePath = $this->extractRequestBasePath($request->getRequestUri());
         $isPublicRoute = preg_match('/public/', $requestUriBasePath);
+
         if ($isPublicRoute) {
             return $next($request);
         }
