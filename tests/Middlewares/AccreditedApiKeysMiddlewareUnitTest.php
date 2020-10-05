@@ -33,7 +33,7 @@ class AccreditedApiKeysMiddlewareUnitTest extends TestCase
 
         $expectedException = new SecurityException(
             'SEC04',
-            'Your x-api-key header is invalid.',
+            'Your x-infra-key header is invalid.',
             401
         );
         $this->expectCustomException(
@@ -53,7 +53,7 @@ class AccreditedApiKeysMiddlewareUnitTest extends TestCase
 
         $expectedException = new SecurityException(
             'SEC03',
-            'This endpoint is protected by ApiKey, you must provide a valid x-api-key header to use.',
+            'This endpoint is protected by InfraKey, you must provide a valid x-infra-key header to use.',
             401
         );
         $this->expectCustomException(
@@ -83,7 +83,7 @@ class AccreditedApiKeysMiddlewareUnitTest extends TestCase
         $this->assertInstanceOf(Response::class, $response);
         $this->assertTrue($response->headers->has('Welcome-Message'));
         $this->assertEquals(
-            'Welcome to the test. You are using the x-api-key credential: test',
+            'Welcome to the test. You are using the x-infra-key credential: test',
             $response->headers->get('Welcome-Message')
         );
     }
@@ -106,7 +106,7 @@ class AccreditedApiKeysMiddlewareUnitTest extends TestCase
         $this->assertInstanceOf(Response::class, $response);
         $this->assertTrue($response->headers->has('Welcome-Message'));
         $this->assertEquals(
-            'Welcome to the UnknowApi. You are using the x-api-key credential: test',
+            'Welcome to the UnknowApi. You are using the x-infra-key credential: test',
             $response->headers->get('Welcome-Message')
         );
     }
@@ -123,7 +123,7 @@ class AccreditedApiKeysMiddlewareUnitTest extends TestCase
             'source-test-api' => '1721wt712w6216t'
         ]]);
         $fakeRequest = new Request();
-        $fakeRequest->headers->set('x-api-key', '1721wt712w6216t');
+        $fakeRequest->headers->set('x-infra-key', '1721wt712w6216t');
 
         $response = $middleware->handle($fakeRequest, function () {
             return response()->json('test');
@@ -179,7 +179,7 @@ class AccreditedApiKeysMiddlewareUnitTest extends TestCase
         ]]);
         $expectedException = new SecurityException(
             'SEC03',
-            'This endpoint is protected by ApiKey, you must provide a valid x-api-key header to use.',
+            'This endpoint is protected by InfraKey, you must provide a valid x-infra-key header to use.',
             401
         );
 
@@ -187,7 +187,7 @@ class AccreditedApiKeysMiddlewareUnitTest extends TestCase
             $middleware = new AccreditedApiKeysMiddleware();
 
             $fakeRequest = new Request();
-            $fakeRequest->headers->set('x-api-keyy', '');
+            $fakeRequest->headers->set('x-infra-keyy', '');
 
             $middleware->handle($fakeRequest, function () {
                 return response()->json('test');
@@ -206,7 +206,7 @@ class AccreditedApiKeysMiddlewareUnitTest extends TestCase
         ]]);
         $expectedException = new SecurityException(
             'SEC04',
-            'Your x-api-key header is invalid.',
+            'Your x-infra-key header is invalid.',
             401
         );
 
@@ -214,7 +214,7 @@ class AccreditedApiKeysMiddlewareUnitTest extends TestCase
             $middleware = new AccreditedApiKeysMiddleware();
 
             $fakeRequest = new Request();
-            $fakeRequest->headers->set('x-api-key', 'invalid');
+            $fakeRequest->headers->set('x-infra-key', 'invalid');
 
             $middleware->handle($fakeRequest, function () {
                 return response()->json('test');
