@@ -28,13 +28,13 @@ class AccreditedApiKeysMiddleware
             return $next($request);
         }
 
-        $xApiKeyHeader = $request->header('x-api-key', '');
+        $xInfraKeyHeader = $request->header('x-infra-key', '');
         $accreditedApiKeys = config('accreditedApiKeys', []);
 
-        $this->validateXApiKeyData($accreditedApiKeys, $xApiKeyHeader);
+        $this->validateXApiKeyData($accreditedApiKeys, $xInfraKeyHeader);
 
         $response = $next($request);
-        $response = $this->setWelcomeHeaderInResponse($response, $accreditedApiKeys, $xApiKeyHeader);
+        $response = $this->setWelcomeHeaderInResponse($response, $accreditedApiKeys, $xInfraKeyHeader);
 
         return $response;
     }
@@ -52,30 +52,30 @@ class AccreditedApiKeysMiddleware
         $accreditedApiKeys = array_filter($accreditedApiKeys);
         $xApiKeyName = array_flip($accreditedApiKeys)[$xApiKeyHeader];
         $apiName = config('app.api-name', 'UnknowApi');
-        $response->headers->set('Welcome-Message', "Welcome to the {$apiName}. You are using the x-api-key credential: {$xApiKeyName}");
+        $response->headers->set('Welcome-Message', "Welcome to the {$apiName}. You are using the x-infra-key credential: {$xApiKeyName}");
 
         return $response;
     }
 
     /**
      * @param array $accreditedApiKeys
-     * @param string $xApiKeyHeader
+     * @param string $xInfraKeyHeader
      * @throws SecurityException
      */
-    public function validateXApiKeyData(array $accreditedApiKeys, string $xApiKeyHeader): void
+    public function validateXApiKeyData(array $accreditedApiKeys, string $xInfraKeyHeader): void
     {
-        if (empty($xApiKeyHeader)) {
+        if (empty($xInfraKeyHeader)) {
             throw new SecurityException(
                 'SEC03',
-                'This endpoint is protected by ApiKey, you must provide a valid x-api-key header to use.',
+                'This endpoint is protected by InfraKey, you must provide a valid x-infra-key header to use.',
                 Response::HTTP_UNAUTHORIZED
             );
         }
 
-        if (!in_array($xApiKeyHeader, $accreditedApiKeys)) {
+        if (!in_array($xInfraKeyHeader, $accreditedApiKeys)) {
             throw new SecurityException(
                 'SEC04',
-                'Your x-api-key header is invalid.',
+                'Your x-infra-key header is invalid.',
                 Response::HTTP_UNAUTHORIZED
             );
         }

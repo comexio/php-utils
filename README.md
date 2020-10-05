@@ -280,7 +280,7 @@ $app->routeMiddleware([
 > is your "API guest list". <br> <br>
 > You need to register a configuration file called accreditedApiKeys, with all 
 > the api-keys that can request your api. <br> <br>
-> Therefore, if the request does not contain the x-api-key header or a allowed value, the API denies the request 
+> Therefore, if the request does not contain the x-infra-key header or a allowed value, the API denies the request 
 > with the security exception. <br> <br>
 > It is recommended to use as a global middleware, and if you need to avoid this middleware for some routes, just 
 > insert into the public route group.
@@ -305,7 +305,7 @@ $app->middleware([
 
 // routes/api.php
 $router->group(['prefix' => 'public',], function () use ($router) {
-    $router->get('test', 'Controller@test');// this route does not need x-api-key validation
+    $router->get('test', 'Controller@test');// this route does not need x-infra-key validation
 });
 ```
 
