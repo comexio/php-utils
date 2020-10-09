@@ -15,6 +15,10 @@ class TracerSingleton
      */
     public static function getTraceValue(): string
     {
+        if (empty(self::$traceValue)) {
+            return 'TRACE_NOT_IMPLEMENTED';
+        }
+
         return self::$traceValue;
     }
 

@@ -16,6 +16,7 @@ use Logcomex\PhpUtils\Exceptions\ApiException;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Exceptions\SecurityException;
 use Logcomex\PhpUtils\Exceptions\UnavailableServiceException;
+use Logcomex\PhpUtils\Singletons\TracerSingleton;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -69,8 +70,9 @@ class ExceptionHandler extends Handler
     public function report(Exception $exception): void
     {
         $treatedException = self::exportExceptionToArray($exception);
+        $traceId = TracerSingleton::getTraceValue();
 
-        Log::error('[[REQUEST_ERROR]]', $treatedException);
+        Log::error("[[REQUEST_ERROR]] | {$traceId} |", $treatedException);
     }
 
     /**

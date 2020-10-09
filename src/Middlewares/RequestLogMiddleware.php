@@ -74,12 +74,10 @@ class RequestLogMiddleware
             $requestLog->setResponseTime($responseTime);
         }
 
-        $traceId = empty(TracerSingleton::getTraceValue())
-            ? 'NOT_IMPLEMENTED'
-            : TracerSingleton::getTraceValue();
+        $traceId = TracerSingleton::getTraceValue();
         $requestLog->setTraceId($traceId);
 
-        Log::info('[[REQUEST_INFO]]', $requestLog->toArray());
+        Log::info("[[REQUEST_INFO]] | {$traceId} |", $requestLog->toArray());
 
         return $response;
     }
