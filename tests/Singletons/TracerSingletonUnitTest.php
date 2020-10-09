@@ -19,13 +19,23 @@ class TracerSingletonUnitTest extends TestCase
     /**
      * @return void
      */
-    public function testGetTraceValue_SuccessFlow(): void
+    public function testGetTraceValue_HappyPath_SuccessFlow(): void
     {
         TracerSingleton::setTraceValue('test');
 
         $response = TracerSingleton::getTraceValue();
         $this->assertIsString($response);
         $this->assertEquals('test', $response);
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetTraceValue_EmptyValue_SuccessFlow(): void
+    {
+        $response = TracerSingleton::getTraceValue();
+        $this->assertIsString($response);
+        $this->assertEquals('TRACE_NOT_IMPLEMENTED', $response);
     }
 
     /**
