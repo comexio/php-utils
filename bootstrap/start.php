@@ -19,6 +19,7 @@ $app->configure('cors');
 
 $app->routeMiddleware([
     'request-log' => Logcomex\PhpUtils\Middlewares\RequestLogMiddleware::class,
+    'response-time-log' => Logcomex\PhpUtils\Middlewares\ResponseTimeLogMiddleware::class,
     'allowed-hosts' => Logcomex\PhpUtils\Middlewares\AllowedHostsMiddleware::class,
     'cors' => Logcomex\PhpUtils\Middlewares\CorsMiddleware::class,
 ]);
@@ -37,6 +38,12 @@ $app->router->group([], function ($router) {
     });
     $router->group(['middleware' => ['request-log']], function () use ($router, $routeFunction) {
         $router->get('request-log-middleware', $routeFunction);
+    });
+    $router->group(['middleware' => ['response-time-log']], function () use ($router, $routeFunction) {
+        $router->get('response-time-log-middleware', function() {
+            sleep(2);
+            return 'Request should spend more than 2 seconds';
+        });
     });
     $router->group(['middleware' => ['allowed-hosts']], function () use ($router, $routeFunction) {
         $router->get('allowed-hosts-middleware', $routeFunction);
