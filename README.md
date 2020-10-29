@@ -245,6 +245,54 @@ $app->middleware([
 ]);
 ```
 
+#### ResponseTimeLogMiddleware
+
+> It is a class that registers the response time of each request in your api.
+> You can choose what request will be measured through calling the middleware by route.
+
+First of all, you have to define the framework start time globally before requiring anything in your bootstrap:
+
+``` php
+// bootstrap/app.php
+if (!defined('GLOBAL_FRAMEWORK_START')) {
+    define('GLOBAL_FRAMEWORK_START', microtime(true));
+}
+```
+
+Configuration:
+
+``` php
+// config/responseTimeLog.php
+return [
+    'api-name' => '',
+];
+
+// bootstrap/app.php
+$app->configure('responseTimeLog');
+```
+
+Usage:
+
+``` php
+// Using in global mode
+$app->middleware([
+    Logcomex\PhpUtils\Middleware\ResponseTimeLogMiddleware::class, // And after trace, you need the request log
+]);
+
+// Using in specific routes
+$app->routeMiddleware([
+    'response-time-log' => Logcomex\PhpUtils\Middlewares\ResponseTimeLogMiddleware::class,
+]);
+Route::group(
+    [
+        'prefix' => 'example',
+        'middleware' => ['response-time-log'],
+    ],
+    function () {
+        Route::get('responseTimeLog', 'ExampleClassName@exampleMethodName');
+    });
+```
+
 #### TracerMiddleware
 
 > It is a class that provides tracer functionality for your api.
