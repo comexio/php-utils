@@ -23,7 +23,12 @@ class ResponseTimeLogMiddlewareUnitTest extends TestCase
     public function testRequestUsingMiddlewareWithoutGlobalFrameworkStart(): void
     {
         $response = $this->call('get', '/response-time-log-middleware');
-        $this->assertNull($response->headers->get('response-time'));
+
+        if (!defined('GLOBAL_FRAMEWORK_START')) {
+            $this->assertNull($response->headers->get('response-time-log'));
+        }
+
+        $this->assertResponseOk();
     }
 
     public function testRequestUsingMiddlewareWithGlobalFrameworkStart(): void
@@ -33,7 +38,7 @@ class ResponseTimeLogMiddlewareUnitTest extends TestCase
         }
 
         $response = $this->call('get', '/response-time-log-middleware');
-        $this->assertGreaterThan(2, $response->headers->get('response-time'));
+        $this->assertGreaterThan(2, $response->headers->get('response-time-log'));
     }
 }
 

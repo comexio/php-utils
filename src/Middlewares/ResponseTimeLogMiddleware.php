@@ -47,7 +47,7 @@ class ResponseTimeLogMiddleware
                 'payload' => $request->all(),
                 'created_at' => Carbon::now(),
             ]);
-            $response->header('Response-Time', $responseTime);
+            $response->header('Response-Time-Log', $responseTime);
 
             app('ResponseTimeLog')->save($responseTimeLogDto);
         }
