@@ -5,6 +5,7 @@ namespace Logcomex\PhpUtils\Middlewares;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Logcomex\PhpUtils\Dto\ResponseTimePayloadDto;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 
@@ -24,30 +25,39 @@ class ResponseTimeLogMiddleware
      */
     public function __construct()
     {
-        $this->settings = config('responseTimeLog');
+        $this->settings = config('app');
     }
 
     /**
      * @param Request $request
      * @param Closure $next
-     * @return mixed
+     * @return Response
      * @throws BadImplementationException
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         $response = $next($request);
 
         if (defined('GLOBAL_FRAMEWORK_START')) {
+            $apiName = $this->getSetting('api-name');
+
+            if (empty($apiName)) {
+                throw new BadImplementationException(
+                    'PHU-007',
+                    'You must provide the "api-name" property in your app config.'
+                );
+            }
+
             $responseTime = microtime(true) - GLOBAL_FRAMEWORK_START;
             $responseTimeLogDto = new ResponseTimePayloadDto();
             $responseTimeLogDto->attachValues([
-                'api' => $this->getSetting('api-name'),
+                'api' => $apiName,
                 'endpoint' => $request->fullUrl(),
                 'response_time' => $responseTime,
                 'payload' => $request->all(),
                 'created_at' => Carbon::now(),
             ]);
-            $response->header('Response-Time-Log', $responseTime);
+            $response->headers->set('Response-Time-Log', $responseTime);
 
             app('ResponseTimeLog')->save($responseTimeLogDto);
         }
@@ -57,10 +67,10 @@ class ResponseTimeLogMiddleware
 
     /**
      * @param string $settingKey
-     * @param null $defaultValue
-     * @return mixed
+     * @param string $defaultValue
+     * @return string
      */
-    public function getSetting(string $settingKey, $defaultValue = null)
+    public function getSetting(string $settingKey, string $defaultValue = ''): string
     {
         return $this->settings[$settingKey] ?? $defaultValue;
     }

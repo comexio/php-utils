@@ -1,9 +1,11 @@
 <?php
 
+use Illuminate\Http\Response;
 use Logcomex\PhpUtils\Dto\ResponseTimePayloadDto;
+use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 
 /**
- * Class ResponseTimeLogUnitTest
+ * Class ResponseTimeLogMiddlewareUnitTest
  */
 class ResponseTimeLogMiddlewareUnitTest extends TestCase
 {
@@ -12,12 +14,27 @@ class ResponseTimeLogMiddlewareUnitTest extends TestCase
         parent::setUp();
 
         config([
-            'responseTimeLog.api-name' => 'fakeApi',
+            'app.api-name' => 'fakeApi',
         ]);
 
         app()->bind('ResponseTimeLog', function (): ResponseTimeLogFake {
             return new ResponseTimeLogFake();
         });
+    }
+
+    public function testRequestWithoutApiName(): void
+    {
+        if (!defined('GLOBAL_FRAMEWORK_START')) {
+            define('GLOBAL_FRAMEWORK_START', microtime(true));
+        }
+        config([
+            'app.api-name' => null,
+        ]);
+
+        $response = $this->get('/response-time-log-middleware');
+        $this->assertResponseStatus(500);
+        $this->assertInstanceOf(BadImplementationException::class, $response->response->exception);
+        $this->expectExceptionToken($response->response->exception, 'PHU-007');
     }
 
     public function testRequestUsingMiddlewareWithoutGlobalFrameworkStart(): void
@@ -28,7 +45,7 @@ class ResponseTimeLogMiddlewareUnitTest extends TestCase
             $this->assertNull($response->headers->get('response-time-log'));
         }
 
-        $this->assertResponseOk();
+        $this->assertInstanceOf(Response::class, $response);
     }
 
     public function testRequestUsingMiddlewareWithGlobalFrameworkStart(): void

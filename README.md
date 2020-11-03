@@ -261,22 +261,21 @@ if (!defined('GLOBAL_FRAMEWORK_START')) {
 
 Configuration:
 
-``` php
-// config/responseTimeLog.php
-return [
-    'api-name' => '',
-];
+> Your app config has to contain the key 'api-name', which will be used by this middleware for identifying what API the response time belongs to.
 
+``` php
 // bootstrap/app.php
-$app->configure('responseTimeLog');
+$app->configure('app');
 ```
 
 Usage:
 
+> It is IMPORTANT that you call this middleware as the first one, so the response time calc can be the most accurate as possible.
+
 ``` php
 // Using in global mode
 $app->middleware([
-    Logcomex\PhpUtils\Middleware\ResponseTimeLogMiddleware::class, // And after trace, you need the request log
+    Logcomex\PhpUtils\Middleware\ResponseTimeLogMiddleware::class,
 ]);
 
 // Using in specific routes
