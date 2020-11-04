@@ -3,6 +3,7 @@
 namespace Logcomex\PhpUtils\Functionalities;
 
 use Illuminate\Contracts\Support\Arrayable;
+use Logcomex\PhpUtils\Enumerators\ErrorEnum;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 
 /**
@@ -19,14 +20,14 @@ trait ValuesExporterToArrayFunctionality
     {
         if (!($this instanceof Arrayable)) {
             throw new BadImplementationException(
-                'PHU-002',
+                ErrorEnum::PHU002,
                 'You must implement the Arrayable contract to use this functionality.'
             );
         }
 
         if (!method_exists($this, 'properties')) {
             throw new BadImplementationException(
-                'PHU-001',
+                ErrorEnum::PHU001,
                 'You must use the Trait PropertiesExporterFunctionality to use this functionality.'
             );
         }

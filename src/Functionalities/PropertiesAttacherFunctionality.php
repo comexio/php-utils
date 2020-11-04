@@ -2,6 +2,7 @@
 
 namespace Logcomex\PhpUtils\Functionalities;
 
+use Logcomex\PhpUtils\Enumerators\ErrorEnum;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 
 /**
@@ -18,7 +19,7 @@ trait PropertiesAttacherFunctionality
     {
         if (!method_exists($this, 'properties')) {
             throw new BadImplementationException(
-                'PHU-001',
+                ErrorEnum::PHU001,
                 'You must use the Trait PropertiesExporterFunctionality to use this functionality.'
             );
         }

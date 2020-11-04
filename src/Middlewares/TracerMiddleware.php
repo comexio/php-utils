@@ -4,6 +4,7 @@ namespace Logcomex\PhpUtils\Middlewares;
 
 use Closure;
 use Illuminate\Http\Request;
+use Logcomex\PhpUtils\Enumerators\ErrorEnum;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Helpers\TokenHelper;
 use Logcomex\PhpUtils\Singletons\TracerSingleton;
@@ -26,7 +27,7 @@ class TracerMiddleware
         $traceHeadersOptions = config('tracer.headersToPropagate');
         if (empty($traceHeadersOptions)) {
             throw new BadImplementationException(
-                'PHU-005',
+                ErrorEnum::PHU005,
                 'You must provide at least one header name to trace.'
             );
         }

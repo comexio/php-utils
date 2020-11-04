@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Contracts\Support\Arrayable;
+use Logcomex\PhpUtils\Enumerators\ErrorEnum;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Functionalities\PropertiesAttacherFunctionality;
 use Logcomex\PhpUtils\Functionalities\PropertiesExporterFunctionality;
@@ -37,7 +38,7 @@ class ValuesExporterToArrayFunctionalityUnitTest extends TestCase
     public function testToArray_WithoutArrayableContract_FailureFlow(): void
     {
         $expectedException = new BadImplementationException(
-            'PHU-002',
+            ErrorEnum::PHU002,
             'You must implement the Arrayable contract to use this functionality.'
         );
         $this->expectCustomException($expectedException, function () {
@@ -53,7 +54,7 @@ class ValuesExporterToArrayFunctionalityUnitTest extends TestCase
     public function testToArray_WithoutPropertiesFunctionality_FailureFlow(): void
     {
         $expectedException = new BadImplementationException(
-            'PHU-001',
+            ErrorEnum::PHU001,
             'You must use the Trait PropertiesExporterFunctionality to use this functionality.'
         );
         $this->expectCustomException($expectedException, function () {
