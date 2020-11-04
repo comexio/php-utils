@@ -3,6 +3,7 @@
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RequestOptions;
 use Logcomex\PhpUtils\Contracts\MockContract;
+use Logcomex\PhpUtils\Enumerators\ErrorEnum;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Helpers\HttpHelper;
 use Logcomex\PhpUtils\Singletons\TracerSingleton;
@@ -151,7 +152,10 @@ class HttpHelperUnitTest extends TestCase
             'mockedEndpoints.api/mocked' => 'ClassDoesNotExists',
         ]);
 
-        $expectedException = new BadImplementationException('PHU-004', 'Mock Class registered does not exist.');
+        $expectedException = new BadImplementationException(
+            ErrorEnum::PHU004,
+            'Mock Class registered does not exist.'
+        );
         $this->expectCustomException($expectedException, function () {
             $httpHelper = new HttpHelper();
             $httpHelper->post('api/mocked');
@@ -166,7 +170,7 @@ class HttpHelperUnitTest extends TestCase
     {
         config(['app.mode' => 'test']);
         $expectedException = new BadImplementationException(
-            'PHU-003',
+            ErrorEnum::PHU003,
             'You are requesting to external APIs in test mode. Please mock your endpoint.'
         );
 

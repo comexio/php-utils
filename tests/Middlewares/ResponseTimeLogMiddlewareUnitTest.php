@@ -1,6 +1,7 @@
 <?php
 
 use Logcomex\PhpUtils\Dto\ResponseTimePayloadDto;
+use Logcomex\PhpUtils\Enumerators\ErrorEnum;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 
 /**
@@ -34,7 +35,7 @@ class ResponseTimeLogMiddlewareUnitTest extends TestCase
         $response = $this->get('/response-time-log-middleware');
         $this->assertResponseStatus(500);
         $this->assertInstanceOf(BadImplementationException::class, $response->response->exception);
-        $this->expectExceptionToken($response->response->exception, 'PHU-007');
+        $this->expectExceptionToken($response->response->exception, ErrorEnum::PHU007);
     }
 
     public function testRequestUsingMiddlewareWithoutGlobalFrameworkStart(): void

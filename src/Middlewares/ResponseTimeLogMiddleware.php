@@ -7,6 +7,7 @@ use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Logcomex\PhpUtils\Dto\ResponseTimePayloadDto;
+use Logcomex\PhpUtils\Enumerators\ErrorEnum;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 
 /**
@@ -43,7 +44,7 @@ class ResponseTimeLogMiddleware
 
             if (empty($apiName)) {
                 throw new BadImplementationException(
-                    'PHU-007',
+                    ErrorEnum::PHU007,
                     'You must provide the "api-name" property in your app config.'
                 );
             }

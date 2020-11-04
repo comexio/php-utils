@@ -8,6 +8,7 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RequestOptions;
+use Logcomex\PhpUtils\Enumerators\ErrorEnum;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Singletons\TracerSingleton;
 use Psr\Http\Message\ResponseInterface;
@@ -56,13 +57,13 @@ class HttpHelper
         if ($this->isTestMode()) {
             if (!$this->isMockedEndpoint($urlPath)) {
                 throw new BadImplementationException(
-                    'PHU-003',
+                    ErrorEnum::PHU003,
                     'You are requesting to external APIs in test mode. Please mock your endpoint.'
                 );
             }
             if (!class_exists($this->mockedEndpoints[$urlPath])) {
                 throw new BadImplementationException(
-                    'PHU-004',
+                    ErrorEnum::PHU004,
                     'Mock Class registered does not exist.'
                 );
             }
