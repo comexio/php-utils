@@ -4,8 +4,8 @@ namespace Logcomex\PhpUtils\Middlewares;
 
 use Carbon\Carbon;
 use Closure;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Logcomex\PhpUtils\Dto\ResponseTimePayloadDto;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 
@@ -31,10 +31,10 @@ class ResponseTimeLogMiddleware
     /**
      * @param Request $request
      * @param Closure $next
-     * @return Response
+     * @return JsonResponse
      * @throws BadImplementationException
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next): JsonResponse
     {
         $response = $next($request);
 
@@ -62,7 +62,7 @@ class ResponseTimeLogMiddleware
             app('ResponseTimeLog')->save($responseTimeLogDto);
         }
 
-        return $response;
+        return response()->json($response);
     }
 
     /**

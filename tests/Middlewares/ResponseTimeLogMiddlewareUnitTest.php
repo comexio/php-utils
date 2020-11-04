@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Response;
 use Logcomex\PhpUtils\Dto\ResponseTimePayloadDto;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 
@@ -27,6 +26,7 @@ class ResponseTimeLogMiddlewareUnitTest extends TestCase
         if (!defined('GLOBAL_FRAMEWORK_START')) {
             define('GLOBAL_FRAMEWORK_START', microtime(true));
         }
+
         config([
             'app.api-name' => null,
         ]);
@@ -40,12 +40,11 @@ class ResponseTimeLogMiddlewareUnitTest extends TestCase
     public function testRequestUsingMiddlewareWithoutGlobalFrameworkStart(): void
     {
         $response = $this->call('get', '/response-time-log-middleware');
+        $this->shouldReturnJson();
 
         if (!defined('GLOBAL_FRAMEWORK_START')) {
-            $this->assertNull($response->headers->get('response-time-log'));
+            $this->assertNull($response->original->headers->get('response-time-log'));
         }
-
-        $this->assertInstanceOf(Response::class, $response);
     }
 
     public function testRequestUsingMiddlewareWithGlobalFrameworkStart(): void
@@ -55,7 +54,8 @@ class ResponseTimeLogMiddlewareUnitTest extends TestCase
         }
 
         $response = $this->call('get', '/response-time-log-middleware');
-        $this->assertGreaterThan(2, $response->headers->get('response-time-log'));
+        $this->shouldReturnJson();
+        $this->assertGreaterThan(2, $response->original->headers->get('response-time-log'));
     }
 }
 
