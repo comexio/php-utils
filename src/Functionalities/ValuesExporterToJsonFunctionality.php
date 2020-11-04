@@ -3,6 +3,7 @@
 namespace Logcomex\PhpUtils\Functionalities;
 
 use Illuminate\Contracts\Support\Jsonable;
+use Logcomex\PhpUtils\Enumerators\ErrorEnum;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 
 /**
@@ -20,14 +21,14 @@ trait ValuesExporterToJsonFunctionality
     {
         if (!($this instanceof Jsonable)) {
             throw new BadImplementationException(
-                'PHU-006',
+                ErrorEnum::PHU006,
                 'You must implement the Jsonable contract to use this functionality.'
             );
         }
 
         if (!method_exists($this, 'properties')) {
             throw new BadImplementationException(
-                'PHU-001',
+                ErrorEnum::PHU001,
                 'You must use the Trait PropertiesExporterFunctionality to use this functionality.'
             );
         }

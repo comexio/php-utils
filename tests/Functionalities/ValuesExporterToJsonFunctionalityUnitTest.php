@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Contracts\Support\Jsonable;
+use Logcomex\PhpUtils\Enumerators\ErrorEnum;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Functionalities\PropertiesAttacherFunctionality;
 use Logcomex\PhpUtils\Functionalities\PropertiesExporterFunctionality;
@@ -38,7 +39,7 @@ class ValuesExporterToJsonFunctionalityUnitTest extends TestCase
     public function testToJson_WithoutJsonableContract_FailureFlow(): void
     {
         $expectedException = new BadImplementationException(
-            'PHU-006',
+            ErrorEnum::PHU006,
             'You must implement the Jsonable contract to use this functionality.'
         );
         $this->expectCustomException($expectedException, function () {
@@ -54,7 +55,7 @@ class ValuesExporterToJsonFunctionalityUnitTest extends TestCase
     public function testToJson_WithoutPropertiesFunctionality_FailureFlow(): void
     {
         $expectedException = new BadImplementationException(
-            'PHU-001',
+            ErrorEnum::PHU001,
             'You must use the Trait PropertiesExporterFunctionality to use this functionality.'
         );
         $this->expectCustomException($expectedException, function () {

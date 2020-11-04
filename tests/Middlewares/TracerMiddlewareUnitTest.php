@@ -2,6 +2,7 @@
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Logcomex\PhpUtils\Enumerators\ErrorEnum;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Helpers\TokenHelper;
 use Logcomex\PhpUtils\Middlewares\TracerMiddleware;
@@ -180,7 +181,7 @@ class TracerMiddlewareUnitTest extends TestCase
     public function testHandler_MissingTraceSettings_FailureFlow(): void
     {
         $expectedException = new BadImplementationException(
-            'PHU-005',
+            ErrorEnum::PHU005,
             'You must provide at least one header name to trace.'
         );
         $this->expectCustomException($expectedException, function () {
@@ -201,7 +202,7 @@ class TracerMiddlewareUnitTest extends TestCase
     {
         config(['tracer.headersToPropagate' => []]);
         $expectedException = new BadImplementationException(
-            'PHU-005',
+            ErrorEnum::PHU005,
             'You must provide at least one header name to trace.'
         );
         $this->expectCustomException($expectedException, function () {
