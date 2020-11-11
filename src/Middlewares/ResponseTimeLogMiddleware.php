@@ -63,7 +63,7 @@ class ResponseTimeLogMiddleware
             app('ResponseTimeLog')->save($responseTimeLogDto);
         }
 
-        return response()->json($response);
+        return $response;
     }
 
     /**
