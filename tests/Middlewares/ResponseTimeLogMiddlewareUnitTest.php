@@ -38,13 +38,22 @@ class ResponseTimeLogMiddlewareUnitTest extends TestCase
         $this->expectExceptionToken($response->response->exception, ErrorEnum::PHU007);
     }
 
+    public function testRequestUsingMiddleware_ShouldReturnJsonWithSpecificContent(): void
+    {
+        $this->get('/response-time-log-middleware');
+        $this->assertJsonStringEqualsJsonString(
+            '"Request should spend more than 2 seconds."',
+            $this->response->getContent()
+        );
+    }
+
     public function testRequestUsingMiddlewareWithoutGlobalFrameworkStart(): void
     {
-        $response = $this->call('get', '/response-time-log-middleware');
+        $this->get('/response-time-log-middleware');
         $this->shouldReturnJson();
 
         if (!defined('GLOBAL_FRAMEWORK_START')) {
-            $this->assertNull($response->original->headers->get('response-time-log'));
+            $this->assertNull($this->response->headers->get('response-time-log'));
         }
     }
 
@@ -54,9 +63,9 @@ class ResponseTimeLogMiddlewareUnitTest extends TestCase
             define('GLOBAL_FRAMEWORK_START', microtime(true));
         }
 
-        $response = $this->call('get', '/response-time-log-middleware');
+        $this->get('/response-time-log-middleware');
         $this->shouldReturnJson();
-        $this->assertGreaterThan(2, $response->original->headers->get('response-time-log'));
+        $this->assertGreaterThan(2, $this->response->headers->get('response-time-log'));
     }
 }
 
