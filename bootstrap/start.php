@@ -42,7 +42,7 @@ $app->router->group([], function ($router) {
     $router->group(['middleware' => ['response-time-log']], function () use ($router, $routeFunction) {
         $router->get('response-time-log-middleware', function() {
             sleep(2);
-            return 'Request should spend more than 2 seconds';
+            return response()->json('Request should spend more than 2 seconds');
         });
     });
     $router->group(['middleware' => ['allowed-hosts']], function () use ($router, $routeFunction) {

@@ -44,7 +44,7 @@ class ResponseTimeLogMiddlewareUnitTest extends TestCase
         $this->shouldReturnJson();
 
         if (!defined('GLOBAL_FRAMEWORK_START')) {
-            $this->assertNull($response->original->headers->get('response-time-log'));
+            $this->assertNull($response->headers->get('response-time-log'));
         }
     }
 
@@ -56,7 +56,7 @@ class ResponseTimeLogMiddlewareUnitTest extends TestCase
 
         $response = $this->call('get', '/response-time-log-middleware');
         $this->shouldReturnJson();
-        $this->assertGreaterThan(2, $response->original->headers->get('response-time-log'));
+        $this->assertGreaterThan(2, $response->headers->get('response-time-log'));
     }
 }
 
