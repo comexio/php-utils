@@ -196,12 +196,12 @@ $app->register(Your\Provider\AuthServiceProvider::class);
 
 // Using in global mode
 $app->middleware([
-    Logcomex\PhpUtils\Middleware\AuthenticateMiddleware::class,
+    Logcomex\PhpUtils\Middlewares\AuthenticateMiddleware::class,
 ]);
 
 // Or, by specific route
 $app->routeMiddleware([
-    'auth' => Logcomex\PhpUtils\Middleware\AuthenticateMiddleware::class,
+    'auth' => Logcomex\PhpUtils\Middlewares\AuthenticateMiddleware::class,
 ]);
 ```
 
@@ -240,8 +240,8 @@ $app->configure('requestLog');
 
 // Using in global mode
 $app->middleware([
-    Logcomex\PhpUtils\Middleware\TracerMiddleware::class, // If you gonna use tracer, it must be above the requestlog
-    Logcomex\PhpUtils\Middleware\RequestLogMiddleware::class, // And after trace, you need the request log
+    Logcomex\PhpUtils\Middlewares\TracerMiddleware::class, // If you gonna use tracer, it must be above the requestlog
+    Logcomex\PhpUtils\Middlewares\RequestLogMiddleware::class, // And after trace, you need the request log
 ]);
 ```
 
@@ -275,7 +275,7 @@ Usage:
 ``` php
 // Using in global mode
 $app->middleware([
-    Logcomex\PhpUtils\Middleware\ResponseTimeLogMiddleware::class,
+    Logcomex\PhpUtils\Middlewares\ResponseTimeLogMiddleware::class,
 ]);
 
 // Using in specific routes
@@ -311,13 +311,13 @@ $app->configure('tracer');
 
 // Using in global mode
 $app->middleware([
-    Logcomex\PhpUtils\Middleware\TracerMiddleware::class,
+    Logcomex\PhpUtils\Middlewares\TracerMiddleware::class,
     // the other middlewares
 ]);
 
 // Or, by specific route
 $app->routeMiddleware([
-    'tracer' => Logcomex\PhpUtils\Middleware\TracerMiddleware::class,
+    'tracer' => Logcomex\PhpUtils\Middlewares\TracerMiddleware::class,
 ]);
 ```
 
@@ -346,7 +346,7 @@ $app->configure('accreditedApiKeys');
 
 // Using in global mode
 $app->middleware([
-    Logcomex\PhpUtils\Middleware\AccreditedApiKeysMiddleware::class,
+    Logcomex\PhpUtils\Middlewares\AccreditedApiKeysMiddleware::class,
 ]);
 
 
