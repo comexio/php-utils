@@ -24,7 +24,7 @@ class ResponseTimePayloadDto extends Dto
     /**
      * @var float
      */
-    public $time_response = 0.0;
+    public $response_time = 0.0;
     /**
      * @var object | array
      */
