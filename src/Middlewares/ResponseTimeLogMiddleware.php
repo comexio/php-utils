@@ -56,7 +56,7 @@ class ResponseTimeLogMiddleware
                 'endpoint' => $request->fullUrl(),
                 'response_time' => $responseTime,
                 'payload' => $request->all(),
-                'created_at' => Carbon::now(),
+                'created_at' => Carbon::now()->format('Y-m-d\TH:i:s.u\Z'),
             ]);
             $response->headers->set('Response-Time-Log', $responseTime);
 
