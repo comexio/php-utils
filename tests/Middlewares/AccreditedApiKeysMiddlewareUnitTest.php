@@ -136,6 +136,49 @@ class AccreditedApiKeysMiddlewareUnitTest extends TestCase
      * @return void
      * @throws SecurityException
      */
+    public function testHandler_WithXApiKeyHeader_SuccessFlow(): void
+    {
+        $middleware = new AccreditedApiKeysMiddleware();
+
+        config(['accreditedApiKeys' => [
+            'source-test-api' => '1721wt712w6216t'
+        ]]);
+        $fakeRequest = new Request();
+        $fakeRequest->headers->set('x-api-key', '1721wt712w6216t');
+
+        $response = $middleware->handle($fakeRequest, function () {
+            return response()->json('test');
+        });
+
+        $this->assertInstanceOf(JsonResponse::class, $response);
+    }
+
+    /**
+     * @return void
+     * @throws SecurityException
+     */
+    public function testHandlerWithXApiKeyAndXInfraKeyHeader(): void
+    {
+        $middleware = new AccreditedApiKeysMiddleware();
+
+        config(['accreditedApiKeys' => [
+            'source-test-api' => '1721wt712w6216t'
+        ]]);
+        $fakeRequest = new Request();
+        $fakeRequest->headers->set('x-api-key', 'must_not_fail');
+        $fakeRequest->headers->set('x-infra-key', '1721wt712w6216t');
+
+        $response = $middleware->handle($fakeRequest, function () {
+            return response()->json('test');
+        });
+
+        $this->assertInstanceOf(JsonResponse::class, $response);
+    }
+
+    /**
+     * @return void
+     * @throws SecurityException
+     */
     public function testHandler_PublicRouteOnlyBasePath_SuccessFlow(): void
     {
         $middleware = new AccreditedApiKeysMiddleware();
