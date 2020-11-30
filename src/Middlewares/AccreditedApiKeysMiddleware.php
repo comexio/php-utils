@@ -28,7 +28,7 @@ class AccreditedApiKeysMiddleware
             return $next($request);
         }
 
-        $xInfraKeyHeader = $request->header('x-infra-key', '');
+        $xInfraKeyHeader = $request->header('x-infra-key') || $request->header('x-api-key', '');
         $accreditedApiKeys = config('accreditedApiKeys', []);
 
         $this->validateXApiKeyData($accreditedApiKeys, $xInfraKeyHeader);

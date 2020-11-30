@@ -1,0 +1,10 @@
+version: '3'
+services:
+
+  php-utils:
+    container_name: phpUtils
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ".:/var/www/package"
