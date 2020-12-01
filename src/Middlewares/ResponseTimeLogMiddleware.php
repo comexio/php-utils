@@ -32,10 +32,10 @@ class ResponseTimeLogMiddleware
     /**
      * @param Request $request
      * @param Closure $next
-     * @return JsonResponse
+     * @return mixed
      * @throws BadImplementationException
      */
-    public function handle(Request $request, Closure $next): JsonResponse
+    public function handle(Request $request, Closure $next)
     {
         $response = $next($request);
 
