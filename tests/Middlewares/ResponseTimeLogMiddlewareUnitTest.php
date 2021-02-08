@@ -42,7 +42,7 @@ class ResponseTimeLogMiddlewareUnitTest extends TestCase
     {
         $this->get('/response-time-log-middleware');
         $this->assertJsonStringEqualsJsonString(
-            '"Request should spend more than 2 seconds."',
+            '["Request should spend more than 2 seconds."]',
             $this->response->getContent()
         );
     }
