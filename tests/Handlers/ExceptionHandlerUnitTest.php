@@ -11,6 +11,7 @@ use Logcomex\PhpUtils\Exceptions\ApiException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Illuminate\Support\Facades\Validator;
 
 /**
@@ -121,6 +122,21 @@ class ExceptionHandlerUnitTest extends TestCase
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals('{"message":"A p\u00e1gina solicitada n\u00e3o p\u00f4de ser encontrada","error":"Page not found"}', $response->getContent());
         $this->assertEquals(404, $response->getStatusCode());
+    }
+
+    /**
+     * @return void
+     */
+    public function testRenderTooManyRequestsHttpException(): void
+    {
+        $exception = new TooManyRequestsHttpException();
+        $request = new Request();
+
+        $response = $this->handler->render($request, $exception);
+
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals('{"message":"Limite de requisi\u00e7\u00e3o excedido.","error":"Too Many Requests."}', $response->getContent());
+        $this->assertEquals(429, $response->getStatusCode());
     }
 
     /**
