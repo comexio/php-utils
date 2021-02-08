@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 
 /**
  * Class ExceptionHandler
@@ -142,6 +143,12 @@ class ExceptionHandler extends Handler
                         'service' => $exception->getService(),
                         'reason' => $exception->getMessage(),
                     ], $exception->getHttpCode());
+            case $exception instanceof TooManyRequestsHttpException:
+                return response()
+                    ->json([
+                        'message' => 'Limite de requisição excedido.',
+                        'error' => 'Too Many Requests.'
+                    ], Response::HTTP_TOO_MANY_REQUESTS);
             default:
                 return response()
                     ->json([
