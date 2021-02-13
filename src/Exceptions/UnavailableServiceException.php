@@ -3,15 +3,13 @@
 namespace Logcomex\PhpUtils\Exceptions;
 
 use Exception;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Http\Response;
 
 /**
  * Class UnavailableServiceException
  * @package Logcomex\PhpUtils\Exceptions
  */
-class UnavailableServiceException extends Exception implements Arrayable, Jsonable
+class UnavailableServiceException extends BaseException
 {
     /**
      * @var int

@@ -1,5 +1,6 @@
 <?php
 
+use Logcomex\PhpUtils\Exceptions\BaseException;
 use Logcomex\PhpUtils\Exceptions\SecurityException;
 
 /**
@@ -98,5 +99,14 @@ class SecurityExceptionUnitTest extends TestCase
         $this->assertEquals('SEC01', $exceptionArray['token']);
         $this->assertNotNull($exceptionArray['file']);
         $this->assertNotNull($exceptionArray['line']);
+    }
+
+    /**
+     * @depends testConstructor
+     * @param SecurityException $exception
+     */
+    public function testExtendsBaseException(SecurityException $exception): void
+    {
+        $this->assertInstanceOf(BaseException::class, $exception);
     }
 }
