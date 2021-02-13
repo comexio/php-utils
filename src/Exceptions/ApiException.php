@@ -3,15 +3,13 @@
 namespace Logcomex\PhpUtils\Exceptions;
 
 use Exception;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Http\Response;
 
 /**
  * Class ApiException
  * @package Logcomex\PhpUtils\Exceptions
  */
-class ApiException extends Exception implements Arrayable, Jsonable
+class ApiException extends BaseException
 {
     /**
      * @var int
