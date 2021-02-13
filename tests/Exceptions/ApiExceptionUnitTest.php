@@ -1,6 +1,7 @@
 <?php
 
 use Logcomex\PhpUtils\Exceptions\ApiException;
+use Logcomex\PhpUtils\Exceptions\BaseException;
 
 /**
  * Class ApiExceptionUnitTest
@@ -98,5 +99,14 @@ class ApiExceptionUnitTest extends TestCase
         $this->assertEquals('T001', $exceptionArray['token']);
         $this->assertNotNull($exceptionArray['file']);
         $this->assertNotNull($exceptionArray['line']);
+    }
+
+    /**
+     * @depends testConstructor
+     * @param ApiException $exception
+     */
+    public function testExtendsBaseException(ApiException $exception): void
+    {
+        $this->assertInstanceOf(BaseException::class, $exception);
     }
 }

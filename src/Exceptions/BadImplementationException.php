@@ -3,15 +3,13 @@
 namespace Logcomex\PhpUtils\Exceptions;
 
 use Exception;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Http\Response;
 
 /**
  * Class BadImplementationException
  * @package Logcomex\PhpUtils\Exceptions
  */
-class BadImplementationException extends Exception implements Arrayable, Jsonable
+class BadImplementationException extends BaseException
 {
     /**
      * @var int
