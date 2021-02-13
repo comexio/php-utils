@@ -3,15 +3,13 @@
 namespace Logcomex\PhpUtils\Exceptions;
 
 use Exception;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Http\Response;
 
 /**
  * Class SecurityException
  * @package Logcomex\PhpUtils\Exceptions
  */
-class SecurityException extends Exception implements Arrayable, Jsonable
+class SecurityException extends BaseException
 {
     /**
      * @var int
