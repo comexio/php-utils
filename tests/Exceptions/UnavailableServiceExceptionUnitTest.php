@@ -1,5 +1,6 @@
 <?php
 
+use Logcomex\PhpUtils\Exceptions\BaseException;
 use Logcomex\PhpUtils\Exceptions\UnavailableServiceException;
 
 /**
@@ -112,5 +113,14 @@ class UnavailableServiceExceptionUnitTest extends TestCase
     public function testGetService(UnavailableServiceException $exception): void
     {
         $this->assertEquals(self::EXCEPTION_SERVICE, $exception->getService());
+    }
+
+    /**
+     * @depends testConstructor
+     * @param UnavailableServiceException $exception
+     */
+    public function testExtendsBaseException(UnavailableServiceException $exception): void
+    {
+        $this->assertInstanceOf(BaseException::class, $exception);
     }
 }

@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Response;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
+use Logcomex\PhpUtils\Exceptions\BaseException;
 
 /**
  * Class BadImplementationExceptionUnitTest
@@ -74,5 +75,14 @@ class BadImplementationExceptionUnitTest extends TestCase
         $this->assertEquals('500', $exceptionArray['http-code']);
         $this->assertNotNull($exceptionArray['file']);
         $this->assertNotNull($exceptionArray['line']);
+    }
+
+    /**
+     * @depends testConstructor
+     * @param BadImplementationException $exception
+     */
+    public function testExtendsBaseException(BadImplementationException $exception): void
+    {
+        $this->assertInstanceOf(BaseException::class, $exception);
     }
 }
