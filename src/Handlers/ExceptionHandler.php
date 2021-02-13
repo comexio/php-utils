@@ -2,7 +2,7 @@
 
 namespace Logcomex\PhpUtils\Handlers;
 
-use Throwable;
+use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -42,10 +42,10 @@ class ExceptionHandler extends Handler
     ];
 
     /**
-     * @param Throwable $exception
+     * @param Exception $exception
      * @return array
      */
-    public static function exportExceptionToArray(Throwable $exception): array
+    public static function exportExceptionToArray(Exception $exception): array
     {
         if (method_exists($exception, 'toArray')) {
             return $exception->toArray();
@@ -65,10 +65,10 @@ class ExceptionHandler extends Handler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param Throwable $exception
+     * @param Exception $exception
      * @return void
      */
-    public function report(Throwable $exception): void
+    public function report(Exception $exception): void
     {
         $treatedException = self::exportExceptionToArray($exception);
         $traceId = TracerSingleton::getTraceValue();
@@ -80,10 +80,10 @@ class ExceptionHandler extends Handler
      * Render an exception into an HTTP response.
      *
      * @param Request $request
-     * @param Throwable $exception
+     * @param Exception $exception
      * @return \Illuminate\Http\Response|JsonResponse
      */
-    public function render($request, Throwable $exception): JsonResponse
+    public function render($request, Exception $exception): JsonResponse
     {
         switch (true) {
             case $exception instanceof AuthenticationException:

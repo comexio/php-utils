@@ -5,15 +5,16 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^8.0",
+        "php": "^7.2",
         "guzzlehttp/guzzle": "~6.5",
         "ext-json": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.4",
-        "phpunit/phpunit": "^9.3",
+        "phpunit/phpunit": "^8.0",
         "mockery/mockery": "^1.0",
-        "laravel/lumen-framework": "^8.0"
+        "laravel/lumen-framework": "^6.0",
+        "ext-http": "*"
     },
     "autoload": {
         "psr-4": {
