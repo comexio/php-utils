@@ -2,6 +2,7 @@
 
 
 namespace Logcomex\PhpUtils\Exceptions;
+
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 
