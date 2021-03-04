@@ -96,18 +96,12 @@ class HttpHelper
     }
 
     /**
+     * @param int $httpCode
      * @return void
      */
-    public static function mustReturnError(): void
+    public static function mustReturnError(int $httpCode = 400): void
     {
         self::$mustReturnError = true;
-    }
-
-    /**
-     * @param int $httpCode
-     */
-    public static function shouldReturnHttpCodeWhenError(int $httpCode): void
-    {
         self::$expectedHttpErrorCode = $httpCode;
     }
 
