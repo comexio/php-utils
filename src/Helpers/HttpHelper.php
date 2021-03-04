@@ -23,6 +23,12 @@ class HttpHelper
      * @var bool
      */
     private static $mustReturnError = false;
+
+    /**
+     * @var int
+     */
+    private static $expectedHttpErrorCode = 400;
+
     /**
      * @var array
      */
@@ -55,30 +61,34 @@ class HttpHelper
         // se não estiver registro no contrato de mocks,
         // será feita a requisição normalmente.
         if ($this->isTestMode()) {
-            if (!$this->isMockedEndpoint($urlPath)) {
-                throw new BadImplementationException(
-                    ErrorEnum::PHU003,
-                    'You are requesting to external APIs in test mode. Please mock your endpoint.'
-                );
+            try {
+                if (!$this->isMockedEndpoint($urlPath)) {
+                    throw new BadImplementationException(
+                        ErrorEnum::PHU003,
+                        'You are requesting to external APIs in test mode. Please mock your endpoint.'
+                    );
+                }
+                if (!class_exists($this->mockedEndpoints[$urlPath])) {
+                    throw new BadImplementationException(
+                        ErrorEnum::PHU004,
+                        'Mock Class registered does not exist.'
+                    );
+                }
+
+                $mockResponse = call_user_func_array([$this->mockedEndpoints[$urlPath], 'mock'], []);
+
+                $httpCodeResponse = self::$mustReturnError ? self::$expectedHttpErrorCode : 200;
+                $mock = new MockHandler([
+                    new Response($httpCodeResponse, [], $mockResponse),
+                ]);
+
+                $handlerStack = HandlerStack::create($mock);
+                $clientMock = new Client(['handler' => $handlerStack]);
+
+                return $clientMock->request('GET', '/');
+            } finally {
+                self::$expectedHttpErrorCode = 400;
             }
-            if (!class_exists($this->mockedEndpoints[$urlPath])) {
-                throw new BadImplementationException(
-                    ErrorEnum::PHU004,
-                    'Mock Class registered does not exist.'
-                );
-            }
-
-            $mockResponse = call_user_func_array([$this->mockedEndpoints[$urlPath], 'mock'], []);
-
-            $httpCodeResponse = self::$mustReturnError ? 400 : 200;
-            $mock = new MockHandler([
-                new Response($httpCodeResponse, [], $mockResponse),
-            ]);
-
-            $handlerStack = HandlerStack::create($mock);
-            $clientMock = new Client(['handler' => $handlerStack]);
-
-            return $clientMock->request('GET', '/');
         }
 
         $client = new Client();
@@ -88,9 +98,10 @@ class HttpHelper
     /**
      * @return void
      */
-    public static function mustReturnError(): void
+    public static function mustReturnError(int $httpCode = 400): void
     {
         self::$mustReturnError = true;
+        self::$expectedHttpErrorCode = $httpCode;
     }
 
     /**
