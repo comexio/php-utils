@@ -11,6 +11,7 @@ use GuzzleHttp\RequestOptions;
 use Logcomex\PhpUtils\Enumerators\ErrorEnum;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Singletons\TracerSingleton;
+use phpDocumentor\Reflection\Types\Static_;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -98,16 +99,9 @@ class HttpHelper
     /**
      * @return void
      */
-    public static function mustReturnError(): void
+    public static function mustReturnError(int $httpCode = 400): void
     {
         self::$mustReturnError = true;
-    }
-
-    /**
-     * @param int $httpCode
-     */
-    public static function shouldReturnHttpCodeWhenError(int $httpCode): void
-    {
         self::$expectedHttpErrorCode = $httpCode;
     }
 

@@ -361,7 +361,7 @@ class HttpHelperUnitTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function test__callWithMockedEndpoint_CustomHttpErrorFlow(): void
+    public function testCallWithMockedEndpointCustomHttpErrorFlow(): void
     {
         config([
             'app.mode' => 'test',
@@ -371,8 +371,7 @@ class HttpHelperUnitTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionCode(500);
 
-        HttpHelper::mustReturnError();
-        HttpHelper::shouldReturnHttpCodeWhenError(500);
+        HttpHelper::mustReturnError(500);
         try {
             $httpHelper = new HttpHelper();
             $httpHelper->post('api/mocked');
