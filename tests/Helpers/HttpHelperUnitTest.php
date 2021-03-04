@@ -356,6 +356,29 @@ class HttpHelperUnitTest extends TestCase
         $this->assertArrayHasKey($headerNameToPropagate, $supposedRequestOptions[RequestOptions::HEADERS]);
         $this->assertEquals($tracerValue, $supposedRequestOptions[RequestOptions::HEADERS][$headerNameToPropagate]);
     }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function testCallWithMockedEndpointCustomHttpErrorFlow(): void
+    {
+        config([
+            'app.mode' => 'test',
+            'mockedEndpoints.api/mocked' => ApiTestMock::class,
+        ]);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(500);
+
+        HttpHelper::mustReturnError(500);
+        try {
+            $httpHelper = new HttpHelper();
+            $httpHelper->post('api/mocked');
+        } finally{
+            HttpHelper::mustNotReturnError();
+        }
+    }
 }
 
 /**
