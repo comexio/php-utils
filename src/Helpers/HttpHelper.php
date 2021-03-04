@@ -11,7 +11,6 @@ use GuzzleHttp\RequestOptions;
 use Logcomex\PhpUtils\Enumerators\ErrorEnum;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Singletons\TracerSingleton;
-use phpDocumentor\Reflection\Types\Static_;
 use Psr\Http\Message\ResponseInterface;
 
 /**
