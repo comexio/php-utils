@@ -25,6 +25,10 @@ class HttpHelper
      * @var bool
      */
     private static $mustReturnError = false;
+    /**
+     * @var array
+     */
+    private $clientConfig;
 
     /**
      * @var int
@@ -38,9 +42,11 @@ class HttpHelper
 
     /**
      * HttpHelper constructor.
+     * @param array $config
      */
-    public function __construct()
+    public function __construct(array $config = [])
     {
+        $this->clientConfig = $config;
         $this->mockedEndpoints = config('mockedEndpoints') ?? [];
     }
 
@@ -87,7 +93,7 @@ class HttpHelper
                 ]);
 
                 $handlerStack = HandlerStack::create($mock);
-                $clientMock = new Client(['handler' => $handlerStack]);
+                $clientMock = new Client(array_merge(['handler' => $handlerStack], $this->clientConfig));
 
                 return $clientMock->request('GET', '/');
             } finally {
@@ -95,7 +101,7 @@ class HttpHelper
             }
         }
 
-        $client = new Client();
+        $client = new Client($this->clientConfig);
         return $client->request($method, ...$args);
     }
 
