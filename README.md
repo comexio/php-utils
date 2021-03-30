@@ -14,10 +14,12 @@ composer require logcomex/php-utils
  - Contracts
  - Exceptions
  - Functionalities
- - Helpers
  - Handlers
+ - Helpers
+ - Loggers
  - Logs
  - Middlewares
+ - Providers
  - Singletons
 
 ## Contracts
@@ -179,6 +181,25 @@ class ProductEnum
 }
 
 $allProducts = ProductEnum::all();
+```
+
+## Loggers
+
+> The idea of this package is provide all the Loggers classes.
+
+### LogcomexLogger
+
+> Using this class you can easily provide a log template, that is very important to integrate with Datadog.
+``` php
+// bootstrap/app.php
+
+$app->register(Logcomex\PhpUtils\Providers\LogcomexLoggerProvider::class);
+
+$app->withFacades(true, [
+    Logcomex\PhpUtils\Facades\Logger::class => 'Logger',
+]);
+
+Logger::info('TOKEN-001', ['reason' => 'test',]);
 ```
 
 ## Middlewares  
@@ -355,6 +376,20 @@ $router->group(['prefix' => 'public',], function () use ($router) {
     $router->get('test', 'Controller@test');// this route does not need x-infra-key validation
 });
 ```
+
+## Providers
+
+> The idea of this package is provide some providers.
+> For a better understanding: [Lumen Providers](https://lumen.laravel.com/docs/6.x/providers)
+
+### LogcomexLoggerProvider
+
+> You have to use this provider when you're using the Logger Facade.
+
+``` php
+// bootstrap/app.php
+
+$app->register(Logcomex\MicroservicesCore\Providers\LogcomexLoggerProvider::class);
 
 ## Singletons  
 
