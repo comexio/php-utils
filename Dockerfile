@@ -5,7 +5,6 @@ RUN apt update && apt install -y libpq-dev libpng-dev libxml2-dev git
 RUN docker-php-ext-install gd xml zip mbstring
 
 RUN pecl install xdebug-2.6.0 && docker-php-ext-enable xdebug \
-    && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" >> /usr/local/etc/php/php.ini  \
     && echo "xdebug.remote_port=9000" >> /usr/local/etc/php/php.ini \
     && echo "xdebug.remote_enable=1" >> /usr/local/etc/php/php.ini \
     && echo "xdebug.remote_connect_back=1" >> /usr/local/etc/php/php.ini \

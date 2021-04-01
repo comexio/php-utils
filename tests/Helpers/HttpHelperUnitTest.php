@@ -229,9 +229,8 @@ class HttpHelperUnitTest extends TestCase
 
     /**
      * @return void
-     * @throws BadImplementationException
      */
-    public function testPropagateTracerValue_HappyPath_WithoutHeaderBundle_SuccessFlow(): void
+    public function testPropagateTracerValueHappyPathWithoutHeaderBundleSuccessFlow(): void
     {
         $headerNameToPropagate = 'x-tracer-id';
         config(['tracer.headersToPropagate' => [$headerNameToPropagate,],]);
@@ -289,9 +288,8 @@ class HttpHelperUnitTest extends TestCase
 
     /**
      * @return void
-     * @throws BadImplementationException
      */
-    public function testPropagateTracerValue_MultipleHeadersNameToPropagate_SuccessFlow(): void
+    public function testPropagateTracerValueMultipleHeadersNameToPropagateSuccessFlow(): void
     {
         $headersNamesToPropagate = ['x-tracer-id', 'x-tracer-id-2',];
         config(['tracer.headersToPropagate' => $headersNamesToPropagate,]);
@@ -328,7 +326,7 @@ class HttpHelperUnitTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testPropagateTracerValue_WithSettingsNotArray_SuccessFlow(): void
+    public function testPropagateTracerValueWithSettingsNotArraySuccessFlow(): void
     {
         $headerNameToPropagate = 'x-tracer-id';
         config(['tracer.headersToPropagate' => $headerNameToPropagate,]);
