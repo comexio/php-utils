@@ -14,10 +14,24 @@ use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Facades\Logger;
 use Logcomex\PhpUtils\Singletons\TracerSingleton;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\UriInterface;
+
 
 /**
  * Class HttpHelper
  * @package Logcomex\PhpUtils\Helpers
+ * @method ResponseInterface get(string|UriInterface $uri, array $options = [])
+ * @method ResponseInterface head(string|UriInterface $uri, array $options = [])
+ * @method ResponseInterface put(string|UriInterface $uri, array $options = [])
+ * @method ResponseInterface post(string|UriInterface $uri, array $options = [])
+ * @method ResponseInterface patch(string|UriInterface $uri, array $options = [])
+ * @method ResponseInterface delete(string|UriInterface $uri, array $options = [])
+ * @method Promise\PromiseInterface getAsync(string|UriInterface $uri, array $options = [])
+ * @method Promise\PromiseInterface headAsync(string|UriInterface $uri, array $options = [])
+ * @method Promise\PromiseInterface putAsync(string|UriInterface $uri, array $options = [])
+ * @method Promise\PromiseInterface postAsync(string|UriInterface $uri, array $options = [])
+ * @method Promise\PromiseInterface patchAsync(string|UriInterface $uri, array $options = [])
+ * @method Promise\PromiseInterface deleteAsync(string|UriInterface $uri, array $options = [])
  */
 class HttpHelper
 {
@@ -96,7 +110,8 @@ class HttpHelper
         }
 
         $client = new Client();
-        return $client->request($method, ...$args);
+
+        return $client->{$method}(...$args);
     }
 
     /**
@@ -151,10 +166,21 @@ class HttpHelper
             $tracerHeaderToPropagate[strtolower($headerNameToPropagate)] = $tracerValue;
         }
 
-        $hasRequestOptions = count($functionArguments) > 1;
-        $functionArguments[1][RequestOptions::HEADERS] = $hasRequestOptions
-            ? array_merge($functionArguments[1][RequestOptions::HEADERS] ?? [], $tracerHeaderToPropagate)
-            : $tracerHeaderToPropagate;
+        foreach ($functionArguments as &$functionArgument) {
+            if (!is_array($functionArgument)) {
+               continue;
+            }
+
+            if (in_array(RequestOptions::HEADERS, array_keys($functionArgument))) {
+                $headers = $functionArgument[RequestOptions::HEADERS];
+                $headers = array_merge($headers, $tracerHeaderToPropagate);
+
+                $functionArgument[RequestOptions::HEADERS] = $headers;
+                continue;
+            }
+
+            $functionArgument[RequestOptions::HEADERS] = $tracerHeaderToPropagate;
+        }
 
         return $functionArguments;
     }
