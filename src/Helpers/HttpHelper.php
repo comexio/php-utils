@@ -9,7 +9,9 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RequestOptions;
 use Logcomex\PhpUtils\Enumerators\ErrorEnum;
+use Logcomex\PhpUtils\Enumerators\LogEnum;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
+use Logcomex\PhpUtils\Facades\Logger;
 use Logcomex\PhpUtils\Singletons\TracerSingleton;
 use Psr\Http\Message\ResponseInterface;
 
@@ -56,6 +58,8 @@ class HttpHelper
         if (!empty($tracerValue = TracerSingleton::getTraceValue())) {
             $args = self::propagateTracerValue($tracerValue, $args);
         }
+
+        Logger::info(LogEnum::REQUEST_HTTP_OUT, $args);
 
         // Tratativa criada pra endpoint mockados,
         // se não estiver registro no contrato de mocks,

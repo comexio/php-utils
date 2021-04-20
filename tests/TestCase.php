@@ -32,6 +32,11 @@ abstract class TestCase extends BaseTestCase
                 'api/mocked' => FakeMock::class,
             ]
         ]);
+
+        $logFilePath = storage_path('logs/lumen.log');
+        if (file_exists($logFilePath)) {
+            unlink($logFilePath);
+        }
     }
 
     /**
@@ -69,6 +74,70 @@ abstract class TestCase extends BaseTestCase
     public function getJsonFile(string $filePath): string
     {
         return trim(json_encode(json_decode(File::get($filePath))));
+    }
+
+    /**
+     * @param object $object
+     * @param string $methodName
+     * @param array $parameters
+     * @return mixed
+     * @throws ReflectionException
+     */
+    public function invokeNonPublicMethod(object $object, string $methodName, array $parameters = [])
+    {
+        $reflection = new ReflectionClass(get_class($object));
+        $method = $reflection->getMethod($methodName);
+        $method->setAccessible(true);
+
+        return $method->invokeArgs($object, $parameters);
+    }
+
+    /**
+     * @param object $object
+     * @param string $propertyName
+     * @return mixed
+     * @throws ReflectionException
+     */
+    public function getNonPublicProperty(object $object, string $propertyName)
+    {
+        $allChainClasses = [];
+        $value = null;
+
+        $reflection = new ReflectionClass(get_class($object));
+        $allChainClasses[] = $reflection;
+
+        $parentClass = $reflection->getParentClass();
+        while ($parentClass != false) {
+            $allChainClasses[] = $parentClass;
+            $parentClass = $parentClass->getParentClass();
+        }
+
+        foreach ($allChainClasses as $reflectionClass) {
+            if (isset($value)) {
+                return $value;
+            }
+
+            $classDoesNotHaveProperty = !$reflectionClass->hasProperty($propertyName);
+            if ($classDoesNotHaveProperty) {
+                continue;
+            }
+
+            $requestedProperty = $reflectionClass->getProperty($propertyName);
+            $requestedProperty->setAccessible(true);
+            $value = $requestedProperty->getValue($object);
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param string $expectedLogContent
+     * @return void
+     */
+    protected function assertLogContent(string $expectedLogContent): void
+    {
+        $logContent = file_get_contents(storage_path('logs/lumen.log'));
+        $this->assertStringContainsString($expectedLogContent, $logContent);
     }
 }
 

@@ -12,10 +12,15 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
-$app->withFacades();
+$app->register(Logcomex\PhpUtils\Providers\LogcomexLoggerProvider::class);
+
+$app->withFacades(true, [
+    Logcomex\PhpUtils\Facades\Logger::class => 'Logger',
+]);
 
 $app->configure('app');
 $app->configure('cors');
+$app->configure('logging');
 
 $app->routeMiddleware([
     'request-log' => Logcomex\PhpUtils\Middlewares\RequestLogMiddleware::class,
