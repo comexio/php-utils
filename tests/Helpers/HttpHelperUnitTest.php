@@ -4,6 +4,7 @@ use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RequestOptions;
 use Logcomex\PhpUtils\Contracts\MockContract;
 use Logcomex\PhpUtils\Enumerators\ErrorEnum;
+use Logcomex\PhpUtils\Enumerators\LogEnum;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Helpers\HttpHelper;
 use Logcomex\PhpUtils\Singletons\TracerSingleton;
@@ -228,9 +229,8 @@ class HttpHelperUnitTest extends TestCase
 
     /**
      * @return void
-     * @throws BadImplementationException
      */
-    public function testPropagateTracerValue_HappyPath_WithoutHeaderBundle_SuccessFlow(): void
+    public function testPropagateTracerValueHappyPathWithoutHeaderBundleSuccessFlow(): void
     {
         $headerNameToPropagate = 'x-tracer-id';
         config(['tracer.headersToPropagate' => [$headerNameToPropagate,],]);
@@ -256,7 +256,6 @@ class HttpHelperUnitTest extends TestCase
 
     /**
      * @return void
-     * @throws BadImplementationException
      */
     public function testPropagateTracerValue_HappyPath_WithHeaderBundle_SuccessFlow(): void
     {
@@ -289,9 +288,8 @@ class HttpHelperUnitTest extends TestCase
 
     /**
      * @return void
-     * @throws BadImplementationException
      */
-    public function testPropagateTracerValue_MultipleHeadersNameToPropagate_SuccessFlow(): void
+    public function testPropagateTracerValueMultipleHeadersNameToPropagateSuccessFlow(): void
     {
         $headersNamesToPropagate = ['x-tracer-id', 'x-tracer-id-2',];
         config(['tracer.headersToPropagate' => $headersNamesToPropagate,]);
@@ -328,7 +326,7 @@ class HttpHelperUnitTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testPropagateTracerValue_WithSettingsNotArray_SuccessFlow(): void
+    public function testPropagateTracerValueWithSettingsNotArraySuccessFlow(): void
     {
         $headerNameToPropagate = 'x-tracer-id';
         config(['tracer.headersToPropagate' => $headerNameToPropagate,]);
@@ -378,6 +376,17 @@ class HttpHelperUnitTest extends TestCase
         } finally{
             HttpHelper::mustNotReturnError();
         }
+    }
+
+    /**
+     * @return void
+     */
+    public function testIfRequestLogWasSaved(): void
+    {
+        $httpHelper = new HttpHelper();
+        $httpHelper->post('api/mocked');
+
+        $this->assertLogContent(LogEnum::REQUEST_HTTP_OUT);
     }
 }
 
