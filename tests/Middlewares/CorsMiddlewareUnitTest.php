@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Logcomex\PhpUtils\Middlewares\CorsMiddleware;
 use Illuminate\Http\Response as IlluminateResponse;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
@@ -170,8 +172,37 @@ class CorsMiddlewareUnitTest extends TestCase
             'cors.access-control-allow-headers' => 'a',
         ]);
 
-        $httpVerbsToTest = ['get', 'options', 'post', 'patch', 'delete'];
+        $response = $this->call('post', '/cors-middleware',[
+            new IlluminateResponse()
+        ]);
 
-        $illuminateReponse = new IlluminateResponse();
+        $responseHeaders = $response->headers->all();
+
+        $this->assertTrue(
+            array_key_exists('access-control-allow-origin', $responseHeaders),
+            "Response haven't the expected header: access-control-allow-origin"
+        );
+    }
+
+    public function testShouldAssertSymfonyResponse ()
+    {
+        config([
+            'cors.access-control-allow-origin' => 'http://myrandomdomain',
+            'cors.access-control-allow-methods' => 'a',
+            'cors.access-control-allow-credentials' => 'a',
+            'cors.access-control-max-age' => 'a',
+            'cors.access-control-allow-headers' => 'a',
+        ]);
+
+        $response = $this->call('post', '/cors-middleware',[
+            new SymfonyResponse()
+        ]);
+
+        $responseHeaders = $response->headers->all();
+
+        $this->assertTrue(
+            array_key_exists('access-control-allow-origin', $responseHeaders),
+            "Response haven't the expected header: access-control-allow-origin"
+        );
     }
 }
