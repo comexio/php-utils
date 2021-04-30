@@ -160,7 +160,7 @@ class CorsMiddlewareUnitTest extends TestCase
         }
     }
 
-    public function testShouldAssertIlluminateResponse ()
+    public function testShouldAssertIlluminateResponse(): void
     {
         config([
             'cors.access-control-allow-origin' => 'http://myrandomdomain',
