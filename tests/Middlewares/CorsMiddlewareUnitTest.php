@@ -160,7 +160,7 @@ class CorsMiddlewareUnitTest extends TestCase
         }
     }
 
-    public function testShouldAssertIlluminateResponse ()
+    public function testShouldAssertIlluminateResponse (): void
     {
         config([
             'cors.access-control-allow-origin' => 'http://myrandomdomain',
@@ -182,7 +182,7 @@ class CorsMiddlewareUnitTest extends TestCase
         );
     }
 
-    public function testShouldAssertSymfonyResponse ()
+    public function testShouldAssertSymfonyResponse (): void
     {
         config([
             'cors.access-control-allow-origin' => 'http://myrandomdomain',
