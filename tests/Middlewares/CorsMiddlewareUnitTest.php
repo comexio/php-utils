@@ -182,7 +182,7 @@ class CorsMiddlewareUnitTest extends TestCase
         );
     }
 
-    public function testShouldAssertSymfonyResponse ()
+    public function testShouldAssertSymfonyResponse(): void
     {
         config([
             'cors.access-control-allow-origin' => 'http://myrandomdomain',
