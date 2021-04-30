@@ -22,7 +22,7 @@ class CorsMiddleware
     public function handle(Request $request, Closure $next)
     {
         $IlluminateResponse = 'Illuminate\Http\Response';
-        $SymfonyResopnse = 'Symfony\Component\HttpFoundation\Response';
+        $SymfonyResponse = 'Symfony\Component\HttpFoundation\Response';
         $corsSettings = collect(config('cors'))->filter();
 
         $allowOriginResponse = $this->treatAccessControlAllowOriginHeader($corsSettings, $request->getUri());
@@ -40,7 +40,7 @@ class CorsMiddleware
 
         $response = $next($request);
 
-        if($response instanceof $IlluminateResponse) {
+        if ($response instanceof $IlluminateResponse) {
             foreach ($headers as $key => $value) {
                 $response->header($key, $value);
             }
@@ -48,7 +48,7 @@ class CorsMiddleware
             return $response;
         }
 
-        if($response instanceof $SymfonyResopnse) {
+        if ($response instanceof $SymfonyResponse) {
             foreach ($headers as $key => $value) {
                 $response->headers->set($key, $value);
             }

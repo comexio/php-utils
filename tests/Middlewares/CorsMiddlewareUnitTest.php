@@ -1,6 +1,8 @@
 <?php
 
 use Logcomex\PhpUtils\Middlewares\CorsMiddleware;
+use Illuminate\Http\Response as IlluminateResponse;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 /**
  * Class CorsMiddlewareUnitTest
@@ -156,5 +158,20 @@ class CorsMiddlewareUnitTest extends TestCase
         } catch (Exception $exception) {
             $this->assertTrue(false, "Middleware is not working to allow all domains!");
         }
+    }
+
+    public function testShouldAssertIlluminateResponse ()
+    {
+        config([
+            'cors.access-control-allow-origin' => 'http://myrandomdomain',
+            'cors.access-control-allow-methods' => 'a',
+            'cors.access-control-allow-credentials' => 'a',
+            'cors.access-control-max-age' => 'a',
+            'cors.access-control-allow-headers' => 'a',
+        ]);
+
+        $httpVerbsToTest = ['get', 'options', 'post', 'patch', 'delete'];
+
+        $illuminateReponse = new IlluminateResponse();
     }
 }
