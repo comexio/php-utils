@@ -7,6 +7,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
+use Illuminate\Http\Response as IlluminateResponse;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 /**
  * Class CorsMiddleware
@@ -21,6 +23,8 @@ class CorsMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        $illuminateResponse = IlluminateResponse::class;
+        $symfonyResponse = SymfonyResponse::class;
         $corsSettings = collect(config('cors'))->filter();
 
         $allowOriginResponse = $this->treatAccessControlAllowOriginHeader($corsSettings, $request->getUri());
@@ -37,6 +41,23 @@ class CorsMiddleware
         }
 
         $response = $next($request);
+
+        if ($response instanceof $illuminateResponse) {
+            foreach ($headers as $key => $value) {
+                $response->header($key, $value);
+            }
+
+            return $response;
+        }
+
+        if ($response instanceof $symfonyResponse) {
+            foreach ($headers as $key => $value) {
+                $response->headers->set($key, $value);
+            }
+
+            return $response;
+        }
+
         foreach ($headers as $key => $value) {
             $response->header($key, $value);
         }
