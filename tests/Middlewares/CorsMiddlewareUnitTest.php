@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Logcomex\PhpUtils\Middlewares\CorsMiddleware;
 use Illuminate\Http\Response as IlluminateResponse;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
