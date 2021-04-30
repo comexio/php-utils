@@ -44,6 +44,7 @@ class CorsMiddleware
             foreach ($headers as $key => $value) {
                 $response->header($key, $value);
             }
+
             return $response;
         }
 
@@ -51,6 +52,7 @@ class CorsMiddleware
             foreach ($headers as $key => $value) {
                 $response->headers->set($key, $value);
             }
+
             return $response;
         }
 
