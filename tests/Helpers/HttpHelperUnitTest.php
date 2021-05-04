@@ -387,6 +387,8 @@ class HttpHelperUnitTest extends TestCase
         $httpHelper->post('api/mocked');
 
         $this->assertLogContent(LogEnum::REQUEST_HTTP_OUT);
+        $this->assertLogContent('http_url_request_out');
+        $this->assertLogContent('payload');
     }
 }
 
