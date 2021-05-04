@@ -51,10 +51,16 @@ class HttpHelper
     private $mockedEndpoints;
 
     /**
+     * @var Client
+     */
+    private $client;
+
+    /**
      * HttpHelper constructor.
      */
     public function __construct()
     {
+        $this->client = new Client();
         $this->mockedEndpoints = config('mockedEndpoints') ?? [];
     }
 
@@ -112,9 +118,7 @@ class HttpHelper
             }
         }
 
-        $client = new Client();
-
-        return $client->{$method}(...$args);
+        return $this->client->{$method}(...$args);
     }
 
     /**
