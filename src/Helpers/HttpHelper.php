@@ -79,7 +79,10 @@ class HttpHelper
             $args = self::propagateTracerValue($tracerValue, $args);
         }
 
-        Logger::info(LogEnum::REQUEST_HTTP_OUT, $args);
+        Logger::info(
+            LogEnum::REQUEST_HTTP_OUT,
+            ['http_url_request_out' => $urlPath, 'payload' => $args,]
+        );
 
         // Tratativa criada pra endpoint mockados,
         // se não estiver registro no contrato de mocks,
