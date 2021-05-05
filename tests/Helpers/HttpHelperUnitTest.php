@@ -1,5 +1,7 @@
 <?php
 
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RequestOptions;
 use Logcomex\PhpUtils\Contracts\MockContract;
@@ -389,6 +391,27 @@ class HttpHelperUnitTest extends TestCase
         $this->assertLogContent(LogEnum::REQUEST_HTTP_OUT);
         $this->assertLogContent('http_url_request_out');
         $this->assertLogContent('payload');
+    }
+
+    /**
+     * @return void
+     */
+    public function testClientInstance(): void
+    {
+        config([
+            'app.mode' => 'mock',
+            'mockedEndpoints.api/mocked' => ApiTestMock::class,
+        ]);
+
+        $mock = new MockHandler([
+            new Response(200, ['Set-Cookie' => 'foo=bar']),
+            new Response(200, [])
+        ]);
+        $handler = HandlerStack::create($mock);
+        $client = new HttpHelper(['handler' => $handler, 'cookies' => true]);
+        $response1 = $client->post('api/mocked');
+
+        self::assertEquals('foo=bar', $response1->getHeaders()['Set-Cookie'][0]);
     }
 }
 
