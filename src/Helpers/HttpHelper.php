@@ -45,6 +45,11 @@ class HttpHelper
     private $clientConfig;
 
     /**
+     * @var Client
+     */
+    private $client;
+
+    /**
      * @var int
      */
     private static $expectedHttpErrorCode = 400;
@@ -61,6 +66,7 @@ class HttpHelper
     public function __construct(array $config = [])
     {
         $this->clientConfig = $config;
+        $this->client = new Client($config);
         $this->mockedEndpoints = config('mockedEndpoints') ?? [];
     }
 
@@ -118,9 +124,7 @@ class HttpHelper
             }
         }
 
-        $client = new Client($this->clientConfig);
-
-        return $client->{$method}(...$args);
+        return $this->client->{$method}(...$args);
     }
 
     /**
