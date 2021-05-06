@@ -89,48 +89,56 @@ class ExceptionHandler extends Handler
             case $exception instanceof AuthenticationException:
                 return response()
                     ->json([
+                        'trace' => TracerSingleton::getTraceValue(),
                         'message' => 'Não autenticado',
                         'error' => 'Unauthorized'
                     ], Response::HTTP_UNAUTHORIZED);
             case $exception instanceof QueryException:
                 return response()
                     ->json([
+                        'trace' => TracerSingleton::getTraceValue(),
                         'message' => 'Tivemos um problema com nosso banco de dados',
                         'error' => 'Bad Gateway'
                     ], Response::HTTP_BAD_GATEWAY);
             case $exception instanceof NotFoundHttpException:
                 return response()
                     ->json([
+                        'trace' => TracerSingleton::getTraceValue(),
                         'message' => 'A página solicitada não pôde ser encontrada',
                         'error' => 'Page not found'
                     ], Response::HTTP_NOT_FOUND);
             case $exception instanceof ValidationException:
                 return response()
                     ->json([
+                        'trace' => TracerSingleton::getTraceValue(),
                         'message' => __('common.errors.data_invalid'),
                         'error' => $exception->validator->errors()
                     ], Response::HTTP_NOT_ACCEPTABLE);
             case $exception instanceof MethodNotAllowedHttpException:
                 return response()
                     ->json([
+                        'trace' => TracerSingleton::getTraceValue(),
                         'message' => 'O método para essa requisição está incorreto.',
                         'error' => 'Method Not Allowed'
                     ], Response::HTTP_METHOD_NOT_ALLOWED);
             case $exception instanceof ApiException:
                 return response()
-                    ->json(
-                        ['message' => $exception->getMessage(), 'code' => $exception->getToken()],
-                        $exception->getHttpCode()
-                    );
+                    ->json([
+                        'trace' => TracerSingleton::getTraceValue(),
+                        'message' => $exception->getMessage(),
+                        'code' => $exception->getToken()
+                    ], $exception->getHttpCode());
             case $exception instanceof BadImplementationException:
                 return response()
                     ->json([
+                        'trace' => TracerSingleton::getTraceValue(),
                         'code' => $exception->getToken(),
                         'message' => 'Tivemos um erro na aplicação!'
                     ], $exception->getHttpCode());
             case $exception instanceof SecurityException:
                 return response()
                     ->json([
+                        'trace' => TracerSingleton::getTraceValue(),
                         'code' => $exception->getToken(),
                         'message' => 'Tivemos um erro de segurança na aplicação!',
                         'reason' => $exception->getMessage(),
@@ -138,6 +146,7 @@ class ExceptionHandler extends Handler
             case $exception instanceof UnavailableServiceException:
                 return response()
                     ->json([
+                        'trace' => TracerSingleton::getTraceValue(),
                         'code' => $exception->getToken(),
                         'message' => "Service {$exception->getService()} apresenta problemas!",
                         'service' => $exception->getService(),
@@ -146,12 +155,14 @@ class ExceptionHandler extends Handler
             case $exception instanceof TooManyRequestsHttpException:
                 return response()
                     ->json([
+                        'trace' => TracerSingleton::getTraceValue(),
                         'message' => 'Limite de requisição excedido.',
                         'error' => 'Too Many Requests.'
                     ], Response::HTTP_TOO_MANY_REQUESTS);
             default:
                 return response()
                     ->json([
+                        'trace' => TracerSingleton::getTraceValue(),
                         'message' => 'Tivemos um erro inesperado.',
                         'error' => 'Internal server error',
                         'request' => $request->all(),
