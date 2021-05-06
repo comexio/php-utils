@@ -75,7 +75,7 @@ class ExceptionHandlerUnitTest extends TestCase
         $response = $this->handler->render($request, $exception);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertEquals('{"message":"Tivemos um erro inesperado.","error":"Internal server error","request":[]}', $response->getContent());
+        $this->assertEquals('{"trace":"TRACE_NOT_IMPLEMENTED","message":"Tivemos um erro inesperado.","error":"Internal server error","request":[]}', $response->getContent());
         $this->assertEquals(500, $response->getStatusCode());
     }
 
@@ -90,7 +90,7 @@ class ExceptionHandlerUnitTest extends TestCase
         $response = $this->handler->render($request, $exception);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertEquals('{"message":"N\u00e3o autenticado","error":"Unauthorized"}', $response->getContent());
+        $this->assertEquals('{"trace":"TRACE_NOT_IMPLEMENTED","message":"N\u00e3o autenticado","error":"Unauthorized"}', $response->getContent());
         $this->assertEquals(401, $response->getStatusCode());
     }
 
@@ -105,7 +105,7 @@ class ExceptionHandlerUnitTest extends TestCase
         $response = $this->handler->render($request, $exception);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertEquals('{"message":"Tivemos um problema com nosso banco de dados","error":"Bad Gateway"}', $response->getContent());
+        $this->assertEquals('{"trace":"TRACE_NOT_IMPLEMENTED","message":"Tivemos um problema com nosso banco de dados","error":"Bad Gateway"}', $response->getContent());
         $this->assertEquals(502, $response->getStatusCode());
     }
 
@@ -120,7 +120,7 @@ class ExceptionHandlerUnitTest extends TestCase
         $response = $this->handler->render($request, $exception);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertEquals('{"message":"A p\u00e1gina solicitada n\u00e3o p\u00f4de ser encontrada","error":"Page not found"}', $response->getContent());
+        $this->assertEquals('{"trace":"TRACE_NOT_IMPLEMENTED","message":"A p\u00e1gina solicitada n\u00e3o p\u00f4de ser encontrada","error":"Page not found"}', $response->getContent());
         $this->assertEquals(404, $response->getStatusCode());
     }
 
@@ -135,7 +135,7 @@ class ExceptionHandlerUnitTest extends TestCase
         $response = $this->handler->render($request, $exception);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertEquals('{"message":"Limite de requisi\u00e7\u00e3o excedido.","error":"Too Many Requests."}', $response->getContent());
+        $this->assertEquals('{"trace":"TRACE_NOT_IMPLEMENTED","message":"Limite de requisi\u00e7\u00e3o excedido.","error":"Too Many Requests."}', $response->getContent());
         $this->assertEquals(429, $response->getStatusCode());
     }
 
@@ -151,7 +151,7 @@ class ExceptionHandlerUnitTest extends TestCase
             $response = $this->handler->render($request, $exception);
 
             $this->assertInstanceOf(JsonResponse::class, $response);
-            $this->assertEquals('{"message":"common.errors.data_invalid","error":{"test":["The test field is required."]}}', $response->getContent());
+            $this->assertEquals('{"trace":"TRACE_NOT_IMPLEMENTED","message":"common.errors.data_invalid","error":{"test":["The test field is required."]}}', $response->getContent());
             $this->assertEquals(406, $response->getStatusCode());
 
             return;
@@ -171,7 +171,7 @@ class ExceptionHandlerUnitTest extends TestCase
         $response = $this->handler->render($request, $exception);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertEquals('{"message":"O m\u00e9todo para essa requisi\u00e7\u00e3o est\u00e1 incorreto.","error":"Method Not Allowed"}', $response->getContent());
+        $this->assertEquals('{"trace":"TRACE_NOT_IMPLEMENTED","message":"O m\u00e9todo para essa requisi\u00e7\u00e3o est\u00e1 incorreto.","error":"Method Not Allowed"}', $response->getContent());
         $this->assertEquals(405, $response->getStatusCode());
     }
 
@@ -186,7 +186,7 @@ class ExceptionHandlerUnitTest extends TestCase
         $response = $this->handler->render($request, $exception);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertEquals('{"message":"","code":""}', $response->getContent());
+        $this->assertEquals('{"trace":"TRACE_NOT_IMPLEMENTED","message":"","code":""}', $response->getContent());
         $this->assertEquals(400, $response->getStatusCode());
     }
 
@@ -202,7 +202,7 @@ class ExceptionHandlerUnitTest extends TestCase
 
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals(
-            '{"code":"B1-004","message":"Tivemos um erro na aplica\u00e7\u00e3o!"}',
+            '{"trace":"TRACE_NOT_IMPLEMENTED","code":"B1-004","message":"Tivemos um erro na aplica\u00e7\u00e3o!"}',
             $response->getContent()
         );
         $this->assertEquals(500, $response->getStatusCode());
@@ -219,7 +219,7 @@ class ExceptionHandlerUnitTest extends TestCase
         $response = $this->handler->render($request, $exception);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertEquals('{"code":"SEC01","message":"Tivemos um erro de seguran\u00e7a na aplica\u00e7\u00e3o!","reason":"It\'s not safe"}', $response->getContent());
+        $this->assertEquals('{"trace":"TRACE_NOT_IMPLEMENTED","code":"SEC01","message":"Tivemos um erro de seguran\u00e7a na aplica\u00e7\u00e3o!","reason":"It\'s not safe"}', $response->getContent());
         $this->assertEquals(403, $response->getStatusCode());
     }
 
@@ -239,7 +239,7 @@ class ExceptionHandlerUnitTest extends TestCase
 
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals(
-            '{"code":"XXX001","message":"Service test-1 apresenta problemas!","service":"test-1","reason":"N\u00e3o foi poss\u00edvel fazer requisi\u00e7\u00e3o"}',
+            '{"trace":"TRACE_NOT_IMPLEMENTED","code":"XXX001","message":"Service test-1 apresenta problemas!","service":"test-1","reason":"N\u00e3o foi poss\u00edvel fazer requisi\u00e7\u00e3o"}',
             $response->getContent()
         );
         $this->assertEquals(503, $response->getStatusCode());
@@ -252,6 +252,7 @@ class ExceptionHandlerUnitTest extends TestCase
     {
         $exception = new ApiException('', '');
 
+        /** @noinspection PhpVoidFunctionResultUsedInspection */
         $response = $this->handler->report($exception);
 
         $this->assertNull($response);
