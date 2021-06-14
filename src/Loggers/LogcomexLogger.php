@@ -7,6 +7,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\Log;
 use Logcomex\PhpUtils\Helpers\ExceptionHelper;
 use Logcomex\PhpUtils\Singletons\TracerSingleton;
+use TypeError;
 
 /**
  * Class LogcomexLogger
@@ -58,9 +59,9 @@ class LogcomexLogger
     /**
      * @param string $token
      * @param array $context
-     * @param Exception|null $exception
+     * @param TypeError|null $exception
      */
-    public function error(string $token, $context = [], Exception $exception = null): void
+    public function error(string $token, $context = [], TypeError $exception = null): void
     {
         $traceId = TracerSingleton::getTraceValue();
         $context = self::treatContext($context, $exception);
@@ -82,9 +83,9 @@ class LogcomexLogger
     /**
      * @param string $token
      * @param array $context
-     * @param Exception|null $exception
+     * @param TypeError|null $exception
      */
-    public function severe(string $token, $context = [], Exception $exception = null): void
+    public function severe(string $token, $context = [], TypeError $exception = null): void
     {
         $traceId = TracerSingleton::getTraceValue();
         $context = self::treatContext($context, $exception);
