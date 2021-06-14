@@ -7,7 +7,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\Log;
 use Logcomex\PhpUtils\Helpers\ExceptionHelper;
 use Logcomex\PhpUtils\Singletons\TracerSingleton;
-use TypeError;
+use Throwable;
 
 /**
  * Class LogcomexLogger
@@ -25,7 +25,7 @@ class LogcomexLogger
      * @param Exception|null $exception
      * @return array
      */
-    public static function treatContext($context = [], Exception $exception = null): array
+    public static function treatContext($context = [], Throwable $exception = null): array
     {
         $context = $context instanceof Arrayable
             ? $context->toArray()
@@ -59,9 +59,9 @@ class LogcomexLogger
     /**
      * @param string $token
      * @param array $context
-     * @param TypeError|null $exception
+     * @param Throwable|null $exception
      */
-    public function error(string $token, $context = [], TypeError $exception = null): void
+    public function error(string $token, $context = [], Throwable $exception = null): void
     {
         $traceId = TracerSingleton::getTraceValue();
         $context = self::treatContext($context, $exception);
@@ -73,7 +73,7 @@ class LogcomexLogger
      * @param array $context
      * @param Exception|null $exception
      */
-    public function debug(string $message, $context = [], Exception $exception = null): void
+    public function debug(string $message, $context = [], Throwable $exception = null): void
     {
         $traceId = TracerSingleton::getTraceValue();
         $context = self::treatContext($context, $exception);
@@ -83,9 +83,9 @@ class LogcomexLogger
     /**
      * @param string $token
      * @param array $context
-     * @param TypeError|null $exception
+     * @param Throwable|null $exception
      */
-    public function severe(string $token, $context = [], TypeError $exception = null): void
+    public function severe(string $token, $context = [], Throwable $exception = null): void
     {
         $traceId = TracerSingleton::getTraceValue();
         $context = self::treatContext($context, $exception);
