@@ -2,7 +2,6 @@
 
 namespace Logcomex\PhpUtils\Loggers;
 
-use Exception;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\Log;
 use Logcomex\PhpUtils\Helpers\ExceptionHelper;
@@ -22,7 +21,7 @@ class LogcomexLogger
 
     /**
      * @param array $context
-     * @param Exception|null $exception
+     * @param Throwable|null $exception
      * @return array
      */
     public static function treatContext($context = [], Throwable $exception = null): array
@@ -71,7 +70,7 @@ class LogcomexLogger
     /**
      * @param string $message
      * @param array $context
-     * @param Exception|null $exception
+     * @param Throwable|null $exception
      */
     public function debug(string $message, $context = [], Throwable $exception = null): void
     {
