@@ -9,7 +9,7 @@ use Logcomex\PhpUtils\Functionalities\ValuesExporterToArrayFunctionality;
 use Logcomex\PhpUtils\Functionalities\ValuesExporterToSnakeFunctionality;
 
 /**
- * Class ValuesExporterToArrayFunctionalityUnitTest
+ * Class ValuesExporterToSnakeCaseFunctionalityUnitTest
  */
 class ValuesExporterToSnakeCaseFunctionalityUnitTest extends TestCase
 {
