@@ -6,12 +6,12 @@ use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Functionalities\PropertiesAttacherFunctionality;
 use Logcomex\PhpUtils\Functionalities\PropertiesExporterFunctionality;
 use Logcomex\PhpUtils\Functionalities\ValuesExporterToArrayFunctionality;
-use Logcomex\PhpUtils\Functionalities\ValuesExporterToSnakeCaseToArrayFunctionality;
+use Logcomex\PhpUtils\Functionalities\ValuesExporterToSnakeFunctionality;
 
 /**
  * Class ValuesExporterToArrayFunctionalityUnitTest
  */
-class ValuesExporterToSnakeCaseToArrayFunctionalityUnitTest extends TestCase
+class ValuesExporterToSnakeCaseFunctionalityUnitTest extends TestCase
 {
     /**
      * @return void
@@ -36,22 +36,6 @@ class ValuesExporterToSnakeCaseToArrayFunctionalityUnitTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testToArrayWithoutArrayableContractFailureFlow(): void
-    {
-        $expectedException = new BadImplementationException(
-            ErrorEnum::PHU002,
-            'You must implement the Arrayable contract to use this functionality.'
-        );
-        $this->expectCustomException($expectedException, function () {
-            $fakeClass = new FakeClassWithoutArrayableType();
-            $fakeClass->toSnakeCase();
-        });
-    }
-
-    /**
-     * @return void
-     * @throws Exception
-     */
     public function testToArrayWithoutPropertiesFunctionalityFailureFlow(): void
     {
         $expectedException = new BadImplementationException(
@@ -70,7 +54,7 @@ class FakeClassWithArrayableContractAndPropertiesFunctionalitySnakeCase implemen
     use PropertiesAttacherFunctionality,
         PropertiesExporterFunctionality,
         ValuesExporterToArrayFunctionality,
-        ValuesExporterToSnakeCaseToArrayFunctionality;
+        ValuesExporterToSnakeFunctionality;
     /**
      * @var
      */
@@ -85,13 +69,6 @@ class FakeClassWithArrayableContractAndPropertiesFunctionalitySnakeCase implemen
     private $myPrivateProperty  = 'test';
 }
 
-/**
- * Class FakeClassWithoutArrayableContract
- */
-class FakeClassWithoutArrayableType
-{
-    use ValuesExporterToSnakeCaseToArrayFunctionality;
-}
 
 /**
  * Class FakeClassWithArrayableContractButNotPropertiesFunctionality
@@ -99,7 +76,7 @@ class FakeClassWithoutArrayableType
 class FakeClassWithArrayableContractButNotProperties implements Arrayable
 {
     use ValuesExporterToArrayFunctionality;
-    use ValuesExporterToSnakeCaseToArrayFunctionality;
+    use ValuesExporterToSnakeFunctionality;
     /**
      * @var
      */

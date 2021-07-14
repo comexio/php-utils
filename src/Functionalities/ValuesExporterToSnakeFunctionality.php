@@ -2,7 +2,6 @@
 
 namespace Logcomex\PhpUtils\Functionalities;
 
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Str;
 use Logcomex\PhpUtils\Enumerators\ErrorEnum;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
@@ -19,13 +18,6 @@ trait ValuesExporterToSnakeFunctionality
      */
     public function toSnakeCase(): array
     {
-        if (!($this instanceof Arrayable)) {
-            throw new BadImplementationException(
-                ErrorEnum::PHU002,
-                'You must implement the Arrayable contract to use this functionality.'
-            );
-        }
-
         if (!method_exists($this, 'properties')) {
             throw new BadImplementationException(
                 ErrorEnum::PHU001,
