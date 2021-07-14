@@ -17,7 +17,7 @@ class ValuesExporterToSnakeCaseToArrayFunctionalityUnitTest extends TestCase
      * @return void
      * @throws BadImplementationException
      */
-    public function testToSnakeCase_SuccessFlow(): void
+    public function testToSnakeCaseSuccessFlow(): void
     {
         $expectedResponse = [
             'my_public_property' => 'test',
