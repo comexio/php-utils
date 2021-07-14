@@ -21,8 +21,8 @@ trait ValuesExporterToSnakeCaseToArrayFunctionality
     {
         if (!($this instanceof Arrayable)) {
             throw new BadImplementationException(
-                ErrorEnum::PHU006,
-                'You must implement the Jsonable contract to use this functionality.'
+                ErrorEnum::PHU002,
+                'You must implement the Arrayable contract to use this functionality.'
             );
         }
 
