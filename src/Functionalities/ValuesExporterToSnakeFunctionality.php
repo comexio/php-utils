@@ -7,7 +7,7 @@ use Logcomex\PhpUtils\Enumerators\ErrorEnum;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 
 /**
- * Trait ValuesExporterToJsonFunctionality
+ * Trait ValuesExporterToSnakeFunctionality
  * @package Logcomex\PhpUtils\Functionalities
  */
 trait ValuesExporterToSnakeFunctionality
