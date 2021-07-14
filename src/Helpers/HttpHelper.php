@@ -39,6 +39,12 @@ class HttpHelper
      * @var bool
      */
     private static $mustReturnError = false;
+
+    /**
+     * @var int
+     */
+    private static $expectedHttpErrorCode = 400;
+
     /**
      * @var array
      */
@@ -117,6 +123,7 @@ class HttpHelper
 
                 $handlerStack = HandlerStack::create($mock);
                 $clientMock = new Client(array_merge(['handler' => $handlerStack], $this->clientConfig));
+                $clientMock = new Client(['handler' => $handlerStack]);
 
                 return $clientMock->request('GET', '/');
             } finally {
@@ -125,6 +132,9 @@ class HttpHelper
         }
 
         return $this->client->{$method}(...$args);
+        $client = new Client();
+
+        return $client->{$method}(...$args);
     }
 
     /**

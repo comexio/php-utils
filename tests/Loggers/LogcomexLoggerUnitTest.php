@@ -141,6 +141,9 @@ class LogcomexLoggerUnitTest extends TestCase
         ], array_keys($response));
         array_walk_recursive($response, function ($value) {
             $this->assertNotRegExp('/\n/', $value);
+
+            $this->assertDoesNotMatchRegularExpression('/\n/', $value);
+
             $this->assertIsNotObject($value);
         });
     }

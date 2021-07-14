@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Response as IlluminateResponse;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Logcomex\PhpUtils\Middlewares\CorsMiddleware;
 use Illuminate\Http\Response as IlluminateResponse;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
@@ -161,6 +163,7 @@ class CorsMiddlewareUnitTest extends TestCase
     }
 
     public function testShouldAssertIlluminateResponse(): void
+    public function testShouldAssertIlluminateResponse (): void
     {
         config([
             'cors.access-control-allow-origin' => 'http://myrandomdomain',
@@ -182,7 +185,7 @@ class CorsMiddlewareUnitTest extends TestCase
         );
     }
 
-    public function testShouldAssertSymfonyResponse(): void
+    public function testShouldAssertSymfonyResponse (): void
     {
         config([
             'cors.access-control-allow-origin' => 'http://myrandomdomain',
