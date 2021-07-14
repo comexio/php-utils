@@ -11,7 +11,7 @@ use Logcomex\PhpUtils\Exceptions\BadImplementationException;
  * Trait ValuesExporterToJsonFunctionality
  * @package Logcomex\PhpUtils\Functionalities
  */
-trait ValuesExporterToSnakeCaseToArrayFunctionality
+trait ValuesExporterToSnakeFunctionality
 {
     /**
      * @return array
