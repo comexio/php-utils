@@ -36,7 +36,7 @@ class ValuesExporterToSnakeCaseToArrayFunctionalityUnitTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testToArray_WithoutArrayableContract_FailureFlow(): void
+    public function testToArrayWithoutArrayableContractFailureFlow(): void
     {
         $expectedException = new BadImplementationException(
             ErrorEnum::PHU002,
