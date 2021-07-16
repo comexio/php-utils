@@ -2,11 +2,11 @@
 
 namespace Logcomex\PhpUtils\Loggers;
 
-use Exception;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\Log;
 use Logcomex\PhpUtils\Helpers\ExceptionHelper;
 use Logcomex\PhpUtils\Singletons\TracerSingleton;
+use Throwable;
 
 /**
  * Class LogcomexLogger
@@ -21,10 +21,10 @@ class LogcomexLogger
 
     /**
      * @param array $context
-     * @param Exception|null $exception
+     * @param Throwable|null $exception
      * @return array
      */
-    public static function treatContext($context = [], Exception $exception = null): array
+    public static function treatContext($context = [], Throwable $exception = null): array
     {
         $context = $context instanceof Arrayable
             ? $context->toArray()
@@ -58,9 +58,9 @@ class LogcomexLogger
     /**
      * @param string $token
      * @param array $context
-     * @param Exception|null $exception
+     * @param Throwable|null $exception
      */
-    public function error(string $token, $context = [], Exception $exception = null): void
+    public function error(string $token, $context = [], Throwable $exception = null): void
     {
         $traceId = TracerSingleton::getTraceValue();
         $context = self::treatContext($context, $exception);
@@ -70,9 +70,9 @@ class LogcomexLogger
     /**
      * @param string $message
      * @param array $context
-     * @param Exception|null $exception
+     * @param Throwable|null $exception
      */
-    public function debug(string $message, $context = [], Exception $exception = null): void
+    public function debug(string $message, $context = [], Throwable $exception = null): void
     {
         $traceId = TracerSingleton::getTraceValue();
         $context = self::treatContext($context, $exception);
@@ -82,9 +82,9 @@ class LogcomexLogger
     /**
      * @param string $token
      * @param array $context
-     * @param Exception|null $exception
+     * @param Throwable|null $exception
      */
-    public function severe(string $token, $context = [], Exception $exception = null): void
+    public function severe(string $token, $context = [], Throwable $exception = null): void
     {
         $traceId = TracerSingleton::getTraceValue();
         $context = self::treatContext($context, $exception);
