@@ -390,6 +390,7 @@ class HttpHelperUnitTest extends TestCase
 
         $this->assertLogContent(LogEnum::REQUEST_HTTP_OUT);
         $this->assertLogContent('http_url_request_out');
+        $this->assertLogContent('base_url');
         $this->assertLogContent('payload');
     }
 
