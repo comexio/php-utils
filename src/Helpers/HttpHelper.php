@@ -81,7 +81,7 @@ class HttpHelper
     {
         $url = parse_url($args[0]);
         $urlHost = $url['host'] ?? '';
-        $urlPath =  $url['path'] ?? '';
+        $urlPath = $url['path'] ?? '';
 
         if (!empty($tracerValue = TracerSingleton::getTraceValue())) {
             $args = self::propagateTracerValue($tracerValue, $args);
