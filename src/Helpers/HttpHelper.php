@@ -79,7 +79,9 @@ class HttpHelper
      */
     public function __call($method, $args)
     {
-        $urlPath = parse_url($args[0] ?? '')['path'];
+        $url = parse_url($args[0]);
+        $urlHost = $url['host'] ?? '';
+        $urlPath = $url['path'] ?? '';
 
         if (!empty($tracerValue = TracerSingleton::getTraceValue())) {
             $args = self::propagateTracerValue($tracerValue, $args);
@@ -87,7 +89,11 @@ class HttpHelper
 
         Logger::info(
             LogEnum::REQUEST_HTTP_OUT,
-            ['http_url_request_out' => $urlPath, 'payload' => $args,]
+            [
+                'base_url' => $urlHost,
+                'http_url_request_out' => $urlPath,
+                'payload' => $args,
+            ]
         );
 
         // Tratativa criada pra endpoint mockados,
