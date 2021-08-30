@@ -22,7 +22,6 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
-use Throwable;
 
 /**
  * Class ExceptionHandler
@@ -66,12 +65,12 @@ class ExceptionHandler extends Handler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param Exception $e
+     * @param Exception $exception
      * @return void
      */
-    public function report(Throwable $e): void
+    public function report(Exception $exception): void
     {
-        $treatedException = self::exportExceptionToArray($e);
+        $treatedException = self::exportExceptionToArray($exception);
         $traceId = TracerSingleton::getTraceValue();
 
         Log::error("[[REQUEST_ERROR]] | {$traceId} |", $treatedException);
@@ -81,79 +80,79 @@ class ExceptionHandler extends Handler
      * Render an exception into an HTTP response.
      *
      * @param Request $request
-     * @param Exception $e
+     * @param Exception $exception
      * @return \Illuminate\Http\Response|JsonResponse
      */
-    public function render($request, Throwable $e): JsonResponse
+    public function render($request, Exception $exception): JsonResponse
     {
         switch (true) {
-            case $e instanceof AuthenticationException:
+            case $exception instanceof AuthenticationException:
                 return response()
                     ->json([
                         'trace' => TracerSingleton::getTraceValue(),
                         'message' => 'Não autenticado',
                         'error' => 'Unauthorized'
                     ], Response::HTTP_UNAUTHORIZED);
-            case $e instanceof QueryException:
+            case $exception instanceof QueryException:
                 return response()
                     ->json([
                         'trace' => TracerSingleton::getTraceValue(),
                         'message' => 'Tivemos um problema com nosso banco de dados',
                         'error' => 'Bad Gateway'
                     ], Response::HTTP_BAD_GATEWAY);
-            case $e instanceof NotFoundHttpException:
+            case $exception instanceof NotFoundHttpException:
                 return response()
                     ->json([
                         'trace' => TracerSingleton::getTraceValue(),
                         'message' => 'A página solicitada não pôde ser encontrada',
                         'error' => 'Page not found'
                     ], Response::HTTP_NOT_FOUND);
-            case $e instanceof ValidationException:
+            case $exception instanceof ValidationException:
                 return response()
                     ->json([
                         'trace' => TracerSingleton::getTraceValue(),
                         'message' => __('common.errors.data_invalid'),
-                        'error' => $e->validator->errors()
+                        'error' => $exception->validator->errors()
                     ], Response::HTTP_NOT_ACCEPTABLE);
-            case $e instanceof MethodNotAllowedHttpException:
+            case $exception instanceof MethodNotAllowedHttpException:
                 return response()
                     ->json([
                         'trace' => TracerSingleton::getTraceValue(),
                         'message' => 'O método para essa requisição está incorreto.',
                         'error' => 'Method Not Allowed'
                     ], Response::HTTP_METHOD_NOT_ALLOWED);
-            case $e instanceof ApiException:
+            case $exception instanceof ApiException:
                 return response()
                     ->json([
                         'trace' => TracerSingleton::getTraceValue(),
-                        'message' => $e->getMessage(),
-                        'code' => $e->getToken()
-                    ], $e->getHttpCode());
-            case $e instanceof BadImplementationException:
+                        'message' => $exception->getMessage(),
+                        'code' => $exception->getToken()
+                    ], $exception->getHttpCode());
+            case $exception instanceof BadImplementationException:
                 return response()
                     ->json([
                         'trace' => TracerSingleton::getTraceValue(),
-                        'code' => $e->getToken(),
+                        'code' => $exception->getToken(),
                         'message' => 'Tivemos um erro na aplicação!'
-                    ], $e->getHttpCode());
-            case $e instanceof SecurityException:
+                    ], $exception->getHttpCode());
+            case $exception instanceof SecurityException:
                 return response()
                     ->json([
                         'trace' => TracerSingleton::getTraceValue(),
-                        'code' => $e->getToken(),
+                        'code' => $exception->getToken(),
                         'message' => 'Tivemos um erro de segurança na aplicação!',
-                        'reason' => $e->getMessage(),
-                    ], $e->getHttpCode());
-            case $e instanceof UnavailableServiceException:
+                        'reason' => $exception->getMessage(),
+                    ], $exception->getHttpCode());
+            case $exception instanceof UnavailableServiceException:
                 return response()
                     ->json([
                         'trace' => TracerSingleton::getTraceValue(),
-                        'code' => $e->getToken(),
-                        'message' => "Service {$e->getService()} apresenta problemas!",
-                        'service' => $e->getService(),
-                        'reason' => $e->getMessage(),
-                    ], $e->getHttpCode());
-            case $e instanceof TooManyRequestsHttpException:
+                        'code' => $exception->getToken(),
+                        'message' => "Service {$exception->getService()} apresenta problemas!",
+                        'service' => $exception->getService(),
+                        'reason' => $exception->getMessage(),
+                    ], $exception->getHttpCode());
+            case $exception instanceof TooManyRequestsHttpException:
                 return response()
                     ->json([
                         'trace' => TracerSingleton::getTraceValue(),
