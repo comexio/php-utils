@@ -22,6 +22,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
+use Throwable;
 
 /**
  * Class ExceptionHandler
@@ -42,21 +43,21 @@ class ExceptionHandler extends Handler
     ];
 
     /**
-     * @param Exception $exception
+     * @param Throwable $throwable
      * @return array
      */
-    public static function exportExceptionToArray(Exception $exception): array
+    public static function exportExceptionToArray(Throwable $throwable): array
     {
-        if (method_exists($exception, 'toArray')) {
-            return $exception->toArray();
+        if (method_exists($throwable, 'toArray')) {
+            return $throwable->toArray();
         }
 
         return [
-            'exception-class' => class_basename($exception),
-            'message' => $exception->getMessage(),
-            'file' => $exception->getFile(),
-            'line' => $exception->getLine(),
-            'code' => $exception->getCode(),
+            'exception-class' => class_basename($throwable),
+            'message' => $throwable->getMessage(),
+            'file' => $throwable->getFile(),
+            'line' => $throwable->getLine(),
+            'code' => $throwable->getCode(),
         ];
     }
 
