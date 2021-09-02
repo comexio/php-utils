@@ -46,7 +46,7 @@ class ExceptionHandler extends Handler
      * @param Throwable $throwable
      * @return array
      */
-    public static function exportThrowableToArray(Throwable $throwable): array
+    public static function exportExceptionToArray(Throwable $throwable): array
     {
         if (method_exists($throwable, 'toArray')) {
             return $throwable->toArray();
@@ -71,7 +71,7 @@ class ExceptionHandler extends Handler
      */
     public function report(Exception $exception): void
     {
-        $treatedException = self::exportThrowableToArray($exception);
+        $treatedException = self::exportExceptionToArray($exception);
         $traceId = TracerSingleton::getTraceValue();
 
         Log::error("[[REQUEST_ERROR]] | {$traceId} |", $treatedException);
