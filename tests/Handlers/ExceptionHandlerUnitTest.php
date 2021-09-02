@@ -44,7 +44,7 @@ class ExceptionHandlerUnitTest extends TestCase
     {
         $exception = new ApiException('T01', 'Teste', 404);
 
-        $response = $this->handler::exportThrowableToArray($exception);
+        $response = $this->handler::exportExceptionToArray($exception);
 
         $this->assertIsArray($response);
     }
@@ -56,7 +56,7 @@ class ExceptionHandlerUnitTest extends TestCase
     {
         $exception = new Exception('Teste', 100);
 
-        $exceptionArray = $this->handler::exportThrowableToArray($exception);
+        $exceptionArray = $this->handler::exportExceptionToArray($exception);
         $this->assertIsArray($exceptionArray);
         $this->assertEquals('Exception', $exceptionArray['exception-class']);
         $this->assertEquals('Teste', $exceptionArray['message']);
