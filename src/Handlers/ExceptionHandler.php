@@ -66,12 +66,12 @@ class ExceptionHandler extends Handler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param Throwable $throwable
+     * @param Exception $exception
      * @return void
      */
-    public function report(Throwable $throwable): void
+    public function report(Exception $exception): void
     {
-        $treatedException = self::exportThrowableToArray($throwable);
+        $treatedException = self::exportThrowableToArray($exception);
         $traceId = TracerSingleton::getTraceValue();
 
         Log::error("[[REQUEST_ERROR]] | {$traceId} |", $treatedException);
