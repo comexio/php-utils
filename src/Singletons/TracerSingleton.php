@@ -8,6 +8,10 @@ namespace Logcomex\PhpUtils\Singletons;
  */
 class TracerSingleton
 {
+    /** @var string */
+    public const TRACER_NOT_IMPLEMENTED = 'TRACE_NOT_IMPLEMENTED';
+
+    /** @var string */
     private static $traceValue = '';
 
     /**
@@ -16,7 +20,7 @@ class TracerSingleton
     public static function getTraceValue(): string
     {
         if (empty(self::$traceValue)) {
-            return 'TRACE_NOT_IMPLEMENTED';
+            return self::TRACER_NOT_IMPLEMENTED;
         }
 
         return self::$traceValue;
