@@ -397,6 +397,29 @@ class HttpHelperUnitTest extends TestCase
     /**
      * @return void
      */
+    public function testIfRequestLogSaveRequestTime(): void
+    {
+        $httpHelper = new HttpHelper();
+        $httpHelper->post('api/mocked');
+
+        $this->assertLogContent(LogEnum::REQUEST_HTTP_OUT);
+        $this->assertLogContent('request_time');
+    }
+
+    public function testRequestNotMockedSaveRequestTime(): void
+    {
+        config(['app.mode' => 'prod',]);
+        $httpHelper = new HttpHelper();
+
+        // If an error occurs, it means that the guzzle is not mocking
+        $this->expectException(Exception::class);
+        $httpHelper->post('api/not/mocked');
+        $this->assertLogContent('request_time');
+    }
+
+    /**
+     * @return void
+     */
     public function testClientInstance(): void
     {
         config([
