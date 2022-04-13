@@ -394,6 +394,17 @@ class HttpHelperUnitTest extends TestCase
         $this->assertLogContent('payload');
     }
 
+    public function testRequestNotMockedSaveRequestTime(): void
+    {
+        config(['app.mode' => 'prod',]);
+        $httpHelper = new HttpHelper();
+
+        // If an error occurs, it means that the guzzle is not mocking
+        $this->expectException(Exception::class);
+        $httpHelper->post('api/not/mocked');
+        $this->assertLogContent('request_time');
+    }
+
     /**
      * @return void
      */
