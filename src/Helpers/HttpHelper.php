@@ -15,6 +15,7 @@ use Logcomex\PhpUtils\Facades\Logger;
 use Logcomex\PhpUtils\Singletons\TracerSingleton;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
+use Throwable;
 
 
 /**
@@ -79,6 +80,7 @@ class HttpHelper
      */
     public function __call($method, $args)
     {
+        $initialTime = round(microtime(true));
         $url = parse_url($args[0]);
         $urlHost = $url['host'] ?? '';
         $urlPath = $url['path'] ?? '';
@@ -86,15 +88,6 @@ class HttpHelper
         if (!empty($tracerValue = TracerSingleton::getTraceValue())) {
             $args = self::propagateTracerValue($tracerValue, $args);
         }
-
-        Logger::info(
-            LogEnum::REQUEST_HTTP_OUT,
-            [
-                'base_url' => $urlHost,
-                'http_url_request_out' => $urlPath,
-                'payload' => $args,
-            ]
-        );
 
         // Tratativa criada pra endpoint mockados,
         // se não estiver registro no contrato de mocks,
@@ -130,7 +123,35 @@ class HttpHelper
             }
         }
 
-        return $this->client->{$method}(...$args);
+        try {
+            $requestResult = $this->client->{$method}(...$args);
+            $finalTime = round(microtime(true));
+
+            Logger::info(
+                LogEnum::REQUEST_HTTP_OUT,
+                [
+                    'base_url' => $urlHost,
+                    'http_url_request_out' => $urlPath,
+                    'payload' => $args,
+                    'request_time' => $finalTime - $initialTime,
+                ]
+            );
+
+            return $requestResult;
+        } catch (Throwable $exception) {
+            $finalTime = round(microtime(true));
+            Logger::info(
+                LogEnum::REQUEST_HTTP_OUT,
+                [
+                    'base_url' => $urlHost,
+                    'http_url_request_out' => $urlPath,
+                    'payload' => $args,
+                    'request_time' => $finalTime - $initialTime,
+                ]
+            );
+
+            throw $exception;
+        }
     }
 
     /**
