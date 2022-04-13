@@ -394,18 +394,6 @@ class HttpHelperUnitTest extends TestCase
         $this->assertLogContent('payload');
     }
 
-    /**
-     * @return void
-     */
-    public function testIfRequestLogSaveRequestTime(): void
-    {
-        $httpHelper = new HttpHelper();
-        $httpHelper->post('api/mocked');
-
-        $this->assertLogContent(LogEnum::REQUEST_HTTP_OUT);
-        $this->assertLogContent('request_time');
-    }
-
     public function testRequestNotMockedSaveRequestTime(): void
     {
         config(['app.mode' => 'prod',]);

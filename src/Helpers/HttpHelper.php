@@ -92,7 +92,6 @@ class HttpHelper
         // se não estiver registro no contrato de mocks,
         // será feita a requisição normalmente.
         if ($this->isTestMode()) {
-            $initialTime = round(microtime(true));
             try {
                 if (!$this->isMockedEndpoint($urlPath)) {
                     throw new BadImplementationException(
@@ -126,7 +125,6 @@ class HttpHelper
                         'base_url' => $urlHost,
                         'http_url_request_out' => $urlPath,
                         'payload' => $args,
-                        'request_time' => $finalTime - $initialTime,
                     ]
                 );
                 self::$expectedHttpErrorCode = 400;
