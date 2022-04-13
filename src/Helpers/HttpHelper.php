@@ -118,7 +118,6 @@ class HttpHelper
 
                 return $clientMock->request('GET', '/');
             } finally {
-                $finalTime = round(microtime(true));
                 Logger::info(
                     LogEnum::REQUEST_HTTP_OUT,
                     [
