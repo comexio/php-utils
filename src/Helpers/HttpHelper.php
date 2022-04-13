@@ -93,6 +93,14 @@ class HttpHelper
         // será feita a requisição normalmente.
         if ($this->isTestMode()) {
             try {
+                Logger::info(
+                    LogEnum::REQUEST_HTTP_OUT,
+                    [
+                        'base_url' => $urlHost,
+                        'http_url_request_out' => $urlPath,
+                        'payload' => $args,
+                    ]
+                );
                 if (!$this->isMockedEndpoint($urlPath)) {
                     throw new BadImplementationException(
                         ErrorEnum::PHU003,
@@ -124,21 +132,8 @@ class HttpHelper
 
         $initialTime = round(microtime(true));
         try {
-            $requestResult = $this->client->{$method}(...$args);
-            $finalTime = round(microtime(true));
-
-            Logger::info(
-                LogEnum::REQUEST_HTTP_OUT,
-                [
-                    'base_url' => $urlHost,
-                    'http_url_request_out' => $urlPath,
-                    'payload' => $args,
-                    'request_time' => $finalTime - $initialTime,
-                ]
-            );
-
-            return $requestResult;
-        } catch (Throwable $exception) {
+            return $this->client->{$method}(...$args);
+        } finally {
             $finalTime = round(microtime(true));
             Logger::info(
                 LogEnum::REQUEST_HTTP_OUT,
@@ -149,8 +144,6 @@ class HttpHelper
                     'request_time' => $finalTime - $initialTime,
                 ]
             );
-
-            throw $exception;
         }
     }
 
