@@ -80,7 +80,6 @@ class HttpHelper
      */
     public function __call($method, $args)
     {
-        $initialTime = round(microtime(true));
         $url = parse_url($args[0]);
         $urlHost = $url['host'] ?? '';
         $urlPath = $url['path'] ?? '';
@@ -123,6 +122,7 @@ class HttpHelper
             }
         }
 
+        $initialTime = round(microtime(true));
         try {
             $requestResult = $this->client->{$method}(...$args);
             $finalTime = round(microtime(true));
