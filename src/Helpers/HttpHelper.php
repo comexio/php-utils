@@ -130,18 +130,18 @@ class HttpHelper
             }
         }
 
-        $initialTime = round(microtime(true));
+        $initialTime = round(microtime(true) * 1000);
         try {
             return $this->client->{$method}(...$args);
         } finally {
-            $finalTime = round(microtime(true));
+            $finalTime = round(microtime(true) * 1000);
             Logger::info(
                 LogEnum::REQUEST_HTTP_OUT,
                 [
                     'base_url' => $urlHost,
                     'http_url_request_out' => $urlPath,
                     'payload' => $args,
-                    'request_time' => $finalTime - $initialTime,
+                    'request_time' => ($finalTime - $initialTime / 1000),
                 ]
             );
         }
