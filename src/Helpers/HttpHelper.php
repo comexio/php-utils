@@ -15,7 +15,6 @@ use Logcomex\PhpUtils\Facades\Logger;
 use Logcomex\PhpUtils\Singletons\TracerSingleton;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
-use Throwable;
 
 
 /**
@@ -131,7 +130,7 @@ class HttpHelper
                     'base_url' => $urlHost,
                     'http_url_request_out' => $urlPath,
                     'payload' => $args,
-                    'request_time' => ($finalTime - $initialTime / 1000),
+                    'request_time' => ($finalTime - $initialTime) / 1000,
                 ]
             );
         }

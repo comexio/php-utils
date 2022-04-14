@@ -1,5 +1,7 @@
 <?php
 
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RequestOptions;
 use Logcomex\PhpUtils\Contracts\MockContract;
@@ -390,6 +392,54 @@ class HttpHelperUnitTest extends TestCase
         $this->assertLogContent('http_url_request_out');
         $this->assertLogContent('base_url');
         $this->assertLogContent('payload');
+    }
+
+    public function testRequestNotMockedSaveRequestTime(): void
+    {
+        config(['app.mode' => 'prod',]);
+        $httpHelper = new HttpHelper();
+
+        // If an error occurs, it means that the guzzle is not mocking
+        $this->expectException(Exception::class);
+        $httpHelper->post('api/not/mocked');
+        $this->assertLogContent('request_time');
+    }
+
+    public function testRequestTimeSaveBoolean(): void
+    {
+        config(['app.mode' => 'prod',]);
+        $httpHelper = new HttpHelper();
+        try {
+            $httpHelper->post('api/not/mocked');
+        } catch (Exception $exception) {
+            // catch para não ser lançado uma excessão.
+            // se colocar um expectException ele não valida os testes feitos a baixo
+        }
+        $log = $this->getLastLogJson();
+
+        $this->assertIsFloat($log['request_time']);
+        $this->assertEquals(5, strlen((string) $log['request_time']));
+    }
+
+    /**
+     * @return void
+     */
+    public function testClientInstance(): void
+    {
+        config([
+            'app.mode' => 'mock',
+            'mockedEndpoints.api/mocked' => ApiTestMock::class,
+        ]);
+
+        $mock = new MockHandler([
+            new Response(200, ['Set-Cookie' => 'foo=bar']),
+            new Response(200, [])
+        ]);
+        $handler = HandlerStack::create($mock);
+        $client = new HttpHelper(['handler' => $handler, 'cookies' => true]);
+        $response1 = $client->post('api/mocked');
+
+        self::assertEquals('foo=bar', $response1->getHeaders()['Set-Cookie'][0]);
     }
 }
 
