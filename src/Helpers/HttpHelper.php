@@ -15,6 +15,7 @@ use Logcomex\PhpUtils\Facades\Logger;
 use Logcomex\PhpUtils\Singletons\TracerSingleton;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
+use Throwable;
 
 
 /**
@@ -75,15 +76,6 @@ class HttpHelper
             $args = self::propagateTracerValue($tracerValue, $args);
         }
 
-        Logger::info(
-            LogEnum::REQUEST_HTTP_OUT,
-            [
-                'base_url' => $urlHost,
-                'http_url_request_out' => $urlPath,
-                'payload' => $args,
-            ]
-        );
-
         // Tratativa criada pra endpoint mockados,
         // se não estiver registro no contrato de mocks,
         // será feita a requisição normalmente.
@@ -114,13 +106,35 @@ class HttpHelper
 
                 return $clientMock->request('GET', '/');
             } finally {
+                Logger::info(
+                    LogEnum::REQUEST_HTTP_OUT,
+                    [
+                        'base_url' => $urlHost,
+                        'http_url_request_out' => $urlPath,
+                        'payload' => $args,
+                    ]
+                );
                 self::$expectedHttpErrorCode = 400;
             }
         }
 
-        $client = new Client();
+        $initialTime = round(microtime(true) * 1000);
+        try {
+            $client = new Client();
 
-        return $client->{$method}(...$args);
+            return $client->{$method}(...$args);
+        } finally {
+            $finalTime = round(microtime(true) * 1000);
+            Logger::info(
+                LogEnum::REQUEST_HTTP_OUT,
+                [
+                    'base_url' => $urlHost,
+                    'http_url_request_out' => $urlPath,
+                    'payload' => $args,
+                    'request_time' => ($finalTime - $initialTime / 1000),
+                ]
+            );
+        }
     }
 
     /**
