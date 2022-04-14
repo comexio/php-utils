@@ -141,7 +141,7 @@ class HttpHelper
                     'base_url' => $urlHost,
                     'http_url_request_out' => $urlPath,
                     'payload' => $args,
-                    'request_time' => ($finalTime - $initialTime / 1000),
+                    'request_time' => ($finalTime - $initialTime) / 1000,
                 ]
             );
         }

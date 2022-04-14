@@ -139,6 +139,14 @@ abstract class TestCase extends BaseTestCase
         $logContent = file_get_contents(storage_path('logs/lumen.log'));
         $this->assertStringContainsString($expectedLogContent, $logContent);
     }
+
+    protected function getLastLogJson(): array
+    {
+        $logContent = file_get_contents(storage_path('logs/lumen.log'));
+        $explodedLogContent = explode(')', $logContent);
+
+        return json_decode($explodedLogContent[1], true);
+    }
 }
 
 /**
