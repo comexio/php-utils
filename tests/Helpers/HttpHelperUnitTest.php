@@ -405,6 +405,22 @@ class HttpHelperUnitTest extends TestCase
         $this->assertLogContent('request_time');
     }
 
+    public function testRequestTimeSaveBoolean(): void
+    {
+        config(['app.mode' => 'prod',]);
+        $httpHelper = new HttpHelper();
+        try {
+            $httpHelper->post('api/not/mocked');
+        } catch (Exception $exception) {
+            // catch para não ser lançado uma excessão.
+            // se colocar um expectException ele não valida os testes feitos a baixo
+        }
+        $log = $this->getLastLogJson();
+
+        $this->assertIsFloat($log['request_time']);
+        $this->assertEquals(5, strlen((string) $log['request_time']));
+    }
+
     /**
      * @return void
      */
