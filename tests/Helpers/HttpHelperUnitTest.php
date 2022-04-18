@@ -420,27 +420,6 @@ class HttpHelperUnitTest extends TestCase
         $this->assertIsFloat($log['request_time']);
         $this->assertEquals(5, strlen((string) $log['request_time']));
     }
-
-    /**
-     * @return void
-     */
-    public function testClientInstance(): void
-    {
-        config([
-            'app.mode' => 'mock',
-            'mockedEndpoints.api/mocked' => ApiTestMock::class,
-        ]);
-
-        $mock = new MockHandler([
-            new Response(200, ['Set-Cookie' => 'foo=bar']),
-            new Response(200, [])
-        ]);
-        $handler = HandlerStack::create($mock);
-        $client = new HttpHelper(['handler' => $handler, 'cookies' => true]);
-        $response1 = $client->post('api/mocked');
-
-        self::assertEquals('foo=bar', $response1->getHeaders()['Set-Cookie'][0]);
-    }
 }
 
 /**
