@@ -5,6 +5,7 @@ namespace Logcomex\PhpUtils\Handlers;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
@@ -161,6 +162,13 @@ class ExceptionHandler extends Handler
                         'error' => 'Too Many Requests.'
                     ], Response::HTTP_TOO_MANY_REQUESTS);
             default:
+
+                if (method_exists($exception, 'render')) {
+                    return $exception->render($request);
+                } elseif ($exception instanceof Responsable) {
+                    return $exception->toResponse($request);
+                }
+
                 return response()
                     ->json([
                         'trace' => TracerSingleton::getTraceValue(),
