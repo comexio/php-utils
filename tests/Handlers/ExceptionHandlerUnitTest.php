@@ -257,4 +257,19 @@ class ExceptionHandlerUnitTest extends TestCase
 
         $this->assertNull($response);
     }
+
+    public function testShouldBeErrorWhenExceptionDoesntHaveRenderMethod()
+    {
+        $exception = new Exception();
+        $request = new Request();
+
+        $response = $this->handler->render($request, $exception);
+
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals(
+            '{"trace":"TRACE_NOT_IMPLEMENTED","message":"Tivemos um erro inesperado.","error":"Internal server error","request":[]}',
+            $response->getContent()
+        );
+        $this->assertEquals(500, $response->getStatusCode());
+    }
 }
