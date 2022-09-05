@@ -81,7 +81,7 @@ class HttpHelper
     public function __call($method, $args)
     {
         $url = parse_url($args[0]);
-        $urlHost = $url['host'] ?? '';
+        $urlHost = $url['host'] ?? $this->clientConfig['base_uri'] ?? '';
         $urlPath = $url['path'] ?? '';
 
         if (!empty($tracerValue = TracerSingleton::getTraceValue())) {
