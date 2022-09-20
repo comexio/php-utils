@@ -1,9 +1,13 @@
 <?php
 
+namespace Tests\Middlewares;
+
+use Closure;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Logcomex\PhpUtils\Middlewares\AuthenticateMiddleware;
+use Tests\TestCase;
 
 /**
  * Class AuthenticateMiddlewareUnitTest

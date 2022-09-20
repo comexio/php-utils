@@ -1,5 +1,9 @@
 <?php
 
+namespace Tests\Facades;
+
+use Tests\TestCase;
+
 /**
  * Class LogUnitTest
  * @package Tests\Unit\Facades

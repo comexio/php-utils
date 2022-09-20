@@ -1,6 +1,10 @@
 <?php
 
+namespace Tests\Middlewares;
+
+use Exception;
 use Logcomex\PhpUtils\Middlewares\RequestLogMiddleware;
+use Tests\TestCase;
 
 /**
  * Class RequestLogUnitTest
@@ -17,7 +21,7 @@ class RequestLogMiddlewareUnitTest extends TestCase
 
             $this->assertTrue(true, 'Middleware is working!');
         } catch (Exception $exception) {
-            $this->assertTrue(false, 'Middleware is not working!');
+            $this->fail('Middleware is not working!');
         }
     }
 
@@ -38,7 +42,7 @@ class RequestLogMiddlewareUnitTest extends TestCase
 
             $this->assertTrue(true, 'Middleware is working!');
         } catch (Exception $exception) {
-            $this->assertTrue(false, 'Middleware is not working!');
+            $this->fail('Middleware is not working!');
         }
     }
 

@@ -1,8 +1,12 @@
 <?php
 
+namespace Tests\Middlewares;
+
+use Exception;
 use Logcomex\PhpUtils\Middlewares\CorsMiddleware;
 use Illuminate\Http\Response as IlluminateResponse;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Tests\TestCase;
 
 /**
  * Class CorsMiddlewareUnitTest
@@ -80,7 +84,7 @@ class CorsMiddlewareUnitTest extends TestCase
 
                 $this->assertTrue(true, "Middleware is working in '{$httpVerb}' http verb!");
             } catch (Exception $exception) {
-                $this->assertTrue(false, "Middleware is not working in '{$httpVerb}' http verb!");
+                $this->fail("Middleware is not working in '{$httpVerb}' http verb!");
             }
         }
     }

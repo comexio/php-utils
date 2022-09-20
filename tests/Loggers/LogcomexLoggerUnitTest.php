@@ -1,10 +1,14 @@
 <?php
 
+namespace Tests\Loggers;
+
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use Logcomex\PhpUtils\Facades\Logger;
 use Logcomex\PhpUtils\Loggers\LogcomexLogger;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
+use Tests\TestCase;
 
 /**
  * Class LogcomexLoggerUnitTest
@@ -111,7 +115,8 @@ class LogcomexLoggerUnitTest extends TestCase
     {
         $exception = new BadResponseException(
             "Client Error:'POST http://localhost response:[{error: true, message:'Tracking\nalready\nexists\n'}]",
-            new Request('POST', 'http://localhost')
+            new Request('POST', 'http://localhost'),
+            new Response()
         );
         $context = [
             'fieldWithDoubleQuotes' => "Test\n\n",
@@ -140,7 +145,7 @@ class LogcomexLoggerUnitTest extends TestCase
             'code'
         ], array_keys($response));
         array_walk_recursive($response, function ($value) {
-            $this->assertNotRegExp('/\n/', $value);
+            $this->assertDoesNotMatchRegularExpression('/\n/', $value);
             $this->assertIsNotObject($value);
         });
     }

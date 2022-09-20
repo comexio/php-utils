@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Loggers;
+
 use Illuminate\Contracts\Support\Arrayable;
 use Logcomex\PhpUtils\Dto\Dto;
 use Logcomex\PhpUtils\Functionalities\PropertiesExporterFunctionality;
