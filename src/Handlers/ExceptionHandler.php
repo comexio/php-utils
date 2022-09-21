@@ -2,14 +2,12 @@
 
 namespace Logcomex\PhpUtils\Handlers;
 
-use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler;
@@ -81,9 +79,9 @@ class ExceptionHandler extends Handler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param Request $request
-     * @param Exception $e
-     * @return \Illuminate\Http\Response|JsonResponse
+     * @param $request
+     * @param Throwable $e
+     * @return JsonResponse
      */
     public function render($request, Throwable $e): JsonResponse
     {
