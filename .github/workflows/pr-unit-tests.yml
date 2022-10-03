@@ -20,4 +20,4 @@ jobs:
         run: docker exec -it php8 composer install --optimize-autoloader
 
       - name: Iniciando testes..
-        run: ./vendor/bin/phpunit --coverage-clover=coverage.xml
+        run: docker exec -it php8 ./vendor/bin/phpunit --coverage-clover=coverage.xml
