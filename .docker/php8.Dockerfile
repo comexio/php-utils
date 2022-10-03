@@ -1,4 +1,4 @@
-FROM php:8-apache
+FROM php:8.1-apache
 
 RUN apt update && apt install -y libpq-dev libpng-dev libxml2-dev git uuid-runtime libzip-dev libonig-dev
 RUN docker-php-ext-install gd xml zip mbstring sockets

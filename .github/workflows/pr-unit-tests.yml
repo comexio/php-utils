@@ -13,18 +13,11 @@ jobs:
           path: vendor/
           key: ${{ runner.OS }}-composer-${{ hashFiles('**/composer.lock') }}
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 7.2
+      - name: Setup Environment
+        run: docker compose -f .docker/docker-compose.yml up -d
 
       - name: Installing dependencies
-        run: composer install --ignore-platform-reqs --optimize-autoloader
+        run: docker exec -it php8 composer install --optimize-autoloader
 
       - name: Iniciando testes..
         run: ./vendor/bin/phpunit --coverage-clover=coverage.xml
-
-      - name: Connect to CodeCov
-        run: bash ./.scripts/codecov.sh
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
