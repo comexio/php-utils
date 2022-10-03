@@ -17,7 +17,7 @@ jobs:
         run: docker compose -f .docker/docker-compose.yml up -d
 
       - name: Installing dependencies
-        run: docker exec -it php8 composer install --optimize-autoloader
+        run: docker exec php8 composer install --optimize-autoloader
 
-      - name: Iniciando testes..
-        run: docker exec -it php8 ./vendor/bin/phpunit --coverage-clover=coverage.xml
+      - name: Executando testes únitarios
+        run: docker exec php8 ./vendor/bin/phpunit --coverage-clover=coverage.xml
