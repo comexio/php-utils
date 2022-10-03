@@ -1,5 +1,8 @@
 <?php
 
+namespace Tests\Helpers;
+
+use Exception;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
@@ -10,6 +13,7 @@ use Logcomex\PhpUtils\Enumerators\LogEnum;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Helpers\HttpHelper;
 use Logcomex\PhpUtils\Singletons\TracerSingleton;
+use Tests\TestCase;
 
 /**
  * Class HttpHelperUnitTest

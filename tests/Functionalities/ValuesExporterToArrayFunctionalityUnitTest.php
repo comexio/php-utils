@@ -1,11 +1,15 @@
 <?php
 
+namespace Tests\Functionalities;
+
+use Exception;
 use Illuminate\Contracts\Support\Arrayable;
 use Logcomex\PhpUtils\Enumerators\ErrorEnum;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Functionalities\PropertiesAttacherFunctionality;
 use Logcomex\PhpUtils\Functionalities\PropertiesExporterFunctionality;
 use Logcomex\PhpUtils\Functionalities\ValuesExporterToArrayFunctionality;
+use Tests\TestCase;
 
 /**
  * Class ValuesExporterToArrayFunctionalityUnitTest

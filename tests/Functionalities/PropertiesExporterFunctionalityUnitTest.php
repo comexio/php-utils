@@ -1,6 +1,9 @@
 <?php
 
+namespace Tests\Functionalities;
+
 use Logcomex\PhpUtils\Functionalities\PropertiesExporterFunctionality;
+use Tests\TestCase;
 
 /**
  * Class PropertiesExporterFunctionalityUnitTest

@@ -1,9 +1,15 @@
 <?php
 
+namespace Tests;
+
+use Closure;
 use Illuminate\Support\Facades\File;
 use Laravel\Lumen\Application;
 use Laravel\Lumen\Testing\TestCase as BaseTestCase;
 use Logcomex\PhpUtils\Contracts\MockContract;
+use ReflectionClass;
+use ReflectionException;
+use Throwable;
 
 /**
  * Class TestCase
@@ -40,25 +46,25 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * @param Exception $exception
+     * @param Throwable $exception
      * @param string $expectedToken
      */
-    public function expectExceptionToken(Exception $exception, string $expectedToken)
+    public function expectExceptionToken(Throwable $exception, string $expectedToken)
     {
         $this->assertEquals($expectedToken, $exception->getToken(), 'Exception token is not expected.');
     }
 
     /**
-     * @param Exception $expectedException
+     * @param Throwable $expectedException
      * @param Closure $handler
-     * @throws Exception
+     * @throws Throwable
      */
-    public function expectCustomException(Exception $expectedException, Closure $handler): void
+    public function expectCustomException(Throwable $expectedException, Closure $handler): void
     {
         try {
             $this->expectExceptionObject($expectedException);
             $handler();
-        } catch (Exception $exception) {
+        } catch (Throwable $exception) {
             if (method_exists($exception, 'getToken')) {
                 $this->expectExceptionToken($exception, $expectedException->getToken());
             }

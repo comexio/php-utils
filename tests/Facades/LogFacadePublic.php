@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Facades;
+
 use Logcomex\PhpUtils\Facades\Log;
 
 /**

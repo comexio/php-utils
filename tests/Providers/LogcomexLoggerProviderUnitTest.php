@@ -1,7 +1,10 @@
 <?php
 
+namespace Tests\Providers;
+
 use Logcomex\PhpUtils\Loggers\LogcomexLogger;
 use Logcomex\PhpUtils\Providers\LogcomexLoggerProvider;
+use Tests\TestCase;
 
 /**
  * Class LogcomexLoggerProviderUnitTest

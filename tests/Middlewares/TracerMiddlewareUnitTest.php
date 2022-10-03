@@ -1,5 +1,8 @@
 <?php
 
+namespace Tests\Middlewares;
+
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Logcomex\PhpUtils\Enumerators\ErrorEnum;
@@ -7,6 +10,7 @@ use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Helpers\TokenHelper;
 use Logcomex\PhpUtils\Middlewares\TracerMiddleware;
 use Logcomex\PhpUtils\Singletons\TracerSingleton;
+use Tests\TestCase;
 
 /**
  * Class TracerMiddlewareUnitTest

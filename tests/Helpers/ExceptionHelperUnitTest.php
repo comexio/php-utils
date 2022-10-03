@@ -1,8 +1,10 @@
 <?php
 
+namespace Tests\Helpers;
 
 use Logcomex\PhpUtils\Exceptions\ApiException;
 use Logcomex\PhpUtils\Helpers\ExceptionHelper;
+use Tests\TestCase;
 
 /**
  * Class ExceptionHelperUnitTest
@@ -38,7 +40,7 @@ class ExceptionHelperUnitTest extends TestCase
      */
     public function testExportExceptionToArrayWithDefaultException(): void
     {
-        $exception = new Exception('Teste', 100);
+        $exception = new \Exception('Teste', 100);
 
         $exceptionArray = $this->helper::exportExceptionToArray($exception);
         $this->assertIsArray($exceptionArray);

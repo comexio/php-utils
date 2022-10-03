@@ -1,6 +1,9 @@
 <?php
 
+namespace Tests\Singletons;
+
 use Logcomex\PhpUtils\Singletons\TracerSingleton;
+use Tests\TestCase;
 
 /**
  * Class TracerSingletonUnitTest

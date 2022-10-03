@@ -1,7 +1,11 @@
 <?php
 
+namespace Tests\Exceptions;
+
+use Exception;
 use Logcomex\PhpUtils\Exceptions\ApiException;
 use Logcomex\PhpUtils\Exceptions\BaseException;
+use Tests\TestCase;
 
 /**
  * Class ApiExceptionUnitTest

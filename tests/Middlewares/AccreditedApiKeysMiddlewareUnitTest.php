@@ -1,10 +1,14 @@
 <?php
 
+namespace Tests\Middlewares;
+
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Logcomex\PhpUtils\Exceptions\SecurityException;
 use Logcomex\PhpUtils\Middlewares\AccreditedApiKeysMiddleware;
+use Tests\TestCase;
 
 /**
  * Class AccreditedApiKeysMiddlewareUnitTest

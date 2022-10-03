@@ -1,9 +1,12 @@
 <?php
 
+namespace Tests\Functionalities;
+
 use Illuminate\Contracts\Support\Arrayable;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Functionalities\PropertiesAttacherFunctionality;
 use Logcomex\PhpUtils\Functionalities\PropertiesExporterFunctionality;
+use Tests\TestCase;
 
 /**
  * Class PropertiesAttacherFunctionalityUnitTest

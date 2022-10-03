@@ -1,5 +1,8 @@
 <?php
 
+namespace Tests\Handlers;
+
+use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
@@ -13,6 +16,7 @@ use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Illuminate\Support\Facades\Validator;
+use Tests\TestCase;
 
 /**
  * Class ExceptionHandlerUnitTest
@@ -157,7 +161,7 @@ class ExceptionHandlerUnitTest extends TestCase
             return;
         }
 
-        $this->assertTrue(false, 'It was not possible to test this Exception');
+        $this->fail('It was not possible to test this Exception');
     }
 
     /**
