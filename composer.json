@@ -3,7 +3,14 @@
     "description": "PHP Utils for Lumen and Laravel projects",
     "keywords": [],
     "license": "MIT",
-    "type": "project",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Crystopher Glodzienski Cardoso",
+            "email": "crystopher@logcomex.com",
+            "role": "Principal Software Engineer"
+        }
+    ],
     "require": {
         "php": "^7.2",
         "ext-json": "*",
@@ -31,5 +38,6 @@
         "optimize-autoloader": true
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "abandoned": "logcomex/php-utils:ˆ2.0"
 }
