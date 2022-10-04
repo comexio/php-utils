@@ -7,17 +7,21 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - name: Cache Composer Downloads
-        uses: actions/cache@v2
-        with:
-          path: vendor/
-          key: ${{ runner.OS }}-composer-${{ hashFiles('**/composer.lock') }}
 
       - name: Setup Environment
         run: docker compose -f .docker/docker-compose.yml up -d
 
-      - name: Installing dependencies
-        run: docker exec php8 composer install --optimize-autoloader
+      - name: Stack PHP7 | Installing dependencies
+        run: docker exec stackPhp7 composer install --optimize-autoloader
 
-      - name: Executando testes únitarios
-        run: docker exec php8 ./vendor/bin/phpunit --coverage-clover=coverage.xml
+      - name: Stack PHP7 | Executando testes únitarios
+        run: docker exec stackPhp7 ./vendor/bin/phpunit --coverage-clover=coverage.xml
+
+      - name: Removing vendor folder and composer.lock file
+        run: docker exec stackPhp7 rm -rf vendor composer.lock
+
+      - name: Stack PHP8 | Installing dependencies
+        run: docker exec stackPhp8 composer install --optimize-autoloader
+
+      - name: Stack PHP8 | Executando testes únitarios
+        run: docker exec stackPhp8 ./vendor/bin/phpunit --coverage-clover=coverage.xml

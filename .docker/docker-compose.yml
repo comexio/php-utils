@@ -1,12 +1,18 @@
 version: '3'
 services:
 
-  php8:
-    container_name: php8
+  stack_php7:
+    container_name: stackPhp7
+    build:
+      context: .
+      dockerfile: php7.Dockerfile
+    volumes:
+      - "..:/var/www/app"
+
+  stack_php8:
+    container_name: stackPhp8
     build:
       context: .
       dockerfile: php8.Dockerfile
-    ports:
-      - "8001:80"
     volumes:
       - "../:/var/www/app"
