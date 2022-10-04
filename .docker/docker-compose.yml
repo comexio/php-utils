@@ -1,0 +1,12 @@
+version: '3'
+services:
+
+  php8:
+    container_name: php8
+    build:
+      context: .
+      dockerfile: php8.Dockerfile
+    ports:
+      - "8001:80"
+    volumes:
+      - "../:/var/www/app"

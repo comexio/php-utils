@@ -1,8 +1,11 @@
 <?php
 
+namespace Tests\Middlewares;
+
 use Logcomex\PhpUtils\Dto\ResponseTimePayloadDto;
 use Logcomex\PhpUtils\Enumerators\ErrorEnum;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
+use Tests\TestCase;
 
 /**
  * Class ResponseTimeLogMiddlewareUnitTest
@@ -42,7 +45,7 @@ class ResponseTimeLogMiddlewareUnitTest extends TestCase
     {
         $this->get('/response-time-log-middleware');
         $this->assertJsonStringEqualsJsonString(
-            '"Request should spend more than 2 seconds."',
+            '["Request should spend more than 2 seconds."]',
             $this->response->getContent()
         );
     }

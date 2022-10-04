@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Loggers;
+
 use Logcomex\PhpUtils\Dto\Dto;
 
 /**

@@ -1,11 +1,15 @@
 <?php
 
+namespace Tests\Functionalities;
+
+use Exception;
 use Illuminate\Contracts\Support\Jsonable;
 use Logcomex\PhpUtils\Enumerators\ErrorEnum;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Functionalities\PropertiesAttacherFunctionality;
 use Logcomex\PhpUtils\Functionalities\PropertiesExporterFunctionality;
 use Logcomex\PhpUtils\Functionalities\ValuesExporterToJsonFunctionality;
+use Tests\TestCase;
 
 /**
  * Class ValuesExporterToJsonFunctionalityUnitTest

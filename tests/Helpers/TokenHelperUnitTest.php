@@ -1,6 +1,9 @@
 <?php
 
+namespace Tests\Helpers;
+
 use Logcomex\PhpUtils\Helpers\TokenHelper;
+use Tests\TestCase;
 
 /**
  * Class TokenHelperUnitTest

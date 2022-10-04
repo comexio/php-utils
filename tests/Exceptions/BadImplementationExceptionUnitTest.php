@@ -1,8 +1,12 @@
 <?php
 
+namespace Tests\Exceptions;
+
+use Exception;
 use Illuminate\Http\Response;
 use Logcomex\PhpUtils\Exceptions\BadImplementationException;
 use Logcomex\PhpUtils\Exceptions\BaseException;
+use Tests\TestCase;
 
 /**
  * Class BadImplementationExceptionUnitTest

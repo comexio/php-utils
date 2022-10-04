@@ -1,8 +1,11 @@
 <?php
 
+namespace Tests\Middlewares;
+
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Logcomex\PhpUtils\Middlewares\AllowedHostsMiddleware;
+use Tests\TestCase;
 
 /**
  * Class AllowedHostsMiddlewareUnitTest

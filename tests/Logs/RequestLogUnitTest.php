@@ -1,6 +1,9 @@
 <?php
 
+namespace Tests\Logs;
+
 use Logcomex\PhpUtils\Logs\RequestInfoLog;
+use Tests\TestCase;
 
 /**
  * Class RequestLogUnitTest

@@ -1,6 +1,9 @@
 <?php
 
+namespace Tests\Helpers;
+
 use Logcomex\PhpUtils\Helpers\EnumHelper;
+use Tests\TestCase;
 
 /**
  * Class EnumHelperUnitTest

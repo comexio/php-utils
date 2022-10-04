@@ -1,7 +1,11 @@
 <?php
 
+namespace Tests\Exceptions;
+
+use Exception;
 use Logcomex\PhpUtils\Exceptions\BaseException;
 use Logcomex\PhpUtils\Exceptions\UnavailableServiceException;
+use Tests\TestCase;
 
 /**
  * Class UnavailableServiceExceptionUnitTest
