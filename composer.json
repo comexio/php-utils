@@ -3,7 +3,7 @@
     "description": "PHP Utils for Lumen and Laravel projects",
     "keywords": [],
     "license": "MIT",
-    "type": "project",
+    "type": "library",
     "require": {
         "php": "^8.1",
         "ext-json": "*",
