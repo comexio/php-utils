@@ -17,9 +17,6 @@ jobs:
       - name: Stack PHP7 | Executando testes únitarios
         run: docker exec stackPhp7 ./vendor/bin/phpunit --coverage-clover=coverage.xml
 
-      - name: Removing vendor folder and composer.lock file
-        run: rm -rf vendor composer.lock
-
       - name: Stack PHP8 | Installing dependencies
         run: docker exec stackPhp8 composer install --optimize-autoloader
 
