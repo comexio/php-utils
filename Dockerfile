@@ -1,4 +1,4 @@
-FROM php:7.4-apache
+FROM php:7.2-apache
 ARG XDEBUG_VERSION=2.6.0
 
 RUN apt update && apt install -y libpq-dev libpng-dev libxml2-dev git
