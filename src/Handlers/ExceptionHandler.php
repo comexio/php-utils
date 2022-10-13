@@ -70,7 +70,7 @@ class ExceptionHandler extends Handler
      * @param Exception $e
      * @return void
      */
-    public function report(Exception|Throwable $e): void
+    public function report(Throwable $e): void
     {
         $treatedException = self::exportExceptionToArray($e);
         $traceId = TracerSingleton::getTraceValue();
@@ -85,7 +85,7 @@ class ExceptionHandler extends Handler
      * @param Exception $e
      * @return \Illuminate\Http\Response|JsonResponse
      */
-    public function render($request, Exception|Throwable $e): JsonResponse
+    public function render($request, Throwable $e): JsonResponse
     {
         switch (true) {
             case $e instanceof AuthenticationException:
