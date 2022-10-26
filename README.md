@@ -1,6 +1,11 @@
-# php-utils
+# logcomex/php-utils
 
 PHP Utilities for Laravel/Lumen
+
+## Requirements
+
+- Laravel or Lumen ^7.0 || ^8.0 || ^9.0
+- PHP ^7.4 || ^8.1
 
 ## Installation 
 
@@ -390,6 +395,7 @@ $router->group(['prefix' => 'public',], function () use ($router) {
 // bootstrap/app.php
 
 $app->register(Logcomex\MicroservicesCore\Providers\LogcomexLoggerProvider::class);
+```
 
 ## Singletons  
 
@@ -401,8 +407,7 @@ $app->register(Logcomex\MicroservicesCore\Providers\LogcomexLoggerProvider::clas
 
 ## Unit Tests Coverage
 
-Master <br>
-[![codecov](https://codecov.io/gh/comexio/php-utils/branch/master/graph/badge.svg)](https://codecov.io/gh/comexio/php-utils)
+> TODO
 
 ## TODO
 
@@ -419,4 +424,4 @@ Master <br>
 ## Contributing  
   
 - Open an issue first to discuss potential changes/additions.
-- Open a pull request, you need two approvals and tests need to pass Travis CI.
+- Open a pull request to current version
