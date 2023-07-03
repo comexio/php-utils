@@ -5,4 +5,4 @@ Homestead.json
 Homestead.yaml
 .phpunit.result.cache
 /report
-composer.lock
+composer.lock.github/workflow
