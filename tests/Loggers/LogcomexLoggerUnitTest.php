@@ -147,6 +147,19 @@ class LogcomexLoggerUnitTest extends TestCase
 
     /**
      * @return void
+     * @throws Exception
+     */
+    public function testTreatContextWhenContextIsNotAbleToJsonDecode(): void
+    {
+        $context = random_bytes(20);
+        $response = LogcomexLogger::treatContext($context);
+
+        $this->assertIsArray($response);
+        $this->assertEmpty($response);
+    }
+
+    /**
+     * @return void
      */
     public function testInfoWithContextArraySuccessFlow(): void
     {
