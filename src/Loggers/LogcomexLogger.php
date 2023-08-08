@@ -34,7 +34,7 @@ class LogcomexLogger
             $context = array_merge($context, ExceptionHelper::exportExceptionToArray($exception));
         }
 
-        $context = json_decode(json_encode($context), true);
+        $context = json_decode(json_encode($context), true) ?? [];
         array_walk_recursive($context, function (&$value) {
             if (is_string($value)) {
                 $value = trim(str_replace("\n", " ", $value));
