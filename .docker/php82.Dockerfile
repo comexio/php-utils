@@ -1,9 +1,9 @@
-FROM php:7.4-apache
+FROM php:8.2-apache
 
 RUN apt update && apt install -y libpq-dev libpng-dev libxml2-dev git uuid-runtime libzip-dev libonig-dev
 RUN docker-php-ext-install gd xml zip mbstring sockets
 
-RUN pecl install xdebug-3.1.0 && docker-php-ext-enable xdebug \
+RUN pecl install xdebug-3.5.3 && docker-php-ext-enable xdebug \
     && echo "xdebug.client_port=9000" >> /usr/local/etc/php/php.ini \
     && echo "xdebug.mode=coverage,debug,develop" >> /usr/local/etc/php/php.ini \
     && echo "xdebug.discover_client_host=1" >> /usr/local/etc/php/php.ini \

@@ -1,18 +1,18 @@
 version: '3'
 services:
 
-  stack_php7:
-    container_name: stackPhp7
+  stack_php82:
+    container_name: stackPhp852
     build:
       context: .
-      dockerfile: php7.Dockerfile
+      dockerfile: php82.Dockerfile
     volumes:
       - "..:/var/www/app"
 
-  stack_php8:
-    container_name: stackPhp8
+  stack_php85:
+    container_name: stackPhp85
     build:
       context: .
-      dockerfile: php8.Dockerfile
+      dockerfile: php85.Dockerfile
     volumes:
       - "../:/var/www/app"

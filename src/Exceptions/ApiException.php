@@ -31,7 +31,7 @@ class ApiException extends BaseException
         string $token,
         string $message,
         int $httpCode = Response::HTTP_BAD_REQUEST,
-        Exception $previous = null
+        ?Exception $previous = null
     )
     {
         $this->token = $token;

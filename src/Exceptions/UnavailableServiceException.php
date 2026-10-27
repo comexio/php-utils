@@ -37,7 +37,7 @@ class UnavailableServiceException extends BaseException
         string $reason,
         string $service,
         int $httpCode = Response::HTTP_SERVICE_UNAVAILABLE,
-        Exception $previous = null
+        ?Exception $previous = null
     )
     {
         $this->token = $token;

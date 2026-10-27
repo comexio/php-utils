@@ -31,7 +31,7 @@ class SecurityException extends BaseException
         string $token,
         string $message,
         int $httpCode = Response::HTTP_FORBIDDEN,
-        Exception $previous = null
+        ?Exception $previous = null
     )
     {
         $this->token = $token;

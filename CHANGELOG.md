@@ -1,3 +1,16 @@
+## [3.x](https://github.com/comexio/php-utils/compare/2.x...3.x) - 2026-10-27
+
+### About
+
+A versao 3.x foi criada em cima da 2.x para a linha PHP >= 8.2 (Laravel/Lumen 11+). Nenhuma classe mudou de contrato;
+quem esta na 2.x continua na 2.x.
+
+### Changed
+- `php` minimo `^8.2` (antes `^7.4 || ^8.1`).
+- `LoggerFormatterJson` aceita `Monolog\LogRecord` (Monolog 3) alem de array (Monolog 2).
+- Parametros com default `null` passam a declarar o tipo nullable explicito (deprecation do PHP 8.4+).
+- Dev/CI: PHPUnit 11, Lumen 11, stacks PHP 8.2 e 8.5 (xdebug 3.5.3).
+
 ## [2.x](https://github.com/comexio/php-utils/compare/1.x...2.x) - 2022-10-03
 
 ### About

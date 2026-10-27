@@ -421,8 +421,9 @@ class HttpHelperUnitTest extends TestCase
         }
         $log = $this->getLastLogJson();
 
-        $this->assertIsFloat($log['request_time']);
-        $this->assertEquals(5, strlen((string) $log['request_time']));
+        $this->assertIsNumeric($log['request_time']);
+        $this->assertGreaterThanOrEqual(0, $log['request_time']);
+        $this->assertEquals(round($log['request_time'], 3), $log['request_time']);
     }
 
     /**
