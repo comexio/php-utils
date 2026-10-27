@@ -4,8 +4,8 @@ PHP Utilities for Laravel/Lumen
 
 ## Requirements
 
-- Laravel or Lumen ^7.0 || ^8.0 || ^9.0
-- PHP ^7.4 || ^8.1
+- Laravel ^11.0 || ^12.0 || ^13.0 (ou Lumen ^11.0)
+- PHP ^8.2
 
 ## Installation 
 

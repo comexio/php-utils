@@ -103,7 +103,7 @@ class ExceptionHandlerUnitTest extends TestCase
      */
     public function testRenderQueryException(): void
     {
-        $exception = new QueryException('', [], new Exception());
+        $exception = new QueryException('', '', [], new Exception());
         $request = new Request();
 
         $response = $this->handler->render($request, $exception);

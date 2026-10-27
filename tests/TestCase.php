@@ -16,6 +16,13 @@ use Throwable;
  */
 abstract class TestCase extends BaseTestCase
 {
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        restore_error_handler();
+        restore_exception_handler();
+    }
+
     /**
      * Creates the application.
      *
@@ -93,7 +100,6 @@ abstract class TestCase extends BaseTestCase
     {
         $reflection = new ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
-        $method->setAccessible(true);
 
         return $method->invokeArgs($object, $parameters);
     }
@@ -129,7 +135,6 @@ abstract class TestCase extends BaseTestCase
             }
 
             $requestedProperty = $reflectionClass->getProperty($propertyName);
-            $requestedProperty->setAccessible(true);
             $value = $requestedProperty->getValue($object);
         }
 

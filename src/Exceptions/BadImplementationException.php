@@ -30,7 +30,7 @@ class BadImplementationException extends BaseException
     public function __construct(string $token,
                                 string $message,
                                 int $httpCode = Response::HTTP_INTERNAL_SERVER_ERROR,
-                                Exception $previous = null
+                                ?Exception $previous = null
     )
     {
         $this->token = $token;

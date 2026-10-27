@@ -24,7 +24,7 @@ class LogcomexLogger
      * @param Throwable|null $exception
      * @return array
      */
-    public static function treatContext($context = [], Throwable $exception = null): array
+    public static function treatContext($context = [], ?Throwable $exception = null): array
     {
         $context = $context instanceof Arrayable
             ? $context->toArray()
@@ -60,7 +60,7 @@ class LogcomexLogger
      * @param array $context
      * @param Throwable|null $exception
      */
-    public function error(string $token, $context = [], Throwable $exception = null): void
+    public function error(string $token, $context = [], ?Throwable $exception = null): void
     {
         $traceId = TracerSingleton::getTraceValue();
         $context = self::treatContext($context, $exception);
@@ -72,7 +72,7 @@ class LogcomexLogger
      * @param array $context
      * @param Throwable|null $exception
      */
-    public function debug(string $message, $context = [], Throwable $exception = null): void
+    public function debug(string $message, $context = [], ?Throwable $exception = null): void
     {
         $traceId = TracerSingleton::getTraceValue();
         $context = self::treatContext($context, $exception);
@@ -84,7 +84,7 @@ class LogcomexLogger
      * @param array $context
      * @param Throwable|null $exception
      */
-    public function severe(string $token, $context = [], Throwable $exception = null): void
+    public function severe(string $token, $context = [], ?Throwable $exception = null): void
     {
         $traceId = TracerSingleton::getTraceValue();
         $context = self::treatContext($context, $exception);
